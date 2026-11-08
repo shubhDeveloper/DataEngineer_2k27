@@ -1,0 +1,330 @@
+Data Warehouse Design
+=====================
+
+1. Data Warehouse
+
+Overview
+A Data Warehouse is a centralized repository that stores cleaned, integrated, and historical data from multiple business systems. Unlike a Data Lake, which stores raw data, 
+a Data Warehouse is optimized for analytical queries, reporting, dashboards, and business intelligence.
+
+It enables organizations to make data-driven decisions by providing a single source of truth.
+
+------------------------------------------------------------------------------------------------
+
+2. Data Warehouse vs Data Lake
+-------------------------------------------------------------------------------------------------------------
+Data Lake														|	Data Warehouse							|
+------------------------------------------------------------------------------------------------------------|
+Stores raw data													|	Stores processed data					|
+Schema-on-Read													|	Schema-on-Write							|
+Supports structured, semi-structured, and unstructured data		|	Primarily structured data				|	
+Low-cost object storage											|	Optimized analytical storage			|	
+Used by Data Engineers & Data Scientists						|	Used by Business Analysts & BI Teams	|
+Examples: Amazon S3, ADLS										|	Examples: Redshift, Snowflake, Synapse	|
+-------------------------------------------------------------------------------------------------------------
+
+------------------------------------------------------------------------------------------------
+
+3. Why Data Warehouses?
+Organizations need
+
+- Faster reporting
+- Historical analysis
+- KPI tracking
+- Executive dashboards
+- Single source of truth
+- High-performance SQL queries
+
+------------------------------------------------------------------------------------------------
+
+4. Typical Architecture
+
+Operational Databases
+        │
+        ▼
+ETL / ELT Pipelines
+        │
+        ▼
+Data Warehouse
+        │
+        ▼
+Data Marts
+        │
+        ▼
+Power BI / Tableau / QuickSight
+
+------------------------------------------------------------------------------------------------
+
+5. Core Components
+
+1. Fact Table
+Fact tables contain measurable business events.
+
+Examples
+
+- Sales
+- Orders
+- Payments
+- Transactions
+
+Typical columns
+
+- Order ID
+- Customer ID
+- Product ID
+- Quantity
+- Sales Amount
+- Profit
+- Order Date
+
+Fact tables are usually very large.
+
+--------------------------------------------
+
+2. Dimension Table
+Dimension tables describe facts.
+
+Examples
+
+- Customer
+- Product
+- Employee
+- Region
+- Date
+
+Dimension tables change slowly.
+
+--------------------------------------------
+
+3. Star Schema
+Star Schema consists of
+
+One Fact Table
+
+Connected to
+
+Multiple Dimension Tables
+
+Advantages
+
+- Fast queries
+- Easy joins
+- BI friendly
+- Simple design
+
+Example- 
+
+          Customer
+             │
+Product ─ Fact Sales ─ Date
+             │
+          Region
+		  
+		  
+--------------------------------------------
+
+4. Snowflake Schema
+Snowflake Schema normalizes dimensions.
+
+Example-
+
+Country
+
+↓
+
+State
+
+↓
+
+City
+
+↓
+
+Customer
+
+Advantages
+
+- Less redundancy
+- Better storage efficiency
+
+Disadvantages
+
+- More joins
+- Slightly slower queries
+
+-------------------------------------------
+
+5. Star vs Snowflake
+
+Star				Snowflake
+Denormalized		Normalized
+Faster				Slightly slower
+Less joins			More joins
+Easier for BI		Better for storage
+
+-------------------------------------------
+
+6. Fact Table Types
+
+1. Transaction Fact
+One row per transaction.
+
+Example
+Sales Order
+
+2. Snapshot Fact
+Stores values at regular intervals.
+
+Example
+Daily Inventory
+
+3. Accumulating Snapshot
+Tracks a business process.
+
+Example
+Loan Approval
+
+--------------------------------------------
+
+7. Dimension Types
+
+Common dimensions
+
+- Customer
+- Product
+- Store
+- Employee
+- Geography
+- Calendar
+
+----------------------------------------------------------------------------------------------------------
+
+6. Slowly Changing Dimensions (SCD)
+
+SCD is a technique used in data warehousing to manage changes in dimension data over time while maintaining historical information.
+
+For example, suppose an employee changes their department from IT to HR. We need to decide whether to overwrite the old department or maintain its history.
+SCD helps us handle these changes.
+
+Types of SCD
+There are 7 commonly discussed SCD types, but Types 0, 1, 2, and 3 are the most important for Data Engineer interviews.
+
+1. SCD Type 0 – Retain Original Value
+- Never update the existing dimension value.
+- Original value remains unchanged.
+- Changes are ignored.
+Example: Employee's joining date should remain unchanged even if other employee details change.
+
+/
+
+2. SCD Type 1 – Overwrite
+- Updates existing records.
+- Does not maintain historical data.
+- Uses the same primary/surrogate key.
+
+Example:
+
+Before:
+EmpID		Name	Department
+101			Rahul	IT
+
+After:
+Emp ID		Name		Department
+101			Rahul		HR
+
+IT history is lost.
+
+/
+
+
+3. SCD Type 2 – Maintain Full History
+- Creates a new record whenever tracked attributes change.
+- Maintains historical records.
+- Uses a new surrogate key for each version.
+- Commonly uses Start_Date, End_Date, and Is_Current columns.
+
+Example:
+Surrogate Key	Emp ID		Department		Start Date		End Date		Current
+1				101			IT				2024-01-01		2025-06-30		N
+2				101			HR				2025-07-01		9999-12-31		Y
+
+Now we can track the employee's complete department history.
+
+/
+
+4. SCD Type 3 – Maintain Limited History
+- Maintains current and previous values.
+- Adds additional columns.
+- Stores limited history, usually one previous value.
+
+Example:
+Emp ID		CurrentDept		Previous Dept
+101			HR				IT
+
+If the employee changes department again, older history may be lost.
+
+/
+
+5. SCD Type 4 – History Table
+- Maintains current data in the main dimension table.
+- Stores historical records in a separate history table.
+
+Example:
+
+Current Employee Table:
+EmpID	Department
+101		HR
+
+Employee History Table:
+EmpID	Department
+101		IT
+101		HR
+
+/
+
+6. SCD Type 5 – Mini-Dimension + Type 1
+- Uses a separate mini-dimension for rapidly changing attributes.
+- Combines Type 1 and Type 4 concepts.
+- Maintains current mini-dimension information through a reference in the base dimension.
+
+/
+
+7. SCD Type 6 – Hybrid (1 + 2 + 3)
+Combines all three approaches:
+- Type 1: Overwrite current information.
+- Type 2: Maintain historical records.
+- Type 3: Maintain previous values in additional columns.
+
+It supports both historical tracking and current-value reporting.
+
+/
+
+8. SCD Type 7 – Dual Type 1 and Type 2
+- Supports both historical and current reporting.
+- Uses natural keys and surrogate keys.
+- Allows users to query historical dimension versions or the current dimension values.
+
+-------------------------------------------------------------------
+
+SCD Types – Quick Comparison
+Type			Approach					Historical data
+Type 0			Retain original				No changes
+Type 1			Overwrite					No
+Type 2			New row						Full history
+Type 3			Additional columns			Limited
+Type 4			Separate history table		Full history
+Type 5			Mini-dimension				Yes
+Type 6			Hybrid 1+2+3				Yes
+Type 7			Dual Type 1/2				Yes
+
+
+/
+
+Practical Data Engineering Example
+Suppose you are building an employee data warehouse using PySpark, Databricks, and Azure Data Lake Storage.
+
+An employee changes their department:
+- Type 1: Update the existing department.
+- Type 2: Insert a new employee dimension record and expire the old record.
+- Type 3: Keep current and previous department columns.
+For most enterprise data warehousing implementations, SCD Type 2 is particularly important.
