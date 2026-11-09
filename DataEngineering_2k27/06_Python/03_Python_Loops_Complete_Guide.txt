@@ -1,0 +1,622 @@
+Python Loops – Complete Learning Guide
+
+1. What is a loop?
+
+A loop repeats a block of code multiple times. Loops help avoid writing
+the same statements again and again.
+
+Example:
+
+    for number in range(1, 4):
+        print(number)
+
+Output:
+
+    1
+    2
+    3
+
+Python mainly provides for loops and while loops.
+
+2. The for loop
+
+A for loop iterates over the items of an iterable, such as a list,
+tuple, string, set, dictionary, range, or file.
+
+Syntax:
+
+    for variable in iterable:
+        # statements
+
+Example with a list:
+
+    names = ["Amit", "Neha", "Rahul"]
+
+    for name in names:
+        print(name)
+
+The loop assigns each item to name, one at a time.
+
+Looping through a string
+
+    for character in "Python":
+        print(character)
+
+Each character is processed individually.
+
+Looping through a tuple
+
+    numbers = (10, 20, 30)
+
+    for number in numbers:
+        print(number)
+
+Looping through a set
+
+    values = {10, 20, 30}
+
+    for value in values:
+        print(value)
+
+A set is unordered, so do not rely on a particular iteration order.
+
+Looping through a dictionary
+
+    employee = {
+        "name": "Amit",
+        "department": "IT",
+        "salary": 50000
+    }
+
+    for key in employee:
+        print(key, employee[key])
+
+Equivalent, more explicit version:
+
+    for key, value in employee.items():
+        print(key, value)
+
+Useful dictionary methods:
+
+    employee.keys()    # keys
+    employee.values()  # values
+    employee.items()   # key-value pairs
+
+3. The range() function
+
+range() generates a sequence of integers. It is commonly used when you
+need to repeat an operation a known number of times.
+
+range(stop)
+
+    for i in range(5):
+        print(i)
+
+Output: 0 1 2 3 4
+
+The stop value is excluded.
+
+range(start, stop)
+
+    for i in range(2, 6):
+        print(i)
+
+Output: 2 3 4 5
+
+range(start, stop, step)
+
+    for i in range(2, 11, 2):
+        print(i)
+
+Output: 2 4 6 8 10
+
+A negative step counts backwards:
+
+    for i in range(5, 0, -1):
+        print(i)
+
+Output: 5 4 3 2 1
+
+Common mistake: range(1, 5) does not include 5.
+
+4. for loop with an index
+
+You can use range(len(collection)) when you need indexes:
+
+    names = ["Amit", "Neha", "Rahul"]
+
+    for i in range(len(names)):
+        print(i, names[i])
+
+However, if you need both the index and value, enumerate() is usually
+cleaner.
+
+5. The enumerate() function
+
+enumerate() provides both the index and the item.
+
+    languages = ["Python", "Java", "SQL"]
+
+    for index, language in enumerate(languages):
+        print(index, language)
+
+Start counting from 1:
+
+    for index, language in enumerate(languages, start=1):
+        print(index, language)
+
+Use enumerate() instead of manually maintaining a counter when possible.
+
+6. The while loop
+
+A while loop repeats as long as its condition is true.
+
+Syntax:
+
+    while condition:
+        # statements
+
+Example:
+
+    count = 1
+
+    while count <= 5:
+        print(count)
+        count += 1
+
+The variable is updated so that the condition eventually becomes false.
+
+When should you use while?
+
+Use while when the number of repetitions is not known in advance and
+repetition depends on a condition.
+
+Example: keep asking until the user enters the correct value.
+
+    password = ""
+
+    while password != "python123":
+        password = input("Enter password: ")
+
+    print("Access granted")
+
+An infinite loop occurs if the condition never becomes false:
+
+    while True:
+        print("Running")
+
+Use break or another exit condition when an intentional infinite loop
+needs to stop.
+
+7. break statement
+
+break immediately terminates the nearest enclosing loop.
+
+    for number in range(1, 10):
+        if number == 5:
+            break
+        print(number)
+
+Output:
+
+    1
+    2
+    3
+    4
+
+Scenario: search for a value and stop as soon as it is found.
+
+    numbers = [10, 20, 30, 40, 50]
+    target = 30
+
+    for number in numbers:
+        if number == target:
+            print("Found")
+            break
+
+8. continue statement
+
+continue skips the rest of the current iteration and moves to the next
+iteration.
+
+    for number in range(1, 6):
+        if number == 3:
+            continue
+        print(number)
+
+Output:
+
+    1
+    2
+    4
+    5
+
+Scenario: print only odd numbers.
+
+    for number in range(1, 11):
+        if number % 2 == 0:
+            continue
+        print(number)
+
+Difference: - break: stops the entire nearest loop. - continue: skips
+only the current iteration.
+
+9. Nested loops
+
+A nested loop is a loop inside another loop.
+
+    for row in range(1, 4):
+        for column in range(1, 3):
+            print(row, column)
+
+For every outer-loop iteration, the inner loop completes all its
+iterations.
+
+Multiplication table
+
+    for number in range(1, 6):
+        for multiplier in range(1, 11):
+            print(number, "x", multiplier, "=", number * multiplier)
+
+Star pattern
+
+    for row in range(1, 5):
+        for column in range(row):
+            print("*", end="")
+        print()
+
+Output:
+
+    *
+    **
+    ***
+    ****
+
+Nested loops are useful for grids, matrices, combinations, and pattern
+problems. They can be expensive for large inputs because the inner loop
+runs repeatedly.
+
+10. else with loops
+
+Python allows else with both for and while loops.
+
+The loop’s else block executes when the loop finishes normally. It does
+not execute if the loop exits through break.
+
+Example:
+
+    for number in range(1, 4):
+        print(number)
+    else:
+        print("Loop completed")
+
+Example where break prevents the else block:
+
+    for number in range(1, 5):
+        if number == 3:
+            break
+    else:
+        print("Completed without break")
+
+Search example
+
+    numbers = [10, 20, 30, 40]
+    target = 50
+
+    for number in numbers:
+        if number == target:
+            print("Found")
+            break
+    else:
+        print("Not found")
+
+This is a useful pattern for searching a collection.
+
+11. The pass statement
+
+pass does nothing. It acts as a placeholder where Python syntax requires
+a statement.
+
+    for number in range(5):
+        if number == 3:
+            pass
+        print(number)
+
+Unlike continue, pass does not skip the remaining statements in the
+iteration.
+
+12. zip() with loops
+
+zip() combines items from multiple iterables position by position.
+
+    names = ["Amit", "Neha", "Rahul"]
+    scores = [80, 90, 85]
+
+    for name, score in zip(names, scores):
+        print(name, score)
+
+By default, iteration stops when the shortest iterable is exhausted.
+
+13. List comprehension
+
+A list comprehension is a compact way to create a list by iterating over
+an iterable.
+
+Regular loop:
+
+    numbers = [1, 2, 3, 4, 5]
+    squares = []
+
+    for number in numbers:
+        squares.append(number ** 2)
+
+List comprehension:
+
+    squares = [number ** 2 for number in numbers]
+
+With a condition:
+
+    even_numbers = [number for number in range(1, 11) if number % 2 == 0]
+
+Use comprehensions for simple transformations and filters. Use a normal
+loop when the logic has multiple steps or side effects.
+
+14. Generator expressions
+
+A generator expression looks similar to a list comprehension but
+produces values lazily, one at a time.
+
+    squares = (number ** 2 for number in range(1, 6))
+
+    for square in squares:
+        print(square)
+
+A list comprehension creates the full list in memory. A generator
+expression generally uses less memory when processing a large sequence,
+but it is consumed as it is iterated.
+
+15. Modifying a list while iterating
+
+Avoid removing items directly from a list while iterating over that same
+list. Removing an item shifts later indexes and can cause elements to be
+skipped.
+
+Problematic pattern:
+
+    numbers = [1, 2, 3, 4, 5, 6]
+
+    for number in numbers:
+        if number % 2 == 0:
+            numbers.remove(number)
+
+Safer approach: create a new filtered list.
+
+    numbers = [1, 2, 3, 4, 5, 6]
+    odd_numbers = [number for number in numbers if number % 2 != 0]
+
+Or iterate over a copy:
+
+    for number in numbers.copy():
+        if number % 2 == 0:
+            numbers.remove(number)
+
+16. Iterating over files
+
+A file object can be iterated line by line.
+
+    with open("data.txt", "r") as file:
+        for line in file:
+            print(line.strip())
+
+This is generally more memory-efficient than reading an entire large
+file into memory with read().
+
+17. Common loop interview problems
+
+A. Sum of numbers from 1 to N
+
+    n = 5
+    total = 0
+
+    for number in range(1, n + 1):
+        total += number
+
+    print(total)  # 15
+
+B. Factorial of a number
+
+    n = 5
+    factorial = 1
+
+    for number in range(1, n + 1):
+        factorial *= number
+
+    print(factorial)  # 120
+
+C. Reverse a string using a loop
+
+    text = "python"
+    reversed_text = ""
+
+    for character in text:
+        reversed_text = character + reversed_text
+
+    print(reversed_text)  # nohtyp
+
+For production code, slicing (text[::-1]) is a simpler alternative.
+
+D. Count vowels
+
+    text = "programming"
+    count = 0
+
+    for character in text.lower():
+        if character in "aeiou":
+            count += 1
+
+    print(count)
+
+E. Find the largest number
+
+    numbers = [12, 45, 7, 89, 23]
+    largest = numbers[0]
+
+    for number in numbers:
+        if number > largest:
+            largest = number
+
+    print(largest)  # 89
+
+F. Count even and odd numbers
+
+    numbers = [1, 2, 3, 4, 5, 6]
+    even_count = 0
+    odd_count = 0
+
+    for number in numbers:
+        if number % 2 == 0:
+            even_count += 1
+        else:
+            odd_count += 1
+
+    print("Even:", even_count)
+    print("Odd:", odd_count)
+
+G. Check whether a number is prime
+
+    number = 17
+    is_prime = number > 1
+
+    for divisor in range(2, int(number ** 0.5) + 1):
+        if number % divisor == 0:
+            is_prime = False
+            break
+
+    print(is_prime)
+
+Checking divisors only up to the square root is sufficient because
+factors occur in pairs.
+
+H. Fibonacci sequence
+
+    a, b = 0, 1
+
+    for _ in range(7):
+        print(a)
+        a, b = b, a + b
+
+18. Loop performance and time complexity
+
+Time complexity describes how the number of operations grows as input
+size grows.
+
+One loop: O(n)
+
+    for item in items:
+        print(item)
+
+If there are n items, the loop processes approximately n items.
+
+Two nested loops: O(n²)
+
+    for first in items:
+        for second in items:
+            print(first, second)
+
+For n items, the inner operation can run approximately n * n times.
+
+Two separate loops: O(n)
+
+    for item in items:
+        print(item)
+
+    for item in items:
+        print(item)
+
+This performs about 2n operations, which is still O(n).
+
+Loop over half the collection: O(n)
+
+    for i in range(len(items) // 2):
+        print(items[i])
+
+The number of iterations grows proportionally to n, so the complexity
+remains O(n).
+
+19. Common mistakes
+
+1.  Forgetting to update a while loop condition variable, causing an
+    infinite loop.
+2.  Expecting range(1, 5) to include 5. The stop value is excluded.
+3.  Using break when only the current iteration should be skipped.
+4.  Using continue when the whole loop should stop.
+5.  Modifying a list while iterating over the same list.
+6.  Assuming a set has a fixed iteration order.
+7.  Forgetting that zip() stops at the shortest iterable by default.
+8.  Assuming a loop’s else block runs after break. It does not.
+9.  Using nested loops without considering their time complexity.
+
+20. for loop vs while loop
+
+  -----------------------------------------------------------------------
+  for loop                            while loop
+  ----------------------------------- -----------------------------------
+  Iterates over an iterable           Repeats while a condition is true
+
+  Useful when processing collection   Useful when repetitions depend on a
+  items                               condition
+
+  Often has a clear end based on the  Requires careful condition
+  iterable                            management
+
+  Example: process every row in a     Example: retry until valid input is
+  file                                received
+  -----------------------------------------------------------------------
+
+21. Practice questions
+
+Try solving these without looking at the solutions first.
+
+1.  Print numbers from 1 to 100.
+2.  Print all even numbers between 1 and 50.
+3.  Calculate the sum of all numbers in a list.
+4.  Find the maximum and minimum values in a list without using max() or
+    min().
+5.  Count how many times a particular value appears in a list.
+6.  Reverse a string using a loop.
+7.  Check whether a string is a palindrome.
+8.  Find all prime numbers between 1 and 100.
+9.  Print the multiplication table of a given number.
+10. Find duplicate values in a list.
+11. Merge two lists by taking one item from each in turn.
+12. Print a right-triangle star pattern.
+13. Find the second-largest distinct number in a list.
+14. Count the frequency of each character in a string.
+15. Process a file line by line and count its lines.
+
+22. Quick revision
+
+-   for: iterates over an iterable.
+-   while: repeats while a condition is true.
+-   range(): generates a sequence of integers.
+-   enumerate(): provides index and value.
+-   break: terminates the nearest loop.
+-   continue: skips the current iteration.
+-   pass: does nothing; it is a placeholder.
+-   Nested loop: a loop inside another loop.
+-   Loop else: runs if the loop finishes without break.
+-   zip(): iterates over multiple iterables together.
+-   List comprehension: concise list creation using iteration.
+-   Generator expression: produces values lazily.
+
+Interview-ready answer
+
+What are loops in Python?
+
+Loops are used to execute a block of code repeatedly. Python provides
+two main types: for and while. A for loop iterates over an iterable such
+as a list, string, tuple, or range. A while loop runs as long as a
+condition is true. We use break to stop a loop, continue to skip the
+current iteration, and nested loops to handle multi-level iteration. For
+example, I can use a for loop to process every row in a dataset and a
+while loop to retry an operation until a condition is satisfied.

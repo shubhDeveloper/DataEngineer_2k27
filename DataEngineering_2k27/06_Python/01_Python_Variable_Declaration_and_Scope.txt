@@ -1,0 +1,624 @@
+PYTHON VARIABLE DECLARATION AND SCOPE A Practical Guide with Examples
+=================================
+
+PURPOSE
+
+This guide explains how Python variables work, what happens when the
+same variable is assigned again, and how variable scope works in
+different situations.
+
+1. VARIABLES AND REASSIGNMENT
+
+A variable is a name that refers to an object.
+
+    x = 10
+    print(x)
+
+Python is dynamically typed. The same variable name can refer to values
+of different data types:
+
+    x = 10
+    print(type(x))       # <class 'int'>
+
+    x = "Python"
+    print(type(x))       # <class 'str'>
+
+    x = [1, 2, 3]
+    print(type(x))       # <class 'list'>
+
+Output: <class ‘int’> <class ‘str’> <class ‘list’>
+
+When the same variable is assigned again in the same scope, its binding
+is updated. The last assignment determines what that name refers to.
+
+    x = 10
+    x = 20
+    x = 30
+    print(x)             # 30
+
+This is reassignment, not a separate variable declaration.
+
+2. WHAT IS VARIABLE SCOPE?
+
+Scope is the region of a program in which a variable name can be
+accessed.
+
+Python resolves names using the LEGB rule:
+
+    L - Local:     inside the current function
+    E - Enclosing: inside an outer function containing the current function
+    G - Global:    at the module level
+    B - Built-in:  predefined Python names, such as print() and len()
+
+Python searches in this order: Local -> Enclosing -> Global -> Built-in.
+
+3. LOCAL SCOPE
+
+A variable assigned inside a function is local to that function, unless
+declared global or nonlocal.
+
+Example 1: Local variable
+
+    def show():
+        x = 100
+        print(x)
+
+    show()               # 100
+
+Example 2: Trying to access it outside the function
+
+    def show():
+        x = 100
+
+    show()
+    print(x)             # NameError
+
+The name x is local to show(), so it cannot be accessed directly outside
+it.
+
+Example 3: Same local name in two functions
+
+    def first():
+        x = 10
+        print("First:", x)
+
+    def second():
+        x = 20
+        print("Second:", x)
+
+    first()              # First: 10
+    second()             # Second: 20
+
+Each function has its own local x. The variables do not overwrite each
+other.
+
+4. GLOBAL SCOPE
+
+A variable assigned at the module level is global to that module.
+
+Example 1: Read a global variable inside a function
+
+    x = 100
+
+    def show():
+        print(x)
+
+    show()               # 100
+
+Python looks in the function’s local scope first. If x is not found
+there, it looks in the global scope.
+
+Example 2: Local variable shadows a global variable
+
+    x = 100
+
+    def show():
+        x = 200
+        print("Inside:", x)
+
+    show()               # Inside: 200
+    print("Outside:", x) # Outside: 100
+
+The assignment x = 200 creates a local variable. It does not change the
+global x.
+
+Example 3: Modify a global variable using global
+
+    x = 100
+
+    def update():
+        global x
+        x = 200
+
+    update()
+    print(x)             # 200
+
+The global keyword tells Python that assignments to x in this function
+refer to the module-level variable.
+
+Example 4: Multiple functions modify the same global variable
+
+    x = 10
+
+    def first():
+        global x
+        x = 20
+
+    def second():
+        global x
+        x = 30
+
+    first()
+    print(x)             # 20
+
+    second()
+    print(x)             # 30
+
+Both functions update the same global variable.
+
+5. ENCLOSING SCOPE AND NESTED FUNCTIONS
+
+A function defined inside another function can access variables in the
+outer function.
+
+Example 1: Read an enclosing variable
+
+    def outer():
+        x = 100
+
+        def inner():
+            print(x)
+
+        inner()
+
+    outer()              # 100
+
+Example 2: Local variable shadows the enclosing variable
+
+    def outer():
+        x = 100
+
+        def inner():
+            x = 200
+            print("Inner:", x)
+
+        inner()
+        print("Outer:", x)
+
+    outer()
+
+Output: Inner: 200 Outer: 100
+
+The assignment inside inner() creates a local x in inner().
+
+Example 3: Modify an enclosing variable using nonlocal
+
+    def outer():
+        x = 100
+
+        def inner():
+            nonlocal x
+            x = 200
+
+        inner()
+        print(x)
+
+    outer()              # 200
+
+The nonlocal keyword refers to a variable in the nearest enclosing
+function scope. It does not refer to a global variable.
+
+6. GLOBAL VS NONLOCAL
+
+global: - Refers to a module-level variable. - Used when a function
+needs to assign to that global variable.
+
+nonlocal: - Refers to a variable in an enclosing function. - Used inside
+nested functions. - Requires that the variable already exists in an
+enclosing function scope.
+
+Example:
+
+    x = 10
+
+    def outer():
+        y = 20
+
+        def inner():
+            global x
+            nonlocal y
+            x = 100
+            y = 200
+
+        inner()
+        print(y)
+
+    outer()
+    print(x)
+
+Output: 200 100
+
+7. READING A VARIABLE BEFORE ASSIGNING IT
+
+This example raises UnboundLocalError:
+
+    x = 100
+
+    def show():
+        print(x)
+        x = 200
+
+    show()
+
+Why? Because Python sees the assignment to x inside show() and treats x
+as a local variable throughout that function. The print statement tries
+to read that local variable before it has a value.
+
+Correct version when you intend to modify the global variable:
+
+    x = 100
+
+    def show():
+        global x
+        print(x)
+        x = 200
+
+    show()               # Prints 100
+    print(x)             # 200
+
+8. LOOPS AND IF BLOCKS DO NOT CREATE A NEW SCOPE
+
+Unlike functions, ordinary for loops, while loops, and if/else blocks do
+not create a separate variable scope.
+
+Example 1: for loop
+
+    for i in range(3):
+        last = i
+
+    print(last)          # 2
+
+Example 2: if block
+
+    if True:
+        result = "OK"
+
+    print(result)        # OK
+
+If a loop does not run, its loop variable may never be assigned:
+
+    for i in range(0):
+        pass
+
+    print(i)             # NameError if i was not defined earlier
+
+9. MUTABLE OBJECTS: LISTS AND DICTIONARIES
+
+Scope and mutability are different concepts.
+
+A list or dictionary can be modified through an existing reference
+without reassigning the variable name.
+
+Example 1: Modify a global list
+
+    numbers = [10, 20, 30]
+
+    def add_item():
+        numbers.append(40)
+
+    add_item()
+    print(numbers)       # [10, 20, 30, 40]
+
+No global declaration is required because append() modifies the existing
+list object. The function does not assign a new object to numbers.
+
+Example 2: Reassign a list name inside a function
+
+    numbers = [10, 20, 30]
+
+    def replace_list():
+        numbers = [100, 200]
+
+    replace_list()
+    print(numbers)       # [10, 20, 30]
+
+Here, numbers inside replace_list() is a new local binding.
+
+Example 3: Replace the global list
+
+    numbers = [10, 20, 30]
+
+    def replace_list():
+        global numbers
+        numbers = [100, 200]
+
+    replace_list()
+    print(numbers)       # [100, 200]
+
+The same principle applies to dictionaries:
+
+    employee = {"name": "Shubham", "salary": 50000}
+
+    def update_salary():
+        employee["salary"] = 60000
+
+    update_salary()
+    print(employee)
+    # {'name': 'Shubham', 'salary': 60000}
+
+10. FUNCTION PARAMETERS ARE LOCAL
+
+Parameters become local names inside the function.
+
+    salary = 50000
+
+    def increase_salary(salary):
+        salary = salary + 10000
+        print("Inside:", salary)
+
+    increase_salary(salary)  # Inside: 60000
+    print("Outside:", salary) # 50000
+
+The parameter named salary is local to the function. It does not replace
+the global salary.
+
+11. LIST COMPREHENSIONS
+
+In Python 3, the iteration variable in a list comprehension has its own
+comprehension scope.
+
+    x = 100
+    values = [x for x in range(5)]
+
+    print(values)        # [0, 1, 2, 3, 4]
+    print(x)             # 100
+
+Compare this with a regular for loop:
+
+    x = 100
+
+    for x in range(5):
+        pass
+
+    print(x)             # 4
+
+The regular loop does not create a separate scope.
+
+12. BUILT-IN NAMES
+
+Python provides built-in names such as:
+
+    print()
+    len()
+    sum()
+    max()
+    min()
+    type()
+    range()
+
+Avoid using these names as your own variable names.
+
+Bad example:
+
+    list = [1, 2, 3]
+    list = 100
+
+Now the name list refers to the integer 100 in the current namespace.
+Calling list(“Python”) will fail because the built-in list name has been
+shadowed.
+
+Prefer names such as:
+
+    numbers = [1, 2, 3]
+    total = 100
+
+13. CLOSURES
+
+A closure is an inner function that retains access to variables from its
+enclosing function, even after the outer function has returned.
+
+    def make_counter():
+        count = 0
+
+        def increment():
+            nonlocal count
+            count += 1
+            return count
+
+        return increment
+
+    counter = make_counter()
+
+    print(counter())     # 1
+    print(counter())     # 2
+    print(counter())     # 3
+
+The inner function retains the enclosing count variable between calls.
+
+14. COMMON INTERVIEW TRAPS
+
+Trap 1: Local variable shadows global variable
+
+    x = 10
+
+    def test():
+        x = 20
+
+    test()
+    print(x)             # 10
+
+Trap 2: Assignment makes a name local in a function
+
+    x = 10
+
+    def test():
+        print(x)
+        x = 20
+
+    test()               # UnboundLocalError
+
+Trap 3: Loop variable remains accessible
+
+    for i in range(3):
+        pass
+
+    print(i)             # 2
+
+Trap 4: Mutating a list is different from reassigning its name
+
+    items = [1, 2]
+
+    def test():
+        items.append(3)
+
+    test()
+    print(items)         # [1, 2, 3]
+
+Trap 5: nonlocal cannot create a missing enclosing variable
+
+    def outer():
+        def inner():
+            nonlocal x   # SyntaxError: no enclosing x binding
+            x = 10
+
+15. QUICK REVISION TABLE
+
+  Situation                      Result
+  ------------------------------ ------------------------------------------
+  Assign same name again         New assignment updates the binding
+  Same name in two functions     Separate local variables
+  Same name local and global     Local name shadows global name
+  Read global inside function    Allowed if not shadowed
+  Assign to global in function   Use global
+  Read enclosing variable        Allowed in nested function
+  Assign to enclosing variable   Use nonlocal
+  Variable in a for loop         Usually accessible after the loop
+  Variable in an if block        Accessible outside the block
+  Append to a global list        Modifies existing list; no global needed
+  Reassign a global list         Use global
+  Read local before assignment   UnboundLocalError
+  List comprehension variable    Separate scope in Python 3
+
+16. PRACTICE QUESTIONS
+
+Try to predict each output before running the code.
+
+Question 1: x = 10 x = 20 print(x)
+
+Answer: 20
+
+Question 2: x = 100
+
+    def test():
+        x = 200
+        print(x)
+
+    test()
+    print(x)
+
+Answer: 200 100
+
+Question 3: x = 10
+
+    def test():
+        global x
+        x = 50
+
+    test()
+    print(x)
+
+Answer: 50
+
+Question 4: def outer(): x = 10
+
+        def inner():
+            print(x)
+
+        inner()
+
+    outer()
+
+Answer: 10
+
+Question 5: for i in range(3): pass print(i)
+
+Answer: 2
+
+Question 6: x = 10
+
+    def test():
+        print(x)
+        x = 20
+
+    test()
+
+Answer: UnboundLocalError
+
+Question 7: def outer(): x = 10
+
+        def inner():
+            nonlocal x
+            x = 30
+
+        inner()
+        print(x)
+
+    outer()
+
+Answer: 30
+
+Question 8: numbers = [1, 2]
+
+    def test():
+        numbers.append(3)
+
+    test()
+    print(numbers)
+
+Answer: [1, 2, 3]
+
+17. INTERVIEW-READY ANSWER
+
+Question: What is variable scope in Python?
+
+Answer:
+
+“Variable scope defines where a variable can be accessed in a Python
+program. Python follows the LEGB rule: Local, Enclosing, Global, and
+Built-in.
+
+A local variable is defined inside a function. An enclosing variable
+belongs to an outer function. A global variable is defined at module
+level, and built-in names are provided by Python.
+
+We use the global keyword to modify a global variable from a function
+and the nonlocal keyword to modify a variable from an enclosing
+function.
+
+Also, loops and if/else blocks do not create separate scopes in Python.”
+
+18. RECOMMENDED POINTS TO MASTER
+
+For Python and Data Engineer interviews, focus on:
+
+1.  LEGB name resolution.
+2.  Local versus global variables.
+3.  global and nonlocal keywords.
+4.  Variable shadowing and reassignment.
+5.  UnboundLocalError.
+6.  Mutable versus immutable objects.
+7.  Function parameters and local scope.
+8.  List comprehension scope.
+9.  Closures and nested functions.
+10. Avoiding accidental modification of shared global state.
+
+FINAL TAKEAWAY
+
+-   Assigning to the same name again updates what that name refers to.
+-   A local variable and a global variable can have the same name.
+-   Python searches names using the LEGB rule.
+-   Use global for module-level reassignment.
+-   Use nonlocal for enclosing-function reassignment.
+-   Mutating a list or dictionary is different from reassigning its
+    variable.
+-   Functions create local scopes; ordinary loops and if blocks do not.

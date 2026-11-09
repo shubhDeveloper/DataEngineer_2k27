@@ -1,0 +1,343 @@
+Python Object Memory – Where Objects Are Stored
+
+1. Short answer
+
+When you create an object in Python, the object is generally allocated
+in the Python-managed memory area, commonly described as the heap.
+
+A variable does not usually contain the complete object itself. A
+variable name refers to an object.
+
+Example:
+
+    numbers = [10, 20, 30]
+
+Conceptually: - Python creates a list object in managed memory. - The
+name numbers refers to that list object. - The list stores references to
+its element objects.
+
+The exact implementation details can vary between Python
+implementations. The explanation below mainly describes the standard
+CPython implementation.
+
+2. Variable name vs object
+
+Consider:
+
+    x = [10, 20, 30]
+
+A useful conceptual picture is:
+
+    Name/reference                 Object in memory
+    -------------                 ----------------
+    x  ------------------------->  List object
+                                    |
+                                    +--> 10
+                                    +--> 20
+                                    +--> 30
+
+The name x is a reference to the list object. It is not best understood
+as a box that physically contains the entire list.
+
+In CPython, names are resolved through namespaces such as local, global,
+and built-in namespaces. Those namespaces hold references to objects.
+
+3. What happens when we assign one variable to another?
+
+    a = [1, 2, 3]
+    b = a
+
+Python does not create a second list here. Both names refer to the same
+list object.
+
+    a ----+
+          |
+          +------> [1, 2, 3]
+          |
+    b ----+
+
+You can verify this with is:
+
+    print(a is b)  # True
+
+Because both names refer to the same object, changing the list through
+one name is visible through the other:
+
+    b.append(4)
+    print(a)  # [1, 2, 3, 4]
+
+4. What happens when we create a separate object?
+
+Use a copy when you need a separate list:
+
+    a = [1, 2, 3]
+    b = a.copy()
+
+    print(a is b)  # False
+
+Now a and b refer to two different list objects.
+
+A shallow copy creates a new outer container, but nested mutable objects
+can still be shared:
+
+    a = [[1, 2], [3, 4]]
+    b = a.copy()
+
+    print(a is b)        # False
+    print(a[0] is b[0])  # True
+
+A deep copy, when appropriate, recursively copies nested objects:
+
+    import copy
+
+    a = [[1, 2], [3, 4]]
+    b = copy.deepcopy(a)
+
+    print(a is b)        # False
+    print(a[0] is b[0])  # False
+
+5. Where do local variables and objects live?
+
+Consider:
+
+    def create_list():
+        values = [10, 20, 30]
+        return values
+
+    result = create_list()
+
+Conceptually: 1. Calling the function creates a function execution
+frame. 2. The local name values refers to the list object. 3. The list
+object is allocated in Python-managed memory. 4. The function returns a
+reference to that object. 5. result now refers to the returned list.
+
+When the function returns, its local execution frame is no longer
+active. However, the list remains available because result still refers
+to it.
+
+Important distinction: - Function frames and local-variable handling are
+implementation details. - Python objects are managed by Python’s
+memory-management system. - Do not assume that every local variable is a
+separate object stored on the heap.
+
+6. Are integers, strings, lists, and custom objects also stored in managed memory?
+
+Yes. In CPython, integers, strings, lists, dictionaries, tuples,
+functions, and instances of user-defined classes are Python objects
+managed by the runtime.
+
+Examples:
+
+    age = 27
+    name = "Shubham"
+    scores = [80, 90, 95]
+    employee = {"id": 101, "name": "Amit"}
+
+Each value is an object. The names refer to those objects.
+
+There are implementation optimizations, such as reusing or caching some
+immutable objects. Therefore, do not assume that every assignment always
+allocates a completely new object.
+
+7. What happens when we create a custom class object?
+
+    class Employee:
+        def __init__(self, name, salary):
+            self.name = name
+            self.salary = salary
+
+    employee1 = Employee("Amit", 50000)
+
+Conceptually: - Employee is a class object. - Calling Employee(...)
+creates an instance. - The instance is allocated in Python-managed
+memory. - employee1 refers to that instance. - The instance stores
+attributes such as name and salary.
+
+A simplified picture:
+
+    employee1
+        |
+        v
+    Employee instance
+        |
+        +---- name   -> "Amit"
+        |
+        +---- salary -> 50000
+
+The instance’s attributes refer to their corresponding values. The
+precise internal layout depends on the Python implementation and class
+configuration.
+
+8. How can we inspect object identity and size?
+
+id()
+
+id() returns an object’s identity value. In CPython, it is commonly the
+object’s memory address while the object exists, but Python’s language
+definition does not promise that id() is always a physical memory
+address.
+
+    numbers = [1, 2, 3]
+
+    print(id(numbers))
+
+is
+
+Use is to check whether two references point to the same object:
+
+    a = [1, 2]
+    b = a
+    c = [1, 2]
+
+    print(a is b)  # True
+    print(a is c)  # False
+    print(a == c)  # True
+
+-   is checks object identity.
+-   == checks value equality.
+
+sys.getsizeof()
+
+    import sys
+
+    numbers = [1, 2, 3]
+    print(sys.getsizeof(numbers))
+
+This reports the shallow size of the object in bytes. It does not
+include the full memory occupied by objects referenced by the list.
+
+For example, the list’s reported size does not necessarily include the
+memory used by all its integer elements.
+
+9. How is object memory released?
+
+Python manages object memory automatically.
+
+In CPython, two important mechanisms are:
+
+A. Reference counting
+
+CPython keeps track of references to objects. When an object’s reference
+count reaches zero, it can generally be deallocated immediately.
+
+    a = [10, 20, 30]
+    b = a
+
+    del a
+
+The list is not deallocated at this point because b still refers to it.
+
+    del b
+
+Now there may be no remaining references to the list, so CPython can
+release it.
+
+del removes a name or reference; it does not directly mean “delete this
+object from memory.”
+
+B. Garbage collection
+
+Reference counting alone cannot reclaim certain groups of objects that
+refer to each other in a cycle.
+
+Example:
+
+    class Node:
+        pass
+
+    a = Node()
+    b = Node()
+
+    a.other = b
+    b.other = a
+
+    del a
+    del b
+
+The two objects refer to each other. Python’s cyclic garbage collector
+can detect and collect unreachable reference cycles.
+
+The garbage collector supplements reference counting in CPython.
+
+10. Does deleting an object immediately reduce process memory?
+
+Not necessarily.
+
+When Python releases an object, its memory may be returned to Python’s
+allocator for reuse rather than immediately returned to the operating
+system.
+
+Therefore: - The object may no longer be accessible. - Python may reuse
+the released memory for future objects. - The process’s memory usage
+shown by the operating system may not immediately decrease.
+
+This is why deleting a large list does not guarantee that the
+application’s reported memory usage drops immediately.
+
+11. Stack vs heap – interview perspective
+
+A common simplified explanation says: - Stack: function calls and
+execution frames. - Heap: dynamically allocated objects.
+
+This can be useful as a general programming concept, but Python’s actual
+implementation is more nuanced.
+
+For CPython: - Python objects are allocated in Python-managed memory,
+commonly associated with the heap. - Function calls use interpreter
+frames and execution state. - Local names refer to objects; they should
+not be described as always containing the objects themselves. - The
+exact storage and optimization details can change between Python
+versions and implementations.
+
+Avoid claiming that every Python variable is stored on the stack or that
+every object is stored at a permanently fixed physical address.
+
+12. Practical example: same object or different object?
+
+    first = [10, 20]
+    second = first
+    third = [10, 20]
+
+    print(first is second)  # True
+    print(first is third)   # False
+
+    second.append(30)
+
+    print(first)  # [10, 20, 30]
+    print(third)  # [10, 20]
+
+Explanation: - second = first creates another reference to the same
+list. - [10, 20] creates a separate list for third. - Mutating the
+shared list through second is visible through first. - The separate list
+referenced by third is unchanged.
+
+13. Key points to remember
+
+1.  Python objects are allocated and managed by the Python runtime.
+2.  In CPython, objects are generally allocated in heap-managed memory.
+3.  A variable name refers to an object; it does not necessarily contain
+    the whole object.
+4.  Assignment such as b = a usually creates another reference, not a
+    copy.
+5.  is checks identity; == checks equality.
+6.  id() returns an identity value, not a portable promise of a memory
+    address.
+7.  sys.getsizeof() reports shallow object size.
+8.  CPython uses reference counting and cyclic garbage collection.
+9.  del removes a reference or name; it does not guarantee immediate
+    return of memory to the operating system.
+10. These implementation details can differ in other Python
+    implementations.
+
+14. Interview-ready answer
+
+Question: When we create an object in Python, where is the memory
+allocated?
+
+When we create an object in Python, the Python runtime allocates memory
+for that object. In CPython, objects are generally allocated in
+heap-managed memory. A variable name stores a reference to the object
+rather than the complete object itself. If we assign one variable to
+another, both names can refer to the same object. Python manages object
+memory automatically using reference counting and garbage collection.
+The exact implementation can vary between Python implementations.
