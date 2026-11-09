@@ -1,0 +1,153 @@
+PYTHON LEARNING TRACKER
+Data Engineering | Fundamentals to Advanced
+============================================================
+
+1. PYTHON FUNDAMENTALS
+------------------------------------------------------------
+[ ] 01. Variables and Data Types
+[ ] 02. Type Casting
+[ ] 03. Operators
+[ ] 04. Conditional Statements
+[ ] 05. Loops (For, While)
+[ ] 06. Strings and String Manipulation
+[ ] 07. Lists, Tuples, Sets and Dictionaries
+[ ] 08. List and Dictionary Comprehensions
+[ ] 09. Functions and Lambda
+[ ] 10. Built-in Functions
+[ ] 11. Scope and Namespaces
+
+2. INTERMEDIATE PYTHON
+------------------------------------------------------------
+[ ] 12. OOP - Classes and Objects
+[ ] 13. Inheritance, Polymorphism and Encapsulation
+[ ] 14. Exception Handling
+[ ] 15. File Handling
+[ ] 16. Modules and Packages
+[ ] 17. Iterators and Iterables
+[ ] 18. Generators and Yield
+[ ] 19. Decorators
+[ ] 20. Context Managers
+[ ] 21. Regular Expressions
+[ ] 22. Date and Time Handling
+
+3. ADVANCED PYTHON
+------------------------------------------------------------
+[ ] 23. *args and **kwargs
+[ ] 24. Shallow Copy vs Deep Copy
+[ ] 25. Mutable vs Immutable Objects
+[ ] 26. Closures
+[ ] 27. Map, Filter and Reduce
+[ ] 28. Advanced Lambda Functions
+[ ] 29. Collections Module
+[ ] 30. Itertools and Functools
+[ ] 31. Memory Management and Garbage Collection
+[ ] 32. GIL - Global Interpreter Lock
+[ ] 33. Type Hints and Dataclasses
+
+4. PYTHON FOR DATA PROCESSING
+------------------------------------------------------------
+[ ] 34. NumPy
+[ ] 35. Pandas
+[ ] 36. DataFrame Operations
+[ ] 37. Data Cleaning and Transformation
+[ ] 38. Data Aggregation and Grouping
+[ ] 39. CSV Processing
+[ ] 40. JSON Processing
+[ ] 41. XML Processing
+[ ] 42. Parquet Processing
+[ ] 43. Excel Processing
+[ ] 44. Compression - ZIP and GZIP
+
+5. PYTHON FOR DATA ENGINEERING
+------------------------------------------------------------
+[ ] 45. ETL / ELT Development
+[ ] 46. Full Load and Incremental Load
+[ ] 47. CDC - Change Data Capture
+[ ] 48. Data Validation and Quality Checks
+[ ] 49. Data Deduplication
+[ ] 50. Idempotency
+[ ] 51. Batch Processing
+[ ] 52. Chunk Processing
+[ ] 53. Watermarking and Checkpointing
+[ ] 54. Schema Validation and Evolution
+[ ] 55. Database Connectivity
+[ ] 56. SQLAlchemy and Database Drivers
+[ ] 57. REST API Integration
+[ ] 58. API Pagination and Authentication
+
+6. CONCURRENCY AND PERFORMANCE
+------------------------------------------------------------
+[ ] 59. Multithreading
+[ ] 60. Multiprocessing
+[ ] 61. Asynchronous Programming
+[ ] 62. Asyncio
+[ ] 63. ThreadPoolExecutor
+[ ] 64. ProcessPoolExecutor
+[ ] 65. Producer-Consumer Pattern
+[ ] 66. Memory Optimization
+[ ] 67. Profiling and Performance Tuning
+
+7. PYTHON DATA ENGINEERING ECOSYSTEM
+------------------------------------------------------------
+[ ] 68. PySpark
+[ ] 69. AWS Boto3
+[ ] 70. Azure SDK
+[ ] 71. ADLS Integration
+[ ] 72. AWS S3 Integration
+[ ] 73. Kafka Python Client
+[ ] 74. Airflow Python Operators
+[ ] 75. FastAPI
+[ ] 76. Pytest and Unit Testing
+[ ] 77. Python Logging
+
+8. PRODUCTION-LEVEL PYTHON
+------------------------------------------------------------
+[ ] 78. Design Patterns
+[ ] 79. SOLID Principles
+[ ] 80. Dependency Injection
+[ ] 81. Code Optimization
+[ ] 82. Debugging and Troubleshooting
+[ ] 83. Virtual Environments
+[ ] 84. Package Management (pip)
+[ ] 85. Git and GitHub
+[ ] 86. Docker
+[ ] 87. CI/CD
+[ ] 88. Security and Secrets Management
+[ ] 89. Monitoring and Observability
+
+============================================================
+LEARNING PROGRESS SUMMARY
+============================================================
+
+Total Concepts: 89
+
+Fundamentals:              ____ / 11
+Intermediate Python:       ____ / 11
+Advanced Python:           ____ / 11
+Data Processing:           ____ / 11
+Data Engineering:           ____ / 14
+Concurrency & Performance:  ____ / 9
+DE Ecosystem:               ____ / 10
+Production-Level Python:   ____ / 12
+
+Total Completed:            ____ / 89
+
+============================================================
+LEARNING NOTES
+============================================================
+
+Current Phase:
+Current Concept Number:
+Currently Learning:
+Topics to Revise:
+Practice Projects:
+Interview Questions:
+============================================================
+
+STUDY APPROACH
+1. Understand the concept.
+2. Practise with Python code.
+3. Apply it to a Data Engineering use case.
+4. Solve interview questions.
+5. Mark the concept completed.
+============================================================

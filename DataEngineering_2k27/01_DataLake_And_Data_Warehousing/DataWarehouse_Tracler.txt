@@ -1,0 +1,295 @@
+DATA WAREHOUSING LEARNING TRACKER
+Data Engineering | Fundamentals to Advanced
+============================================================
+
+1. DATA WAREHOUSING FUNDAMENTALS
+------------------------------------------------------------
+[ ] 01. Introduction to Data Warehousing
+[ ] 02. OLTP vs OLAP
+[ ] 03. Database vs Data Warehouse
+[ ] 04. Data Warehouse vs Data Lake
+[ ] 05. Data Warehouse vs Data Lakehouse
+[ ] 06. Characteristics of Data Warehouse
+[ ] 07. Data Warehouse Architecture
+[ ] 08. Enterprise Data Warehouse (EDW)
+[ ] 09. Operational Data Store (ODS)
+[ ] 10. Data Mart
+[ ] 11. Metadata and Metadata Repository
+[ ] 12. Data Warehouse Lifecycle
+[ ] 13. Data Warehouse Use Cases
+
+2. DATA WAREHOUSE ARCHITECTURE
+------------------------------------------------------------
+[ ] 14. Single-Tier Architecture
+[ ] 15. Two-Tier Architecture
+[ ] 16. Three-Tier Architecture
+[ ] 17. Staging Layer
+[ ] 18. Integration Layer
+[ ] 19. Presentation Layer
+[ ] 20. Source Systems
+[ ] 21. Data Extraction Layer
+[ ] 22. Data Transformation Layer
+[ ] 23. Data Loading Layer
+[ ] 24. Data Warehouse Components
+[ ] 25. Data Flow Architecture
+[ ] 26. Kimball Architecture
+[ ] 27. Inmon Architecture
+[ ] 28. Data Vault Architecture
+[ ] 29. Hybrid Data Warehouse Architecture
+
+3. DATA MODELING FUNDAMENTALS
+------------------------------------------------------------
+[ ] 30. Introduction to Data Modeling
+[ ] 31. Conceptual Data Model
+[ ] 32. Logical Data Model
+[ ] 33. Physical Data Model
+[ ] 34. Entity Relationship Diagram (ERD)
+[ ] 35. Entities and Attributes
+[ ] 36. Primary and Foreign Keys
+[ ] 37. Natural Keys and Surrogate Keys
+[ ] 38. Relationships and Cardinality
+[ ] 39. Normalization
+[ ] 40. Denormalization
+[ ] 41. First Normal Form (1NF)
+[ ] 42. Second Normal Form (2NF)
+[ ] 43. Third Normal Form (3NF)
+[ ] 44. BCNF
+[ ] 45. Functional Dependencies
+
+4. DIMENSIONAL DATA MODELING
+------------------------------------------------------------
+[ ] 46. Introduction to Dimensional Modeling
+[ ] 47. Fact Tables
+[ ] 48. Dimension Tables
+[ ] 49. Star Schema
+[ ] 50. Snowflake Schema
+[ ] 51. Galaxy Schema / Fact Constellation
+[ ] 52. Fact Table Grain
+[ ] 53. Transaction Fact Tables
+[ ] 54. Periodic Snapshot Fact Tables
+[ ] 55. Accumulating Snapshot Fact Tables
+[ ] 56. Factless Fact Tables
+[ ] 57. Conformed Dimensions
+[ ] 58. Role-Playing Dimensions
+[ ] 59. Degenerate Dimensions
+[ ] 60. Junk Dimensions
+[ ] 61. Outrigger Dimensions
+[ ] 62. Mini Dimensions
+[ ] 63. Bridge Tables
+[ ] 64. Hierarchies in Dimensions
+[ ] 65. Slowly Changing Dimensions (SCD)
+[ ] 66. SCD Type 0
+[ ] 67. SCD Type 1
+[ ] 68. SCD Type 2
+[ ] 69. SCD Type 3
+[ ] 70. SCD Type 4
+[ ] 71. SCD Type 5, 6 and 7
+[ ] 72. Late Arriving Dimensions
+[ ] 73. Early Arriving Facts
+[ ] 74. Inferred Members
+
+5. ADVANCED DATA MODELING
+------------------------------------------------------------
+[ ] 75. Kimball Dimensional Modeling Lifecycle
+[ ] 76. Bus Matrix
+[ ] 77. Enterprise Bus Architecture
+[ ] 78. Data Vault 2.0
+[ ] 79. Hubs, Links and Satellites
+[ ] 80. Raw Vault
+[ ] 81. Business Vault
+[ ] 82. PIT Tables
+[ ] 83. Bridge Tables in Data Vault
+[ ] 84. Anchor Modeling
+[ ] 85. One Big Table (OBT)
+[ ] 86. Wide Tables vs Normalized Tables
+[ ] 87. Modeling Many-to-Many Relationships
+[ ] 88. Handling Historical Relationships
+[ ] 89. Multi-Source Data Modeling
+
+6. ETL AND ELT PROCESSES
+------------------------------------------------------------
+[ ] 90. ETL Architecture
+[ ] 91. ELT Architecture
+[ ] 92. ETL vs ELT
+[ ] 93. Data Extraction Techniques
+[ ] 94. Full Data Load
+[ ] 95. Incremental Data Load
+[ ] 96. Initial Load
+[ ] 97. Change Data Capture (CDC)
+[ ] 98. Log-Based CDC
+[ ] 99. Timestamp-Based CDC
+[ ] 100. Watermark-Based Loading
+[ ] 101. Upsert and Merge Operations
+[ ] 102. Data Deduplication
+[ ] 103. Data Cleansing
+[ ] 104. Data Transformation
+[ ] 105. Data Validation
+[ ] 106. Data Reconciliation
+[ ] 107. Data Quality Framework
+[ ] 108. Error Handling and Retry Mechanisms
+[ ] 109. Idempotent Data Loading
+[ ] 110. Late Arriving Data Handling
+[ ] 111. Pipeline Restart and Recovery
+[ ] 112. Audit and Control Tables
+
+7. DATA WAREHOUSE SQL AND QUERY OPTIMIZATION
+------------------------------------------------------------
+[ ] 113. Advanced SQL for Data Warehousing
+[ ] 114. Joins and Join Strategies
+[ ] 115. Window Functions
+[ ] 116. Common Table Expressions (CTEs)
+[ ] 117. Recursive CTEs
+[ ] 118. Aggregations and Grouping
+[ ] 119. Analytical Functions
+[ ] 120. Subqueries and Correlated Subqueries
+[ ] 121. Materialized Views
+[ ] 122. Views and Indexed Views
+[ ] 123. Query Execution Plans
+[ ] 124. Query Optimization
+[ ] 125. Indexing Strategies
+[ ] 126. Partitioning and Subpartitioning
+[ ] 127. Clustering and Sorting
+[ ] 128. Statistics and Cardinality Estimation
+[ ] 129. Predicate Pushdown
+[ ] 130. Join Optimization
+[ ] 131. Parallel Query Execution
+[ ] 132. Query Performance Troubleshooting
+
+8. DATA WAREHOUSE PERFORMANCE AND SCALABILITY
+------------------------------------------------------------
+[ ] 133. Partition Pruning
+[ ] 134. Range Partitioning
+[ ] 135. List Partitioning
+[ ] 136. Hash Partitioning
+[ ] 137. Composite Partitioning
+[ ] 138. Horizontal vs Vertical Partitioning
+[ ] 139. Indexing and Bitmap Indexes
+[ ] 140. Columnar Storage
+[ ] 141. Row-Based vs Column-Based Storage
+[ ] 142. Compression Techniques
+[ ] 143. Parallel Processing
+[ ] 144. Distributed Query Processing
+[ ] 145. Data Skew Handling
+[ ] 146. Workload Management
+[ ] 147. Resource Allocation
+[ ] 148. Query Concurrency
+[ ] 149. Storage Optimization
+[ ] 150. Cost-Based Optimization
+
+9. DATA WAREHOUSE DATABASE TECHNOLOGIES
+------------------------------------------------------------
+[ ] 151. Oracle Data Warehouse
+[ ] 152. PostgreSQL Data Warehouse
+[ ] 153. Amazon Redshift
+[ ] 154. Snowflake Architecture
+[ ] 155. Azure Synapse Analytics
+[ ] 156. Google BigQuery
+[ ] 157. Databricks SQL Warehouse
+[ ] 158. Distributed SQL Engines
+[ ] 159. MPP Architecture
+[ ] 160. Shared-Nothing Architecture
+[ ] 161. Shared-Disk Architecture
+[ ] 162. Storage and Compute Separation
+[ ] 163. Columnar Database Architecture
+
+10. DATA GOVERNANCE AND DATA QUALITY
+------------------------------------------------------------
+[ ] 164. Data Governance
+[ ] 165. Data Quality Dimensions
+[ ] 166. Data Profiling
+[ ] 167. Data Lineage
+[ ] 168. Metadata Management
+[ ] 169. Master Data Management (MDM)
+[ ] 170. Reference Data Management
+[ ] 171. Data Catalog
+[ ] 172. Data Classification
+[ ] 173. Data Security
+[ ] 174. Role-Based Access Control
+[ ] 175. Row-Level Security
+[ ] 176. Column-Level Security
+[ ] 177. Data Masking
+[ ] 178. Data Encryption
+[ ] 179. Data Retention
+[ ] 180. Audit and Compliance
+
+11. DATA WAREHOUSE ORCHESTRATION
+------------------------------------------------------------
+[ ] 181. Workflow Orchestration
+[ ] 182. Apache Airflow Architecture
+[ ] 183. DAGs and Tasks
+[ ] 184. Task Dependencies
+[ ] 185. Scheduling and Triggers
+[ ] 186. Retries and Failure Handling
+[ ] 187. Backfilling
+[ ] 188. Dynamic DAG Generation
+[ ] 189. Sensors and Operators
+[ ] 190. Pipeline Monitoring
+[ ] 191. Dependency Management
+[ ] 192. Data Pipeline SLAs
+
+12. ADVANCED DATA WAREHOUSE CONCEPTS
+------------------------------------------------------------
+[ ] 193. Real-Time Data Warehousing
+[ ] 194. Streaming Data Warehouse
+[ ] 195. Operational Analytics
+[ ] 196. Data Warehouse Automation
+[ ] 197. Data Mesh Architecture
+[ ] 198. Data Fabric Architecture
+[ ] 199. Lambda Architecture
+[ ] 200. Kappa Architecture
+[ ] 201. Data Warehouse Migration
+[ ] 202. Cross-Platform Database Migration
+[ ] 203. Schema Evolution
+[ ] 204. Disaster Recovery
+[ ] 205. High Availability
+[ ] 206. Multi-Region Architecture
+[ ] 207. Data Warehouse System Design
+
+============================================================
+LEARNING PROGRESS SUMMARY
+============================================================
+
+Total Concepts: 207
+
+Data Warehousing Fundamentals:       ____ / 13
+Data Warehouse Architecture:         ____ / 16
+Data Modeling Fundamentals:          ____ / 16
+Dimensional Data Modeling:           ____ / 29
+Advanced Data Modeling:              ____ / 15
+ETL and ELT Processes:               ____ / 23
+SQL and Query Optimization:          ____ / 20
+Performance and Scalability:         ____ / 18
+Database Technologies:               ____ / 13
+Governance and Data Quality:         ____ / 17
+Orchestration:                       ____ / 12
+Advanced Concepts:                   ____ / 15
+
+Total Completed: ____ / 207
+
+============================================================
+LEARNING NOTES
+============================================================
+
+Current Section:
+Current Concept Number:
+Currently Learning:
+Topics to Revise:
+Hands-on Practice:
+Interview Questions:
+Project Implementation:
+
+============================================================
+STUDY APPROACH
+============================================================
+
+1. Understand the concept.
+2. Learn the architecture and design principles.
+3. Practise SQL implementation.
+4. Apply concepts to real-world datasets.
+5. Build end-to-end data warehouse projects.
+6. Practise scenario-based interview questions.
+7. Mark the concept completed.
+
+============================================================
+END OF TRACKER
+============================================================

@@ -1,0 +1,282 @@
+DATA LAKEHOUSE LEARNING TRACKER
+Data Engineering | Fundamentals to Advanced
+============================================================
+
+1. DATA WAREHOUSING FUNDAMENTALS
+------------------------------------------------------------
+[ ] 01. Data Warehouse Concepts
+[ ] 02. Data Lake Concepts
+[ ] 03. Data Lake vs Data Warehouse
+[ ] 04. Data Lakehouse Architecture
+[ ] 05. OLTP vs OLAP
+[ ] 06. Data Warehouse Architecture
+[ ] 07. Data Mart Concepts
+[ ] 08. Enterprise Data Warehouse (EDW)
+[ ] 09. Kimball vs Inmon Architecture
+[ ] 10. Medallion Architecture
+[ ] 11. Data Lakehouse Use Cases
+
+2. DATA LAKE FUNDAMENTALS
+------------------------------------------------------------
+[ ] 12. Data Lake Architecture
+[ ] 13. Structured, Semi-Structured and Unstructured Data
+[ ] 14. Data Ingestion Patterns
+[ ] 15. Batch vs Streaming Ingestion
+[ ] 16. Raw Data Storage
+[ ] 17. Data Lake Zones
+[ ] 18. Data Partitioning
+[ ] 19. File Formats - CSV, JSON, XML
+[ ] 20. Columnar Formats - Parquet and ORC
+[ ] 21. File Compression - Snappy, GZIP, ZSTD
+[ ] 22. Small File Problem
+[ ] 23. Schema-on-Read vs Schema-on-Write
+[ ] 24. Data Retention and Lifecycle Management
+
+3. LAKEHOUSE ARCHITECTURE
+------------------------------------------------------------
+[ ] 25. Lakehouse Architecture Components
+[ ] 26. Medallion Architecture - Bronze, Silver, Gold
+[ ] 27. Data Ingestion Layer
+[ ] 28. Data Processing Layer
+[ ] 29. Storage Layer
+[ ] 30. Metadata Layer
+[ ] 31. Compute Layer
+[ ] 32. Storage and Compute Separation
+[ ] 33. Data Catalog and Metastore
+[ ] 34. Data Governance Architecture
+[ ] 35. Lakehouse Security Architecture
+[ ] 36. Lakehouse Workload Management
+[ ] 37. Data Lineage and Discoverability
+
+4. DELTA LAKE FUNDAMENTALS
+------------------------------------------------------------
+[ ] 38. Introduction to Delta Lake
+[ ] 39. Delta Lake Architecture
+[ ] 40. Delta Transaction Log (_delta_log)
+[ ] 41. ACID Transactions
+[ ] 42. Schema Enforcement
+[ ] 43. Schema Evolution
+[ ] 44. Delta Table Creation
+[ ] 45. Managed vs External Tables
+[ ] 46. Delta Table Operations
+[ ] 47. INSERT, UPDATE and DELETE
+[ ] 48. MERGE INTO Operations
+[ ] 49. UPSERT Operations
+[ ] 50. Time Travel
+[ ] 51. VACUUM
+[ ] 52. OPTIMIZE
+[ ] 53. Z-ORDER
+[ ] 54. Data Compaction
+[ ] 55. Checkpoints
+[ ] 56. Delta Table History
+[ ] 57. Change Data Feed (CDF)
+[ ] 58. Delta Constraints
+
+5. DATA MODELING AND STORAGE DESIGN
+------------------------------------------------------------
+[ ] 59. Relational Data Modeling
+[ ] 60. Dimensional Data Modeling
+[ ] 61. Star Schema
+[ ] 62. Snowflake Schema
+[ ] 63. Fact and Dimension Tables
+[ ] 64. Fact Table Types
+[ ] 65. Dimension Table Types
+[ ] 66. Slowly Changing Dimensions (SCD)
+[ ] 67. SCD Type 0, 1, 2, 3, 4 and Hybrid Types
+[ ] 68. Surrogate and Natural Keys
+[ ] 69. Normalization and Denormalization
+[ ] 70. Partitioning Strategies
+[ ] 71. Clustering Strategies
+[ ] 72. Data Distribution and Skewness
+
+6. DATABRICKS LAKEHOUSE
+------------------------------------------------------------
+[ ] 73. Databricks Architecture
+[ ] 74. Databricks Workspace
+[ ] 75. Clusters and Compute
+[ ] 76. Jobs and Workflows
+[ ] 77. Notebooks
+[ ] 78. Databricks SQL
+[ ] 79. Unity Catalog
+[ ] 80. Catalog, Schema and Tables
+[ ] 81. External Locations
+[ ] 82. Storage Credentials
+[ ] 83. Volumes
+[ ] 84. Access Control and Permissions
+[ ] 85. Delta Live Tables / Lakeflow Declarative Pipelines
+[ ] 86. Databricks Asset Bundles
+[ ] 87. Databricks Monitoring
+[ ] 88. Databricks Cost Optimization
+
+7. AZURE DATA LAKEHOUSE
+------------------------------------------------------------
+[ ] 89. Azure Data Lake Storage Gen2 (ADLS)
+[ ] 90. Storage Accounts and Containers
+[ ] 91. Hierarchical Namespace
+[ ] 92. Blob Storage vs ADLS Gen2
+[ ] 93. Access Tiers and Lifecycle Policies
+[ ] 94. Azure Data Factory (ADF)
+[ ] 95. Linked Services and Datasets
+[ ] 96. Pipelines and Activities
+[ ] 97. Integration Runtime
+[ ] 98. Copy Activity
+[ ] 99. Mapping Data Flows
+[ ] 100. Triggers and Scheduling
+[ ] 101. ADF and Databricks Integration
+[ ] 102. Managed Identity and RBAC
+[ ] 103. Azure Key Vault Integration
+[ ] 104. Azure Monitor
+
+8. AWS DATA LAKEHOUSE
+------------------------------------------------------------
+[ ] 105. AWS Data Lake Architecture
+[ ] 106. Amazon S3
+[ ] 107. S3 Buckets and Objects
+[ ] 108. S3 Storage Classes
+[ ] 109. S3 Versioning and Lifecycle Policies
+[ ] 110. AWS Glue
+[ ] 111. Glue Data Catalog
+[ ] 112. Glue Crawlers
+[ ] 113. Glue ETL Jobs
+[ ] 114. AWS Lake Formation
+[ ] 115. IAM and S3 Security
+[ ] 116. AWS Athena
+[ ] 117. Amazon Redshift
+[ ] 118. AWS EMR
+[ ] 119. AWS Step Functions
+[ ] 120. AWS CloudWatch
+
+9. DATA INGESTION AND PIPELINE DESIGN
+------------------------------------------------------------
+[ ] 121. Batch Data Ingestion
+[ ] 122. Real-Time Data Ingestion
+[ ] 123. Full Load and Incremental Load
+[ ] 124. Change Data Capture (CDC)
+[ ] 125. Database to Data Lake Ingestion
+[ ] 126. API to Data Lake Ingestion
+[ ] 127. Kafka to Data Lake Integration
+[ ] 128. Schema Evolution Handling
+[ ] 129. Idempotent Data Pipelines
+[ ] 130. Watermarking and Checkpointing
+[ ] 131. Data Deduplication
+[ ] 132. Late Arriving Data
+[ ] 133. Retry and Error Handling
+[ ] 134. Data Quality Validation
+
+10. SPARK AND LAKEHOUSE PROCESSING
+------------------------------------------------------------
+[ ] 135. Apache Spark Architecture
+[ ] 136. Spark Driver and Executors
+[ ] 137. Spark Jobs, Stages and Tasks
+[ ] 138. Transformations and Actions
+[ ] 139. Lazy Evaluation
+[ ] 140. Narrow and Wide Transformations
+[ ] 141. DataFrame and Spark SQL
+[ ] 142. Joins and Aggregations
+[ ] 143. Shuffle and Partitioning
+[ ] 144. Broadcast Joins
+[ ] 145. Data Skew Handling
+[ ] 146. Adaptive Query Execution (AQE)
+[ ] 147. Caching and Persistence
+[ ] 148. Spark Performance Optimization
+[ ] 149. Structured Streaming
+[ ] 150. Checkpointing and Watermarking
+
+11. DATA GOVERNANCE AND SECURITY
+------------------------------------------------------------
+[ ] 151. Data Governance
+[ ] 152. Data Cataloging
+[ ] 153. Data Lineage
+[ ] 154. Metadata Management
+[ ] 155. Data Classification
+[ ] 156. Role-Based Access Control (RBAC)
+[ ] 157. Attribute-Based Access Control (ABAC)
+[ ] 158. Row-Level Security
+[ ] 159. Column-Level Security
+[ ] 160. Data Masking
+[ ] 161. Encryption at Rest
+[ ] 162. Encryption in Transit
+[ ] 163. Audit Logging
+[ ] 164. Data Retention and Compliance
+
+12. PERFORMANCE AND COST OPTIMIZATION
+------------------------------------------------------------
+[ ] 165. File Size Optimization
+[ ] 166. Small File Optimization
+[ ] 167. Partition Pruning
+[ ] 168. Predicate Pushdown
+[ ] 169. Data Skipping
+[ ] 170. OPTIMIZE and Compaction
+[ ] 171. Z-ORDER and Liquid Clustering
+[ ] 172. Query Performance Tuning
+[ ] 173. Compute Resource Optimization
+[ ] 174. Storage Cost Optimization
+[ ] 175. Data Lifecycle Optimization
+[ ] 176. Workload Management
+
+13. ADVANCED LAKEHOUSE CONCEPTS
+------------------------------------------------------------
+[ ] 177. Open Table Formats
+[ ] 178. Delta Lake vs Apache Iceberg
+[ ] 179. Delta Lake vs Apache Hudi
+[ ] 180. Multi-Engine Data Access
+[ ] 181. Data Mesh Architecture
+[ ] 182. Data Fabric Concepts
+[ ] 183. Lakehouse vs Data Mesh
+[ ] 184. Streaming Lakehouse
+[ ] 185. Real-Time Analytics Architecture
+[ ] 186. Data Sharing and Delta Sharing
+[ ] 187. Disaster Recovery
+[ ] 188. High Availability
+[ ] 189. Multi-Region Architecture
+[ ] 190. Lakehouse System Design
+
+============================================================
+LEARNING PROGRESS SUMMARY
+============================================================
+
+Total Concepts: 190
+
+Data Warehousing Fundamentals:       ____ / 11
+Data Lake Fundamentals:              ____ / 13
+Lakehouse Architecture:              ____ / 13
+Delta Lake Fundamentals:             ____ / 21
+Data Modeling and Storage Design:    ____ / 14
+Databricks Lakehouse:                ____ / 16
+Azure Data Lakehouse:                ____ / 16
+AWS Data Lakehouse:                  ____ / 16
+Data Ingestion and Pipeline Design:  ____ / 14
+Spark and Lakehouse Processing:      ____ / 16
+Data Governance and Security:        ____ / 14
+Performance and Cost Optimization:   ____ / 12
+Advanced Lakehouse Concepts:         ____ / 14
+
+Total Completed: ____ / 190
+
+============================================================
+LEARNING NOTES
+============================================================
+
+Current Section:
+Current Concept Number:
+Currently Learning:
+Topics to Revise:
+Hands-on Practice:
+Interview Questions:
+Project Implementation:
+
+============================================================
+STUDY APPROACH
+============================================================
+
+1. Understand the architecture and concept.
+2. Learn the underlying technical implementation.
+3. Practise using SQL and PySpark.
+4. Implement using Databricks and cloud services.
+5. Understand real-world use cases.
+6. Practise interview questions.
+7. Mark the concept completed.
+
+============================================================
+END OF TRACKER
+============================================================

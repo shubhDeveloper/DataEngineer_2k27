@@ -1,0 +1,653 @@
+APACHE SPARK & PYSPARK LEARNING TRACKER
+Data Engineering | Fundamentals to Advanced
+============================================================
+
+1. APACHE SPARK FUNDAMENTALS
+------------------------------------------------------------
+[ ] 001. Introduction to Apache Spark
+[ ] 002. Why Apache Spark?
+[ ] 003. Evolution of Hadoop MapReduce to Spark
+[ ] 004. Apache Spark Architecture
+[ ] 005. Spark vs Hadoop MapReduce
+[ ] 006. Spark vs Pandas
+[ ] 007. Spark vs PySpark
+[ ] 008. Spark Ecosystem and Components
+[ ] 009. Spark Core
+[ ] 010. Spark SQL
+[ ] 011. Spark Streaming
+[ ] 012. Structured Streaming
+[ ] 013. MLlib Overview
+[ ] 014. GraphX Overview
+[ ] 015. Spark Use Cases in Data Engineering
+
+2. SPARK ARCHITECTURE AND INTERNALS
+------------------------------------------------------------
+[ ] 016. Driver Program
+[ ] 017. Spark Executors
+[ ] 018. Cluster Manager
+[ ] 019. Worker Nodes
+[ ] 020. Master Node
+[ ] 021. SparkSession
+[ ] 022. SparkContext
+[ ] 023. SQLContext
+[ ] 024. Spark Application Lifecycle
+[ ] 025. Spark Jobs, Stages and Tasks
+[ ] 026. DAG (Directed Acyclic Graph)
+[ ] 027. DAG Scheduler
+[ ] 028. Task Scheduler
+[ ] 029. Scheduler Backend
+[ ] 030. Job Execution Flow
+[ ] 031. Task Execution Flow
+[ ] 032. Application Deployment Modes
+[ ] 033. Client vs Cluster Mode
+[ ] 034. Local vs Distributed Mode
+[ ] 035. Spark UI and Its Components
+
+3. PYTHON FUNDAMENTALS FOR PYSPARK
+------------------------------------------------------------
+[ ] 036. Python Data Types and Collections
+[ ] 037. Functions and Lambda
+[ ] 038. List and Dictionary Comprehensions
+[ ] 039. OOP Concepts
+[ ] 040. Iterators and Generators
+[ ] 041. Exception Handling
+[ ] 042. Modules and Packages
+[ ] 043. Decorators
+[ ] 044. Python Memory Management
+[ ] 045. Serialization and Deserialization
+[ ] 046. Python Pickle
+[ ] 047. Python UDF Concepts
+[ ] 048. Type Hints and Dataclasses
+
+4. PYSPARK FUNDAMENTALS
+------------------------------------------------------------
+[ ] 049. Introduction to PySpark
+[ ] 050. Installing and Configuring PySpark
+[ ] 051. SparkSession Creation
+[ ] 052. SparkContext Creation
+[ ] 053. Spark Configuration
+[ ] 054. Creating DataFrames
+[ ] 055. Creating RDDs
+[ ] 056. Creating DataFrames from RDDs
+[ ] 057. Schema Definition
+[ ] 058. StructType and StructField
+[ ] 059. Data Types in PySpark
+[ ] 060. Nullable and Non-Nullable Columns
+[ ] 061. show(), printSchema(), describe()
+[ ] 062. collect(), take(), first(), head()
+[ ] 063. count() and distinct()
+[ ] 064. DataFrame vs RDD
+[ ] 065. DataFrame vs Dataset
+[ ] 066. Temporary Views and Global Temporary Views
+
+5. RDD (RESILIENT DISTRIBUTED DATASET)
+------------------------------------------------------------
+[ ] 067. RDD Architecture
+[ ] 068. RDD Creation
+[ ] 069. RDD Transformations
+[ ] 070. RDD Actions
+[ ] 071. map()
+[ ] 072. flatMap()
+[ ] 073. filter()
+[ ] 074. reduce()
+[ ] 075. fold()
+[ ] 076. aggregate()
+[ ] 077. union() and intersection()
+[ ] 078. distinct()
+[ ] 079. groupByKey()
+[ ] 080. reduceByKey()
+[ ] 081. sortByKey()
+[ ] 082. mapPartitions()
+[ ] 083. mapPartitionsWithIndex()
+[ ] 084. repartition()
+[ ] 085. coalesce()
+[ ] 086. RDD Lineage
+[ ] 087. RDD Dependencies
+[ ] 088. Narrow vs Wide Dependencies
+[ ] 089. RDD Persistence and Caching
+[ ] 090. RDD Checkpointing
+[ ] 091. Pair RDDs
+[ ] 092. Broadcast Variables
+[ ] 093. Accumulators
+
+6. PYSPARK DATAFRAME OPERATIONS
+------------------------------------------------------------
+[ ] 094. DataFrame Architecture
+[ ] 095. select() and selectExpr()
+[ ] 096. filter() and where()
+[ ] 097. withColumn()
+[ ] 098. withColumnRenamed()
+[ ] 099. drop()
+[ ] 100. alias()
+[ ] 101. cast()
+[ ] 102. distinct() and dropDuplicates()
+[ ] 103. orderBy() and sort()
+[ ] 104. limit()
+[ ] 105. sample() and sampleBy()
+[ ] 106. union() and unionByName()
+[ ] 107. intersect() and exceptAll()
+[ ] 108. groupBy()
+[ ] 109. agg()
+[ ] 110. count(), sum(), avg(), min(), max()
+[ ] 111. first() and last()
+[ ] 112. collect_list() and collect_set()
+[ ] 113. when() and otherwise()
+[ ] 114. lit() and expr()
+[ ] 115. isin() and between()
+[ ] 116. isNull() and isNotNull()
+[ ] 117. fillna() and dropna()
+[ ] 118. replace()
+[ ] 119. selectExpr() and SQL Expressions
+[ ] 120. DataFrame Transformation Chaining
+
+7. PYSPARK JOINS AND SET OPERATIONS
+------------------------------------------------------------
+[ ] 121. Inner Join
+[ ] 122. Left Outer Join
+[ ] 123. Right Outer Join
+[ ] 124. Full Outer Join
+[ ] 125. Left Semi Join
+[ ] 126. Left Anti Join
+[ ] 127. Cross Join
+[ ] 128. Self Join
+[ ] 129. Multiple Table Joins
+[ ] 130. Joining on Multiple Conditions
+[ ] 131. Handling Duplicate Columns
+[ ] 132. Handling NULL Values in Joins
+[ ] 133. Broadcast Hash Join
+[ ] 134. Sort Merge Join
+[ ] 135. Shuffle Hash Join
+[ ] 136. Nested Loop Join
+[ ] 137. Join Strategy Selection
+[ ] 138. Join Optimization
+[ ] 139. Union vs UnionByName
+[ ] 140. Handling Many-to-Many Joins
+
+8. PYSPARK WINDOW FUNCTIONS
+------------------------------------------------------------
+[ ] 141. Introduction to Window Functions
+[ ] 142. Window Specification
+[ ] 143. partitionBy()
+[ ] 144. orderBy()
+[ ] 145. rowsBetween()
+[ ] 146. rangeBetween()
+[ ] 147. row_number()
+[ ] 148. rank()
+[ ] 149. dense_rank()
+[ ] 150. percent_rank()
+[ ] 151. ntile()
+[ ] 152. lag()
+[ ] 153. lead()
+[ ] 154. first_value()
+[ ] 155. last_value()
+[ ] 156. Running Total
+[ ] 157. Moving Average
+[ ] 158. Cumulative Aggregations
+[ ] 159. Deduplication Using Window Functions
+[ ] 160. Top N Records Per Group
+[ ] 161. Session-Based Windowing
+
+9. PYSPARK SQL AND DATA TRANSFORMATIONS
+------------------------------------------------------------
+[ ] 162. Spark SQL Architecture
+[ ] 163. SQL Queries on DataFrames
+[ ] 164. Temporary Views
+[ ] 165. Global Temporary Views
+[ ] 166. CTEs in Spark SQL
+[ ] 167. Subqueries
+[ ] 168. Joins Using Spark SQL
+[ ] 169. Aggregations Using Spark SQL
+[ ] 170. Window Functions Using Spark SQL
+[ ] 171. SQL Functions and Expressions
+[ ] 172. Built-in Functions
+[ ] 173. String Functions
+[ ] 174. Date and Time Functions
+[ ] 175. Mathematical Functions
+[ ] 176. Conditional Functions
+[ ] 177. Array Functions
+[ ] 178. Map Functions
+[ ] 179. Struct Functions
+[ ] 180. Higher-Order Functions
+[ ] 181. explode() and explode_outer()
+[ ] 182. posexplode()
+[ ] 183. split() and concat()
+[ ] 184. array_contains()
+[ ] 185. transform(), filter() and aggregate()
+[ ] 186. JSON Functions
+[ ] 187. from_json() and to_json()
+[ ] 188. get_json_object()
+[ ] 189. Schema Inference vs Explicit Schema
+
+10. DATA SOURCES AND FILE FORMATS
+------------------------------------------------------------
+[ ] 190. Reading and Writing Data
+[ ] 191. CSV File Processing
+[ ] 192. JSON File Processing
+[ ] 193. Parquet File Processing
+[ ] 194. ORC File Processing
+[ ] 195. Avro File Processing
+[ ] 196. Text File Processing
+[ ] 197. XML File Processing
+[ ] 198. JDBC Data Sources
+[ ] 199. Reading from MySQL
+[ ] 200. Reading from PostgreSQL
+[ ] 201. Reading from Oracle
+[ ] 202. Reading from SQL Server
+[ ] 203. Writing to Relational Databases
+[ ] 204. JDBC Partitioned Reads
+[ ] 205. JDBC Batch Writes
+[ ] 206. JDBC Fetch Size and Batch Size
+[ ] 207. JDBC Connection Management
+[ ] 208. Schema Inference
+[ ] 209. Explicit Schema Definition
+[ ] 210. Compression Formats - Snappy, GZIP, ZSTD
+[ ] 211. Partitioned File Writing
+[ ] 212. Partition Discovery
+[ ] 213. Predicate Pushdown
+[ ] 214. Column Pruning
+[ ] 215. Small File Problem
+
+11. DATA PARTITIONING AND DISTRIBUTED PROCESSING
+------------------------------------------------------------
+[ ] 216. Partitioning Fundamentals
+[ ] 217. Physical vs Logical Partitions
+[ ] 218. Data Partitioning
+[ ] 219. repartition()
+[ ] 220. coalesce()
+[ ] 221. repartitionByRange()
+[ ] 222. Hash Partitioning
+[ ] 223. Range Partitioning
+[ ] 224. Partition Pruning
+[ ] 225. Partition Skewness
+[ ] 226. Data Skew Handling
+[ ] 227. Salting Technique
+[ ] 228. Shuffle Operations
+[ ] 229. Shuffle Read and Shuffle Write
+[ ] 230. Shuffle Partitions
+[ ] 231. spark.sql.shuffle.partitions
+[ ] 232. Parallelism
+[ ] 233. Task Distribution
+[ ] 234. Data Locality
+[ ] 235. Partition Sizing Strategies
+[ ] 236. Handling Uneven Data Distribution
+
+12. SPARK EXECUTION AND OPTIMIZATION
+------------------------------------------------------------
+[ ] 237. Lazy Evaluation
+[ ] 238. Transformation vs Action
+[ ] 239. Narrow vs Wide Transformations
+[ ] 240. DAG Generation
+[ ] 241. Job and Stage Creation
+[ ] 242. Catalyst Optimizer
+[ ] 243. Logical Query Plan
+[ ] 244. Analyzed Logical Plan
+[ ] 245. Optimized Logical Plan
+[ ] 246. Physical Query Plan
+[ ] 247. Tungsten Execution Engine
+[ ] 248. Whole-Stage Code Generation
+[ ] 249. Adaptive Query Execution (AQE)
+[ ] 250. Dynamic Partition Pruning
+[ ] 251. Predicate Pushdown
+[ ] 252. Constant Folding
+[ ] 253. Projection Pruning
+[ ] 254. Join Reordering
+[ ] 255. Broadcast Join Optimization
+[ ] 256. explain() and Execution Plan Analysis
+[ ] 257. Cache and Persist
+[ ] 258. Storage Levels
+[ ] 259. Checkpointing
+[ ] 260. Cache vs Persist vs Checkpoint
+[ ] 261. Avoiding Unnecessary Actions
+[ ] 262. Avoiding Excessive Shuffles
+[ ] 263. Avoiding collect() on Large Data
+[ ] 264. Avoiding Python UDFs Where Possible
+
+13. SPARK MEMORY MANAGEMENT AND INTERNALS
+------------------------------------------------------------
+[ ] 265. Spark Memory Architecture
+[ ] 266. Execution Memory
+[ ] 267. Storage Memory
+[ ] 268. Unified Memory Management
+[ ] 269. JVM Heap and Off-Heap Memory
+[ ] 270. Executor Memory
+[ ] 271. Driver Memory
+[ ] 272. Memory Overhead
+[ ] 273. Garbage Collection
+[ ] 274. Memory Spill
+[ ] 275. Disk Spill
+[ ] 276. Serialization
+[ ] 277. Kryo Serialization
+[ ] 278. Java Serialization
+[ ] 279. Python Serialization
+[ ] 280. Broadcast Variables
+[ ] 281. Executor Lost Errors
+[ ] 282. Out of Memory Errors
+[ ] 283. Driver vs Executor Failures
+[ ] 284. Memory Tuning
+
+14. PYSPARK UDF AND ADVANCED PYTHON INTEGRATION
+------------------------------------------------------------
+[ ] 285. User Defined Functions (UDF)
+[ ] 286. Scalar Python UDF
+[ ] 287. Pandas UDF
+[ ] 288. Scalar Iterator Pandas UDF
+[ ] 289. Grouped Map Pandas UDF
+[ ] 290. Grouped Aggregate Pandas UDF
+[ ] 291. Arrow Optimization
+[ ] 292. Apache Arrow Integration
+[ ] 293. mapInPandas()
+[ ] 294. applyInPandas()
+[ ] 295. mapInArrow()
+[ ] 296. Python Worker Processes
+[ ] 297. JVM and Python Communication
+[ ] 298. UDF Performance Optimization
+[ ] 299. Built-in Functions vs UDF
+[ ] 300. Pandas vs Pandas UDF vs Regular UDF
+
+15. SPARK STREAMING AND STRUCTURED STREAMING
+------------------------------------------------------------
+[ ] 301. Introduction to Stream Processing
+[ ] 302. Batch vs Streaming Processing
+[ ] 303. Spark Streaming Architecture
+[ ] 304. DStreams
+[ ] 305. Micro-Batch Processing
+[ ] 306. Structured Streaming Architecture
+[ ] 307. Streaming DataFrames
+[ ] 308. Streaming Sources and Sinks
+[ ] 309. Kafka Integration
+[ ] 310. File Stream Processing
+[ ] 311. Socket Streaming
+[ ] 312. Trigger Intervals
+[ ] 313. Processing Time Triggers
+[ ] 314. AvailableNow Trigger
+[ ] 315. Continuous Processing Mode
+[ ] 316. Output Modes
+[ ] 317. Append Mode
+[ ] 318. Update Mode
+[ ] 319. Complete Mode
+[ ] 320. Event Time vs Processing Time
+[ ] 321. Watermarking
+[ ] 322. Late Arriving Events
+[ ] 323. Windowed Aggregations
+[ ] 324. Tumbling Windows
+[ ] 325. Sliding Windows
+[ ] 326. Session Windows
+[ ] 327. Stateful Streaming
+[ ] 328. Stateless Streaming
+[ ] 329. Streaming Joins
+[ ] 330. Stream-Stream Joins
+[ ] 331. Stream-Static Joins
+[ ] 332. Checkpointing
+[ ] 333. Write-Ahead Logs
+[ ] 334. Exactly-Once Processing Semantics
+[ ] 335. At-Least-Once Processing
+[ ] 336. End-to-End Delivery Guarantees
+[ ] 337. foreachBatch()
+[ ] 338. Streaming Deduplication
+[ ] 339. State Store Management
+[ ] 340. Streaming Recovery and Restart
+[ ] 341. Streaming Monitoring
+[ ] 342. Backpressure and Throughput
+[ ] 343. Kafka Offset Management
+
+16. SPARK CLUSTER MANAGEMENT AND DEPLOYMENT
+------------------------------------------------------------
+[ ] 344. Spark Standalone Cluster
+[ ] 345. YARN Cluster Manager
+[ ] 346. Kubernetes Cluster Manager
+[ ] 347. Hadoop Integration
+[ ] 348. Spark on YARN
+[ ] 349. Spark on Kubernetes
+[ ] 350. Client Deployment Mode
+[ ] 351. Cluster Deployment Mode
+[ ] 352. Executor Allocation
+[ ] 353. Dynamic Resource Allocation
+[ ] 354. Static Resource Allocation
+[ ] 355. Executor Cores and Memory
+[ ] 356. Driver Configuration
+[ ] 357. spark-submit
+[ ] 358. Spark Configuration Properties
+[ ] 359. Dependency and JAR Management
+[ ] 360. Python Environment Management
+[ ] 361. Cluster Resource Scheduling
+[ ] 362. Fault Tolerance
+[ ] 363. Speculative Execution
+[ ] 364. Task Retries
+[ ] 365. Application Monitoring
+
+17. SPARK WITH DATA LAKE AND LAKEHOUSE
+------------------------------------------------------------
+[ ] 366. Spark with Data Lakes
+[ ] 367. Spark with Delta Lake
+[ ] 368. Delta Lake Architecture
+[ ] 369. Delta Transaction Log
+[ ] 370. ACID Transactions
+[ ] 371. Schema Enforcement
+[ ] 372. Schema Evolution
+[ ] 373. Delta MERGE Operations
+[ ] 374. UPSERT Operations
+[ ] 375. Time Travel
+[ ] 376. OPTIMIZE
+[ ] 377. VACUUM
+[ ] 378. Z-ORDER
+[ ] 379. Liquid Clustering
+[ ] 380. Delta Checkpoints
+[ ] 381. Delta Table History
+[ ] 382. Change Data Feed (CDF)
+[ ] 383. Delta Constraints
+[ ] 384. Delta Streaming Reads
+[ ] 385. Delta Streaming Writes
+[ ] 386. Bronze, Silver and Gold Processing
+[ ] 387. SCD Type 1 Using Spark
+[ ] 388. SCD Type 2 Using Spark
+[ ] 389. Incremental Data Processing
+[ ] 390. CDC Pipeline Using Spark
+[ ] 391. Idempotent Lakehouse Pipelines
+
+18. DATABRICKS AND PYSPARK
+------------------------------------------------------------
+[ ] 392. Databricks Architecture
+[ ] 393. Databricks Workspace
+[ ] 394. Databricks Clusters
+[ ] 395. All-Purpose vs Job Compute
+[ ] 396. Databricks Notebooks
+[ ] 397. Databricks Jobs and Workflows
+[ ] 398. Databricks SQL
+[ ] 399. Unity Catalog
+[ ] 400. Catalog, Schema and Tables
+[ ] 401. Managed vs External Tables
+[ ] 402. External Locations
+[ ] 403. Storage Credentials
+[ ] 404. Volumes
+[ ] 405. Access Control and Permissions
+[ ] 406. Databricks Runtime
+[ ] 407. Photon Engine
+[ ] 408. Databricks Connect
+[ ] 409. Lakeflow Declarative Pipelines
+[ ] 410. Databricks Asset Bundles
+[ ] 411. Databricks Monitoring
+[ ] 412. Databricks Cost Optimization
+[ ] 413. Databricks Serverless Compute
+[ ] 414. Databricks Performance Optimization
+
+19. SPARK WITH AWS AND AZURE
+------------------------------------------------------------
+[ ] 415. Spark on AWS EMR
+[ ] 416. Spark on AWS Glue
+[ ] 417. Spark with Amazon S3
+[ ] 418. Spark with AWS Lake Formation
+[ ] 419. Spark with AWS Glue Data Catalog
+[ ] 420. Spark with Amazon Redshift
+[ ] 421. Spark with Azure Databricks
+[ ] 422. Spark with ADLS Gen2
+[ ] 423. Spark with Azure Data Factory
+[ ] 424. Spark with Azure Synapse
+[ ] 425. Managed Identity Integration
+[ ] 426. IAM and RBAC Integration
+[ ] 427. Cloud Storage Authentication
+[ ] 428. Cloud Data Ingestion
+[ ] 429. Cloud-Based Spark Monitoring
+
+20. SPARK SECURITY AND GOVERNANCE
+------------------------------------------------------------
+[ ] 430. Spark Security Architecture
+[ ] 431. Authentication and Authorization
+[ ] 432. Kerberos Authentication
+[ ] 433. Encryption at Rest
+[ ] 434. Encryption in Transit
+[ ] 435. TLS Configuration
+[ ] 436. Secrets Management
+[ ] 437. Data Masking
+[ ] 438. Row-Level Security
+[ ] 439. Column-Level Security
+[ ] 440. Access Control
+[ ] 441. Audit Logging
+[ ] 442. Data Lineage
+[ ] 443. Data Governance
+
+21. SPARK TESTING AND PRODUCTION ENGINEERING
+------------------------------------------------------------
+[ ] 444. PySpark Unit Testing
+[ ] 445. Pytest
+[ ] 446. unittest
+[ ] 447. DataFrame Testing
+[ ] 448. Schema Validation Testing
+[ ] 449. Transformation Testing
+[ ] 450. Integration Testing
+[ ] 451. Mocking and Test Fixtures
+[ ] 452. Data Quality Testing
+[ ] 453. Pipeline Logging
+[ ] 454. Error Handling and Exception Management
+[ ] 455. Retry Mechanisms
+[ ] 456. Idempotency
+[ ] 457. Configuration Management
+[ ] 458. Environment Management
+[ ] 459. CI/CD for Spark Applications
+[ ] 460. Git and GitHub Integration
+[ ] 461. Docker for Spark
+[ ] 462. Production Deployment
+[ ] 463. Pipeline Monitoring and Alerting
+[ ] 464. Spark Application Troubleshooting
+
+22. ADVANCED SPARK CONCEPTS
+------------------------------------------------------------
+[ ] 465. Spark Internal Execution Deep Dive
+[ ] 466. Catalyst Optimizer Internals
+[ ] 467. Tungsten Engine Internals
+[ ] 468. AQE Internals
+[ ] 469. Shuffle Service
+[ ] 470. External Shuffle Service
+[ ] 471. Shuffle Tracking
+[ ] 472. Speculative Execution Internals
+[ ] 473. Dynamic Partition Pruning Internals
+[ ] 474. Adaptive Join Selection
+[ ] 475. Skew Join Optimization
+[ ] 476. Distributed Computing Fundamentals
+[ ] 477. Data Locality and Network Transfer
+[ ] 478. Fault Tolerance and Lineage Recovery
+[ ] 479. Checkpoint vs Lineage Recovery
+[ ] 480. Distributed Aggregation
+[ ] 481. Distributed Sorting
+[ ] 482. Distributed Joins
+[ ] 483. Resource Contention
+[ ] 484. Spark Performance Benchmarking
+
+23. SPARK SYSTEM DESIGN AND INTERVIEW PREPARATION
+------------------------------------------------------------
+[ ] 485. Design a Batch Processing Pipeline
+[ ] 486. Design an Incremental ETL Pipeline
+[ ] 487. Design a CDC-Based Pipeline
+[ ] 488. Design a Real-Time Streaming Pipeline
+[ ] 489. Design a Kafka-to-Spark Pipeline
+[ ] 490. Design a Spark-Based Data Lakehouse
+[ ] 491. Design a Large-Scale Data Processing System
+[ ] 492. Design a Scalable Data Ingestion Framework
+[ ] 493. Design a Fault-Tolerant Spark Pipeline
+[ ] 494. Design a Data Quality Framework
+[ ] 495. Design a SCD Type 2 Pipeline
+[ ] 496. Design a Multi-Source Data Integration Pipeline
+[ ] 497. Spark Performance Troubleshooting Scenarios
+[ ] 498. Executor and Driver Failure Scenarios
+[ ] 499. Data Skew and Shuffle Troubleshooting
+[ ] 500. Spark Architecture Interview Questions
+[ ] 501. PySpark Coding Interview Questions
+[ ] 502. Scenario-Based Data Engineering Questions
+
+============================================================
+LEARNING PROGRESS SUMMARY
+============================================================
+
+Total Concepts: 502
+
+01. Spark Fundamentals:              ____ / 15
+02. Spark Architecture:               ____ / 20
+03. Python Fundamentals:              ____ / 13
+04. PySpark Fundamentals:             ____ / 18
+05. RDD:                              ____ / 27
+06. DataFrame Operations:             ____ / 27
+07. Joins and Set Operations:         ____ / 20
+08. Window Functions:                 ____ / 21
+09. Spark SQL and Transformations:    ____ / 28
+10. Data Sources and File Formats:    ____ / 26
+11. Partitioning and Distributed:     ____ / 21
+12. Execution and Optimization:       ____ / 28
+13. Memory Management:                ____ / 20
+14. UDF and Python Integration:       ____ / 16
+15. Streaming:                        ____ / 43
+16. Cluster Management:               ____ / 22
+17. Data Lake and Lakehouse:          ____ / 26
+18. Databricks:                       ____ / 23
+19. AWS and Azure:                    ____ / 15
+20. Security and Governance:          ____ / 14
+21. Testing and Production:           ____ / 21
+22. Advanced Spark:                   ____ / 20
+23. System Design and Interviews:     ____ / 18
+
+Total Completed: ____ / 502
+
+============================================================
+LEARNING NOTES
+============================================================
+
+Current Section:
+Current Concept Number:
+Currently Learning:
+Topics to Revise:
+Hands-on Practice:
+Interview Questions:
+Project Implementation:
+Doubts / Questions:
+
+============================================================
+STUDY APPROACH
+============================================================
+
+1. Understand the concept.
+2. Learn the underlying Spark architecture.
+3. Practise using PySpark code.
+4. Understand execution plans and Spark UI.
+5. Implement real-world Data Engineering scenarios.
+6. Practise performance optimization.
+7. Solve interview questions.
+8. Mark the concept completed.
+
+============================================================
+RECOMMENDED PRACTICAL PROJECTS
+============================================================
+
+[ ] 1. CSV to Parquet Batch Processing
+[ ] 2. Multi-Source ETL Pipeline
+[ ] 3. Incremental Data Loading Pipeline
+[ ] 4. SCD Type 1 and Type 2 Implementation
+[ ] 5. Oracle to PostgreSQL Migration Using Spark
+[ ] 6. AWS S3 to Spark to Data Warehouse
+[ ] 7. ADLS to Databricks Lakehouse
+[ ] 8. Kafka to Spark Structured Streaming
+[ ] 9. Delta Lake CDC Pipeline
+[ ] 10. End-to-End Medallion Architecture
+[ ] 11. Large-Scale Data Processing Optimization
+[ ] 12. Production-Ready Spark Pipeline with Airflow
+
+============================================================
+END OF TRACKER
+============================================================
