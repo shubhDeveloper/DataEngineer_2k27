@@ -1,0 +1,74 @@
+======================================================================
+PHASE 6 - MICROSOFT AZURE DATA ENGINEERING
+TIMELINE: WEEKS 20-24
+======================================================================
+
+A. AZURE FUNDAMENTALS
+[ ] Cloud computing: IaaS, PaaS and SaaS
+[ ] Subscriptions and resource groups
+[ ] Regions and availability zones
+[ ] Identity, access and networking fundamentals
+[ ] Cost management fundamentals
+
+B. AZURE DATA LAKE STORAGE (ADLS GEN2)
+[ ] Storage accounts, containers and file systems
+[ ] Hierarchical namespace
+[ ] Directory and file operations
+[ ] Access control lists (ACLs)
+[ ] Azure RBAC
+[ ] Managed identities
+[ ] SAS tokens
+[ ] Storage security and encryption
+[ ] Lifecycle management
+[ ] Data organization and partitioning
+[ ] Connect ADLS with Databricks and ADF
+
+C. AZURE DATA FACTORY (ADF)
+[ ] ADF architecture
+[ ] Linked services and datasets
+[ ] Pipelines and activities
+[ ] Copy Data activity
+[ ] Lookup and Get Metadata activities
+[ ] ForEach and If Condition activities
+[ ] Execute Pipeline activity
+[ ] Parameters and variables
+[ ] Dynamic content
+[ ] Triggers and scheduling
+[ ] Tumbling window trigger - concepts
+[ ] Integration Runtime
+[ ] Self-hosted Integration Runtime
+[ ] Incremental and watermark-based loading
+[ ] Metadata-driven pipelines
+[ ] Error handling and retry policies
+[ ] Monitoring and alerts
+[ ] CI/CD and deployment fundamentals
+
+D. AZURE DATABRICKS
+[ ] Workspace and compute concepts
+[ ] Clusters and cluster policies
+[ ] Notebooks, jobs and workflows
+[ ] Databricks Runtime
+[ ] PySpark in Databricks
+[ ] Unity Catalog fundamentals
+[ ] Catalogs, schemas and tables
+[ ] Managed vs external tables
+[ ] Access control and permissions
+[ ] Secrets and secure configuration
+[ ] Delta Lake integration
+[ ] Job scheduling
+[ ] Monitoring and troubleshooting
+[ ] Performance tuning and cost optimization
+
+E. SUPPORTING AZURE SERVICES
+[ ] Azure Key Vault
+[ ] Azure Monitor
+[ ] Log Analytics fundamentals
+[ ] Azure DevOps
+[ ] Azure Repos and Git integration
+[ ] CI/CD for data pipelines
+
+MILESTONE:
+[ ] ADF copies source data into ADLS
+[ ] Databricks processes it using PySpark
+[ ] Bronze, Silver and Gold Delta tables are created
+[ ] Scheduling, monitoring and error handling are configured

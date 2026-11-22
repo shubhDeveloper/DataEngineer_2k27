@@ -1,0 +1,120 @@
+What are Window Functions in Spark?
+
+Window functions let you perform calculations across a group of rows (a "window") that are somehow related to the current row, without 
+collapsing the rows like groupBy does.
+They allow row-wise computations over a group of rows (window).
+/
+
+Common Use Cases:
+Ranking rows (ROW_NUMBER, RANK)
+Running totals or moving averages
+Finding lead/lag values
+Getting max, min, or average within a group
+/
+
+Key Components of a Window Function
+
+partitionBy(...)
+* Divides the data into groups (like SQL's GROUP BY)
+* But doesn't reduce rows — instead, each row is processed within its group
+
+orderBy(...)
+* Sorts rows within each partition, important for ranking or time-based logic
+
+over(...)
+* Defines the window specification used by the function
+/
+____________________________________________________________________________________________________________________________________
+Sample Dataset 
+--------------
+from pyspark.sql import SparkSession
+from pyspark.sql.window import Window
+from pyspark.sql.functions import row_number, rank, dense_rank, avg
+
+spark = SparkSession.builder.appName("WindowFuncs").getOrCreate()
+
+emp_data = [
+    (1, "John", "HR", 50000),
+    (2, "Jane", "HR", 52000),
+    (3, "Alice", "IT", 60000),
+    (4, "Bob", "IT", 58000),
+    (5, "Eve", "IT", 60000),
+    (6, "Chris", "Finance", 55000),
+    (7, "Tom", "Finance", 52000),
+    (8, "Nina", "HR", 51000)
+]
+
+columns = ["emp_id", "name", "dept", "salary"]
+emp_df = spark.createDataFrame(emp_data, columns)
+____________________________________________________________________________________________________________________________________
+
+Example 1: row_number() – Ranking Within Department
+---------------------------------------------------
+
+from pyspark.sql.window import Window
+from pyspark.sql.functions import row_number
+
+window_spec = Window.partitionBy("dept").orderBy(emp_df["salary"].desc())
+
+emp_df.withColumn("row_num", row_number().over(window_spec)).show()
+/
+
+Explanation:
+
+partitionBy("dept"): Separate ranking within each department
+orderBy("salary".desc()): Rank highest salary as 1
+row_number(): Assigns unique row number per group
+------------------------------------------------------------------------------------------------
+
+Example 2: rank() vs dense_rank()
+---------------------------------
+
+from pyspark.sql.functions import rank, dense_rank
+
+emp_df.withColumn("rank", rank().over(window_spec)) \
+      .withColumn("dense_rank", dense_rank().over(window_spec)) \
+      .show()
+/
+Differences:
+------------
+| Function       | Description                               |
+| -------------- | ----------------------------------------- |
+| `rank()`       | Skips ranks after ties (like 1, 2, 2, 4…) |
+| `dense_rank()` | No gaps in ranks (like 1, 2, 2, 3…)       |
+
+--------------------------------------------------------------------------------------------------
+
+Example 3: avg() – Department-wise Average Salary
+-------------------------------------------------
+from pyspark.sql.functions import avg
+avg_window = Window.partitionBy("dept")
+emp_df.withColumn("avg_salary", avg("salary").over(avg_window)).show()
+/
+Explanation:
+Each employee sees the average salary of their department as a new column.
+
+--------------------------------------------------------------------------------------------------
+
+Example 4: lag() and lead() – Previous/Next Salary
+--------------------------------------------------
+from pyspark.sql.functions import lag, lead
+salary_window = Window.partitionBy("dept").orderBy("salary")
+emp_df.withColumn("prev_salary", lag("salary", 1).over(salary_window)) \
+      .withColumn("next_salary", lead("salary", 1).over(salary_window)) \
+      .show()
+____________________________________________________________________________________________________________________________________
+
+Summary Table of Window Function:
+---------------------------------
+
+| Function       | Description                          |
+| -------------- | ------------------------------------ |
+| `row_number()` | Unique row number per partition      |
+| `rank()`       | Rank with gaps if ties               |
+| `dense_rank()` | Rank with no gaps for ties           |
+| `avg()`        | Average over a partition             |
+| `sum()`        | Sum over a partition                 |
+| `lag()`        | Value from previous row in partition |
+| `lead()`       | Value from next row in partition     |
+| `ntile(n)`     | Buckets rows into `n` groups         |
+

@@ -1,0 +1,24 @@
+======================================================================
+PHASE 5 - DELTA LAKE AND LAKEHOUSE ENGINEERING
+TIMELINE: WEEKS 18-19
+======================================================================
+[ ] Delta Lake architecture and Delta tables
+[ ] Transaction log (_delta_log)
+[ ] ACID transactions
+[ ] Schema enforcement and schema evolution
+[ ] INSERT, UPDATE and DELETE
+[ ] MERGE INTO and upsert patterns
+[ ] Time Travel and version history
+[ ] OPTIMIZE and compaction
+[ ] Z-ORDER - use cases and platform support
+[ ] VACUUM and retention considerations
+[ ] Change Data Feed
+[ ] Streaming reads and writes
+[ ] Delta Lake performance tuning
+[ ] Delta Lake vs Apache Iceberg
+[ ] Iceberg architecture and snapshots - fundamentals
+[ ] Parquet and its role in lakehouse storage
+
+MILESTONE:
+[ ] Build Bronze, Silver and Gold Delta tables
+[ ] Implement an incremental MERGE pipeline

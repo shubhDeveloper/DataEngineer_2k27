@@ -1,0 +1,93 @@
+1. Transformations in Spark
+Transformations are lazy operations that build a logical execution plan (DAG) but do not execute until an action is called.
+
+1. Narrow Transformations (No Shuffle)
+These operate on a single partition at a time.
+
+| Transformation           | Description                                |
+| ------------------------ | ------------------------------------------ |
+| `map()`                  | Applies a function to each element         |
+| `filter()`               | Keeps elements matching a condition        |
+| `flatMap()`              | Flattens the result into multiple elements |
+| `mapPartitions()`        | Operates on each partition as a whole      |
+| `sample()`               | Returns a sampled subset of data           |
+| `union()`                | Combines two RDDs/DataFrames               |
+| `distinct()` (sometimes) | Removes duplicates                         |
+___________________________________________________________________________________________________________________________________
+
+2. Wide Transformations (Cause Shuffle)
+These require data to be repartitioned/shuffled across nodes.
+
+| Transformation               | Description                               |
+| ---------------------------- | ----------------------------------------- |
+| `groupBy()` / `groupByKey()` | Groups data by key/column                 |
+| `reduceByKey()`              | Aggregates values by key                  |
+| `join()`                     | Joins two datasets                        |
+| `cogroup()`                  | Groups data from two RDDs                 |
+| `repartition()`              | Re-partitions data randomly               |
+| `coalesce()`                 | Reduces number of partitions              |
+| `sortBy()` / `orderBy()`     | Sorts data                                |
+| `aggregateByKey()`           | Aggregates using custom logic             |
+| `combineByKey()`             | General form of aggregation               |
+| `cartesian()`                | Cartesian product of two datasets         |
+| `subtract()`                 | Removes elements in second RDD from first |
+___________________________________________________________________________________________________________________________________
+
+2. Actions in Spark
+Actions trigger execution of all lazy transformations and return final results or save output.
+
+RDD Actions-
+
+| Action                 | Description                                                 |
+| ---------------------- | ----------------------------------------------------------- |
+| `collect()`            | Returns all data as a list to the driver (use with caution) |
+| `count()`              | Returns number of elements                                  |
+| `take(n)`              | Returns first `n` elements                                  |
+| `first()`              | Returns the first element                                   |
+| `reduce(func)`         | Aggregates all elements using function                      |
+| `foreach(func)`        | Applies function to each element                            |
+| `saveAsTextFile()`     | Writes data to text file                                    |
+| `saveAsSequenceFile()` | Writes data to sequence file                                |
+| `top(n)`               | Returns top n elements                                      |
+| `takeSample()`         | Returns a sample from the dataset                           |
+___________________________________________________________________________________________________________________________________
+
+DataFrame / Dataset Actions
+
+| Action                             | Description                               |
+| ---------------------------------- | ----------------------------------------- |
+| `show(n)`                          | Displays first `n` rows                   |
+| `collect()`                        | Returns all rows as list of Row           |
+| `count()`                          | Returns row count                         |
+| `first()` / `head()`               | Returns first row(s)                      |
+| `take(n)`                          | Returns first `n` rows                    |
+| `write()`                          | Triggers write operation to file/database |
+| `foreach()` / `foreachPartition()` | Applies a function                        |
+| `toPandas()`                       | Converts to Pandas DataFrame (in PySpark) |
+
+___________________________________________________________________________________________________________________________________
+
+3. Special Transformations
+These are helpful in performance optimization and partition management.
+
+| Transformation           | Description                             |
+| ------------------------ | --------------------------------------- |
+| `cache()`                | Caches the DataFrame/RDD in memory      |
+| `persist()`              | Persists with a specified storage level |
+| `checkpoint()`           | Saves the RDD lineage to stable storage |
+| `withColumn()`           | Adds or modifies a column               |
+| `select()`               | Selects specific columns                |
+| `drop()`                 | Drops a column                          |
+| `na.fill()`, `na.drop()` | Fills or drops nulls                    |
+| `explode()`              | Flattens arrays/maps into rows          |
+| `cast()`                 | Converts data types                     |
+___________________________________________________________________________________________________________________________________
+
+Summary Table (High-Level)
+
+| Type                       | Examples                          |
+| -------------------------- | --------------------------------- |
+| **Narrow Transformations** | map, filter, flatMap, union       |
+| **Wide Transformations**   | groupBy, join, distinct, sortBy   |
+| **Actions**                | show, collect, count, write, take |
+

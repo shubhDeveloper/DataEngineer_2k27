@@ -1,0 +1,56 @@
+======================================================================
+PHASE 2 - ADVANCED SQL AND DATABASE ENGINEERING
+TIMELINE: WEEKS 6-8
+======================================================================
+
+A. SQL
+[ ] SELECT, WHERE, ORDER BY and DISTINCT
+[ ] GROUP BY and HAVING
+[ ] INNER, LEFT, RIGHT and FULL OUTER JOIN
+[ ] CROSS JOIN and SELF JOIN
+[ ] UNION and UNION ALL
+[ ] Subqueries and correlated subqueries
+[ ] CTEs and recursive CTEs
+[ ] CASE expressions and NULL handling
+[ ] EXISTS, NOT EXISTS, IN and NOT IN (including NULL semantics)
+[ ] Window functions
+[ ] ROW_NUMBER, RANK and DENSE_RANK
+[ ] LAG, LEAD, FIRST_VALUE and LAST_VALUE
+[ ] Aggregate window functions
+[ ] Running totals and moving averages
+[ ] Date, timestamp and string functions
+[ ] INSERT, UPDATE, DELETE and MERGE
+[ ] Transactions and ACID properties
+
+B. DATABASE CONCEPTS
+[ ] OLTP vs OLAP
+[ ] Primary keys, foreign keys and constraints
+[ ] Normalization and denormalization
+[ ] Index fundamentals
+[ ] B-tree, composite and covering indexes
+[ ] Views and materialized views
+[ ] Sequences and identity columns
+[ ] Stored procedures, functions and triggers
+[ ] Query execution plans
+[ ] Statistics and cardinality
+[ ] Locking and transaction isolation
+[ ] Deadlocks and concurrency
+[ ] Partitioning fundamentals
+
+C. DATABASE PERFORMANCE
+[ ] Read execution plans
+[ ] Identify full table scans and index scans
+[ ] Understand nested loop, hash and merge joins
+[ ] Understand sorting and aggregation
+[ ] Evaluate index selectivity
+[ ] Rewrite inefficient SQL
+[ ] Compare estimated and actual plans
+[ ] Measure elapsed time, CPU and I/O where available
+
+PRACTICE
+[ ] Solve at least 50 SQL problems
+[ ] Tune 5 slow SQL queries
+[ ] Implement incremental loading using SQL
+[ ] Design basic fact and dimension tables
+
+MILESTONE: SQL interview practice plus a documented SQL tuning exercise.

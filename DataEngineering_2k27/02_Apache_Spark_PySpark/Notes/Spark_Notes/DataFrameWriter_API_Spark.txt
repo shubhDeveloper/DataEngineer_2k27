@@ -1,0 +1,105 @@
+--DataFrame Writer API
+
+In Apache Spark, the DataFrameWriter API is used to write data from a DataFrame to external storage systems such as file systems 
+(CSV, JSON, Parquet, etc.), relational databases, and other formats.
+This API provides methods to control output format, save mode, partitioning, file paths, and more.
+--------------------------------------
+--Basic Syntax
+
+df.write
+  .format("format_name")
+  .option("key", "value")
+  .mode("save_mode")
+  .save("path_or_table")
+--------------------------------------
+
+--PySpark DataFrameWriter API Methods
+
+| **Method**      | **Description**                                                   | **Important Parameters (Defaults in brackets)**                                 |
+| --------------- | ----------------------------------------------------------------- | ------------------------------------------------------------------------------- |
+| `format()`      | Specifies the format for data saving.                             | `source` – e.g., `"parquet"`, `"json"`, `"csv"`, `"orc"`, `"jdbc"`, `"delta"`   |
+| `mode()`        | Specifies how to handle existing data.                            | `"append"` (default), `"overwrite"`, `"ignore"`, `"error"` or `"errorifexists"` |
+| `option()`      | Adds a single option for data writing.                            | `key`, `value` – depends on format (e.g., `"header": "true"` for CSV)           |
+| `options()`     | Adds multiple options at once.                                    | `{key1: value1, key2: value2}`                                                  |
+| `partitionBy()` | Partitions the output by given columns.                           | Column names (as strings): e.g., `partitionBy("year", "month")`                 |
+| `bucketBy()`    | Buckets the output by given columns (used with Hive tables).      | `numBuckets`, `col1`, `col2`, ... – e.g., `bucketBy(4, "name")`                 |
+| `sortBy()`      | Sorts data within buckets.                                        | Columns to sort by (used with `bucketBy`)                                       |
+| `save()`        | Saves the content to the specified path.                          | `path` – file system path to save data                                          |
+| `saveAsTable()` | Saves data as a table in Hive or Spark catalog.                   | `name` (table name), `format`, `mode`, `partitionBy`, etc.                      |
+| `insertInto()`  | Inserts data into an existing table. Must match schema.           | `tableName`, requires table to exist                                            |
+| `jdbc()`        | Writes data to a JDBC table.                                      | `url`, `table`, `properties`, `mode`                                            |
+| `text()`        | Writes DataFrame to a text file (only one string column allowed). | `path`, `compression`, `lineSep` (default `\n`)                                 |
+| `csv()`         | Writes data in CSV format.                                        | `path`, `header`, `sep`, `quote`, `escape`, `compression`, `mode`               |
+| `json()`        | Writes data in JSON format.                                       | `path`, `compression`, `dateFormat`, `timestampFormat`, `mode`                  |
+| `parquet()`     | Writes data in Parquet format.                                    | `path`, `compression`, `mode`                                                   |
+| `orc()`         | Writes data in ORC format.                                        | `path`, `compression`, `mode`                                                   |
+
+--------------------------------------
+--Examples
+----------
+1. Save DataFrame as CSV
+
+df.write \
+  .format("csv") \
+  .option("header", "true") \
+  .mode("overwrite") \
+  .save("/path/to/output/csv")
+
+//
+
+2. Save as Parquet with partitioning
+
+df.write \
+  .partitionBy("region") \
+  .mode("append") \
+  .parquet("/path/to/output/parquet")
+
+//
+
+3. Write to a JDBC (e.g., PostgreSQL)
+
+df.write \
+  .format("jdbc") \
+  .option("url", "jdbc:postgresql://localhost:5432/mydb") \
+  .option("dbtable", "mytable") \
+  .option("user", "username") \
+  .option("password", "password") \
+  .mode("append") \
+  .save()
+
+//
+
+4. Save as a Hive Table
+
+df.write \
+  .mode("overwrite") \
+  .saveAsTable("my_hive_table")
+
+------------------------------------------------
+
+--Save Modes
+
+| Mode                       | Behavior if path/table exists |
+| -------------------------- | ----------------------------- |
+| `append`                   | Appends data                  |
+| `overwrite`                | Overwrites existing data      |
+| `ignore`                   | Does nothing if exists        |
+| `error` or `errorifexists` | Fails if exists               |
+
+------------------------------------------------
+
+--Default Modes if not specify
+
+| **Method**      | **Parameter**         | **Default Value (If Skipped)**                                                       |
+| --------------- | --------------------- | ------------------------------------------------------------------------------------ |
+| `mode()`        | mode                  | `"error"`                                                                            |
+| `format()`      | format                | `"parquet"`                                                                          |
+| `option()`      | key                   | `None` (you must specify both key & value)                                           |
+| `partitionBy()` | columns               | No partitioning (no default)                                                         |
+| `bucketBy()`    | numBuckets, col(s)    | No bucketing (must specify both)                                                     |
+| `sortBy()`      | col(s)                | No sorting (only used with `bucketBy`)                                               |
+| `save()`        | path                  | Required if not writing to table                                                     |
+| `saveAsTable()` | tableName, mode       | mode = `"error"` (if not set), tableName = required                                  |
+| `insertInto()`  | tableName, overwrite  | overwrite = `False`                                                                  |
+| `jdbc()`        | connection URL, table | Other options like `driver`, `dbtable`, `user`, `password` must be passed explicitly |
+

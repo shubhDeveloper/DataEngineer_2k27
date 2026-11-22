@@ -1,0 +1,99 @@
+What is groupBy in PySpark?
+groupBy() in PySpark is used to group rows based on the values of one or more columns, and then apply aggregate functions like 
+sum(), avg(), count(), etc., on those groups.
+
+Syntax:
+DataFrame.groupBy(column1, column2, ...).agg(aggregate_functions)
+/
+
+Why Use groupBy?
+
+You use groupBy to:
+
+Get summaries or statistics about data.
+Perform aggregations like total, average, min, max.
+Create department-wise, category-wise, or region-wise reports.
+/
+_____________________________________________________________________________________________________________________________________
+
+Sample DataFrame (emp)
+----------------------
+from pyspark.sql import SparkSession
+from pyspark.sql import functions as F
+
+spark = SparkSession.builder.appName("GroupByDemo").getOrCreate()
+
+data = [
+    (1, "John", "HR", 30000),
+    (2, "Jane", "IT", 50000),
+    (3, "Doe", "IT", 60000),
+    (4, "Alice", "Finance", 40000),
+    (5, "Bob", "HR", 35000)
+]
+
+columns = ["emp_id", "name", "dept", "salary"]
+
+emp = spark.createDataFrame(data, columns)
+emp.show()
+------------------------------------------------------------------------------------------------------------------------
+
+Examples of groupBy in PySpark
+emp.groupBy("dept").sum("salary").show()
+
++--------+-----------+
+|   dept | sum(salary)|
++--------+-----------+
+|     IT |    110000 |
+|     HR |     65000 |
+| Finance|     40000 |
++--------+-----------+
+
+Output:
+
++--------+-----------+
+|   dept | sum(salary)|
++--------+-----------+
+|     IT |    110000 |
+|     HR |     65000 |
+| Finance|     40000 |
++--------+-----------+
+/
+2. Average Salary by Department
+
+emp.groupBy("dept").avg("salary").show()
+/
+3. Multiple Aggregations
+
+emp.groupBy("dept").agg(
+    F.sum("salary").alias("total_salary"),
+    F.avg("salary").alias("avg_salary"),
+    F.max("salary").alias("max_salary"),
+    F.count("emp_id").alias("num_employees")
+).show()
+
+Output:
+
++--------+------------+----------+----------+--------------+
+| dept   |total_salary|avg_salary|max_salary|num_employees|
++--------+------------+----------+----------+--------------+
+| HR     |       65000|   32500.0|     35000|             2|
+| IT     |      110000|   55000.0|     60000|             2|
+| Finance|       40000|   40000.0|     40000|             1|
++--------+------------+----------+----------+--------------+
+/
+
+4. Group by Multiple Columns
+emp.groupBy("dept", "salary").count().show()
+_____________________________________________________________________________________________________________________________________
+
+Summary:
+
+| Feature           | Details                                       |
+| ----------------- | --------------------------------------------- |
+| What it does      | Groups data and applies aggregate             |
+| Common aggregates | `sum()`, `avg()`, `count()`, `min()`, `max()` |
+| Syntax            | `df.groupBy(...).agg(...)`                    |
+| Multi-column      | `groupBy("col1", "col2")`                     |
+| Output            | New DataFrame with grouped results            |
+
+

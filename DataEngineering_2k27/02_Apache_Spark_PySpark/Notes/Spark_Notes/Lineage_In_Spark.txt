@@ -1,0 +1,30 @@
+What is Lineage in Spark?
+
+Lineage is the record of all transformations that Spark applied to build a new RDD or DataFrame from the original data.
+It is like a step-by-step history or family tree of how your data was processed.
+
+Why is Lineage Important?
+Helps Spark recover lost data if something fails (fault tolerance).
+Makes execution lazy and efficient — Spark doesn’t do anything until an action is called.
+It’s used to optimize the job execution plan.
+
+Example:
+
+Suppose you load a file and do some transformations:
+
+data = spark.read.text("logs.txt")
+filtered = data.filter(data.value.contains("ERROR"))
+words = filtered.flatMap(lambda line: line.value.split(" "))
+upper = words.map(lambda word: word.upper())
+
+Now you have a chain (lineage) like:
+
+logs.txt → filter() → flatMap() → map()
+
+When is Lineage Used?
+Let’s say one partition of data is lost during processing due to a machine failure.
+Spark doesn’t need to start the whole job again — it just rebuilds the lost part using the lineage (the saved transformation steps).
+
+Interview Answer (Simple):
+"Lineage in Spark is the history of all transformations applied to create a DataFrame or RDD. Spark uses this lineage to 
+recompute lost data in case of failure, which makes it fault-tolerant. It also helps Spark optimize execution and perform lazy evaluation."

@@ -1,0 +1,52 @@
+Databricks Notebook- https://databricks-prod-cloudfront.cloud.databricks.com/public/4027ec902e239c93eaaa8714f173bcfc/4198658453817425/2712615471373403/2956536773101421/latest.html
+
+////////////////////////////////////////////////////////////////////////////
+
+PySpark Basic DataFrame Functions
+----------------------------------------
+read()
+Reads data from a source into a DataFrame.
+Example:
+df = spark.read.csv("employees.csv", header=True, inferSchema=True)
+
+show()
+Displays the top rows of a DataFrame.
+Example:
+df.show()
+
+printSchema()
+Prints the schema of the DataFrame.
+Example:
+df.printSchema()
+
+select()
+Selects specific columns from the DataFrame.
+Example:
+df.select("name", "salary").show()
+
+drop()
+Drops a column from the DataFrame.
+Example:
+df = df.drop("age")
+
+withColumn()
+Adds or updates a column using a new expression.
+Example:
+from pyspark.sql.functions import col
+df = df.withColumn("salary_int", col("salary").cast("int"))
+
+withColumnRenamed()
+Renames a column in the DataFrame.
+Example:
+df = df.withColumnRenamed("salary_int", "salary")
+
+distinct()
+Returns distinct rows of the DataFrame.
+Example:
+df.select("department").distinct().show()
+
+describe()
+Computes summary statistics of numeric columns.
+Example:
+df.describe("salary").show()
+

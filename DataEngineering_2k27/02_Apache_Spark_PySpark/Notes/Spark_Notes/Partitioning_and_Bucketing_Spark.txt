@@ -1,0 +1,81 @@
+What is Partitioning in Spark?
+Definition:
+Partitioning is the process of dividing data into smaller chunks (called partitions) so that Spark can process data in parallel across 
+multiple nodes.
+Each partition is processed by one task in Spark, and the number of partitions determines the level of parallelism.
+
+Real-World Analogy:
+Imagine a library with 1 million books. Instead of storing all books on one shelf, you divide them into multiple sections 
+(science, history, fiction, etc.).
+Now multiple librarians can work simultaneously in different sections — this is partitioning.
+
+Types of Partitioning in Spark:
+
+| Type                               | Description                                                                                             |
+| ---------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| **Default Partitioning**           | Spark automatically divides data into default number of partitions (e.g., based on file size or cores). |
+| **Custom Partitioning**            | You specify the column or logic to partition data.                                                      |
+| **Repartitioning (`repartition`)** | Creates new partitions (and may shuffle data).                                                          |
+| **Coalescing (`coalesce`)**        | Reduces the number of partitions **without full shuffle**. Useful for writing output efficiently.       |
+
+Why is Partitioning Important?
+Enables parallel processing.
+Reduces shuffle if partitioned on the join/group key.
+Improves performance of large datasets.
+
+df = spark.read.csv("sales.csv", header=True)
+
+# Repartition data based on a column
+df = df.repartition("region")
+
+# Now Spark knows to group records with the same region in the same partition
+
+
+What is Bucketing in Spark?
+Definition:
+Bucketing is a technique used to divide data into a fixed number of buckets based on the hash of a column’s value. It’s mainly used in 
+Hive-compatible formats for efficient joins and aggregations.
+Bucketing is used at the time of writing data (e.g., saving a table), not while reading or transforming data.
+
+Real-World Analogy:
+Let’s say you have a classroom with 1000 students. You decide to assign roll numbers and divide students into 10 groups based on last 
+digit of roll number (0–9).
+Each group is now a bucket — making it easier to find students quickly.
+
+How Bucketing Works:
+Spark hashes the values in the bucketing column.
+Data is written into a fixed number of buckets.
+Each bucket is a separate file.
+Bucketing ensures that the same value always goes to the same bucket.
+
+When to Use Bucketing?
+You’re doing joins on large tables with same bucketing columns.
+You want to avoid shuffles during joins.
+You’re using Spark SQL / Hive tables.
+
+Example
+df.write.bucketBy(4, "customer_id").sortBy("customer_id").saveAsTable("bucketed_customers")
+
+This saves the table into 4 buckets, based on customer_id.
+Helps optimize joins with other bucketed tables.
+
+Partitioning vs Bucketing — Summary Table
+
+| Feature             | **Partitioning**                                    | **Bucketing**                                       |
+| ------------------- | --------------------------------------------------- | --------------------------------------------------- |
+| **When applied**    | While reading/writing data                          | Only while writing data (e.g., saving table)        |
+| **Based on**        | Column value (direct split)                         | Hash of column value                                |
+| **Partition count** | Can be dynamic or based on data                     | Fixed number of buckets                             |
+| **Shuffling**       | May involve shuffle (especially during repartition) | Bucketing avoids shuffle if both sides are bucketed |
+| **Performance**     | Helps in parallelism and partition pruning          | Optimizes joins and aggregations                    |
+| **File Layout**     | Creates directories for each partition              | Creates multiple files (buckets) in one folder      |
+| **Supported with**  | Parquet, JSON, etc.                                 | Mostly used with Hive or saveAsTable                |
+
+
+Interview-Friendly Explanation:
+
+"Partitioning in Spark means dividing data into multiple chunks so that Spark can process them in parallel. 
+It's useful for performance and reducing shuffles when grouping or joining.
+Bucketing, on the other hand, is used when writing data into Hive-compatible formats. It divides the data into 
+fixed buckets based on the hash of a column. Bucketing helps speed up joins and aggregations, especially when 
+both datasets are bucketed on the same column and number of buckets."

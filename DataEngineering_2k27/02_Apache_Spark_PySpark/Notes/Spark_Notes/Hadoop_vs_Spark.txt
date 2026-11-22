@@ -1,0 +1,38 @@
+What is Hadoop?
+Hadoop is an open-source framework used to store and process big data using a distributed system.
+
+It has two main components:
+HDFS (Hadoop Distributed File System) – stores large files by splitting them across multiple machines.
+MapReduce – processes the data in batch mode, step by step.
+
+What is Spark?
+Apache Spark is a fast, in-memory data processing engine that also works in a distributed environment.
+Unlike Hadoop, Spark can do real-time, batch, and streaming processing much faster because it processes data in memory (RAM).
+
+Real-World Analogy
+
+Imagine you have to calculate the total sales from millions of receipts:
+
+Tool	Analogy
+Hadoop	Like a person who writes every calculation on paper → slow but reliable.
+Spark	Like a person who calculates using a calculator or in mind → much faster.
+
+--------------------------------------------------------------------------------------------------------------------------------------
+
+| Feature                   | **Hadoop (MapReduce)**                          | **Spark**                                        |
+| ------------------------- | ----------------------------------------------- | ------------------------------------------------ |
+| **Processing Speed**      | Slower (reads/writes from disk after each step) | Faster (keeps data in memory – RAM)              |
+| **Data Storage**          | Uses **HDFS**                                   | Can use HDFS, S3, Hive, Cassandra, etc.          |
+| **Processing Type**       | **Batch processing** only                       | Supports **batch, real-time**, and streaming     |
+| **Ease of Use**           | Complex – requires writing Java code            | Easy – supports Python, Scala, SQL, etc.         |
+| **Fault Tolerance**       | Handled by HDFS and re-execution of tasks       | Handled using lineage (can recompute lost data)  |
+| **In-Memory Computation** | ❌ No                                            | ✅ Yes                                            |
+| **Speed**                 | Slower (disk-based)                             | 10–100x faster (memory-based)                    |
+| **Components**            | HDFS, YARN, MapReduce                           | Spark Core, Spark SQL, Spark Streaming, MLlib    |
+| **Learning Curve**        | Steeper                                         | Easier for developers familiar with Python, SQL  |
+| **Use Cases**             | Offline big data processing                     | Real-time analytics, ETL, machine learning, etc. |
+
+Interview-Ready Summary Answer
+"Hadoop is a disk-based batch processing system using MapReduce, while Spark is a fast, in-memory data processing engine that supports batch, 
+real-time, and streaming workloads. Spark is typically 10–100x faster than Hadoop because it avoids writing to disk between steps, and it 
+provides high-level APIs in Python, Scala, and SQL, making it more developer-friendly."

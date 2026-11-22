@@ -1,0 +1,132 @@
+What is a Join?
+A join is used to combine rows from two or more DataFrames based on a related column (key).
+In PySpark, joins are performed using the join() function.
+
+Syntax:
+df1.join(df2, df1.key == df2.key, how='join_type')
+
+df1, df2: DataFrames to join
+key: Column to join on
+how: Type of join (inner, left, right, outer, etc.)
+
+/----------------------------------------------------------------------------------------
+
+Sample DataFrames
+------------------
+
+from pyspark.sql import SparkSession
+
+spark = SparkSession.builder.appName("JoinsDemo").getOrCreate()
+
+emp = spark.createDataFrame([
+    (1, "John", "HR"),
+    (2, "Jane", "IT"),
+    (3, "Doe", "IT"),
+    (4, "Alice", "Finance"),
+    (5, "Bob", "HR")
+], ["emp_id", "name", "dept"])
+
+dept = spark.createDataFrame([
+    ("HR", "Mumbai"),
+    ("IT", "Bangalore"),
+    ("Finance", "Delhi"),
+    ("Admin", "Hyderabad")
+], ["dept_name", "location"])
+
+__________________________________________________________________________________________________________________________________
+
+Types of Joins in PySpark
+
+1. Inner Join
+Returns only the rows that have matching values in both DataFrames.
+
+emp.join(dept, emp.dept == dept.dept_name, "inner").show()
+
+Output:
+
++-------+-----+--------+----------+----------+
+|emp_id |name |dept    |dept_name |location  |
++-------+-----+--------+----------+----------+
+|1      |John |HR      |HR        |Mumbai    |
+|2      |Jane |IT      |IT        |Bangalore |
+|3      |Doe  |IT      |IT        |Bangalore |
+|4      |Alice|Finance |Finance   |Delhi     |
+|5      |Bob  |HR      |HR        |Mumbai    |
++-------+-----+--------+----------+----------+
+__________________________________________________________________________________________________________________________________
+
+2. Left Join (Left Outer Join)
+Returns all rows from the left DataFrame, and matched rows from the right.
+
+emp.join(dept, emp.dept == dept.dept_name, "left").show()
+
+If no match, null appears for right DataFrame columns.
+__________________________________________________________________________________________________________________________________
+
+3. Right Join (Right Outer Join)
+Returns all rows from the right DataFrame, and matched rows from the left.
+
+emp.join(dept, emp.dept == dept.dept_name, "right").show()
+
+__________________________________________________________________________________________________________________________________
+
+4. Full Outer Join
+Returns all rows when there is a match in either left or right.
+
+emp.join(dept, emp.dept == dept.dept_name, "outer").show()
+
+__________________________________________________________________________________________________________________________________
+
+5. Left Semi Join
+Returns only columns from the left DataFrame, where a match exists in the right.
+
+emp.join(dept, emp.dept == dept.dept_name, "left_semi").show()
+
+__________________________________________________________________________________________________________________________________
+
+6. Left Anti Join
+Returns only rows from the left DataFrame where no match found in the right.
+
+emp.join(dept, emp.dept == dept.dept_name, "left_anti").show()
+
+__________________________________________________________________________________________________________________________________
+
+7. Cross Join (Cartesian Product)
+Returns the cross product (all combinations) — very expensive!
+
+emp.crossJoin(dept).show()
+
+__________________________________________________________________________________________________________________________________
+
+Column Ambiguity
+If columns have the same name, use alias() or select explicitly:
+
+emp.alias("e").join(dept.alias("d"), F.col("e.dept") == F.col("d.dept_name")).select("e.name", "d.location").show()
+
+__________________________________________________________________________________________________________________________________
+
+Real world use cases:
+
+| Join Type       | Use Case Example                              |
+| --------------- | --------------------------------------------- |
+| Inner Join      | Employee with department info                 |
+| Left Join       | All employees, with or without department     |
+| Right Join      | All departments, even if no employees         |
+| Full Outer Join | Combined view of all data                     |
+| Left Semi Join  | Filter employees whose dept exists            |
+| Left Anti Join  | Employees whose department is invalid         |
+| Cross Join      | Generating combinations (e.g., product X day) |
+
+__________________________________________________________________________________________________________________________________
+
+Summary:
+
+| Join Type  | Description                               |
+| ---------- | ----------------------------------------- |
+| inner      | Matching records from both sides          |
+| left       | All records from left, matched from right |
+| right      | All records from right, matched from left |
+| full       | All records from both sides               |
+| left\_semi | Only left records with a match            |
+| left\_anti | Only left records without a match         |
+| cross      | Cartesian product (all combinations)      |

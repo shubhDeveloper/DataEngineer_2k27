@@ -1,0 +1,70 @@
+======================================================================
+PHASE 4 - APACHE SPARK AND PYSPARK
+TIMELINE: WEEKS 13-17
+======================================================================
+
+A. SPARK FUNDAMENTALS
+[ ] Apache Spark architecture and use cases
+[ ] Driver, executors and cluster manager
+[ ] Jobs, stages and tasks
+[ ] DAG (Directed Acyclic Graph)
+[ ] SparkSession and SparkContext
+[ ] Lazy evaluation
+[ ] Transformations and actions
+[ ] Narrow and wide transformations
+[ ] Shuffle operations
+[ ] RDD fundamentals
+[ ] DataFrames and Datasets - differences
+[ ] Catalyst Optimizer
+[ ] Tungsten execution engine - concepts
+
+B. PYSPARK PROGRAMMING
+[ ] Create SparkSession
+[ ] Read and write CSV, JSON and Parquet
+[ ] Define schemas explicitly
+[ ] select, filter and where
+[ ] withColumn and drop
+[ ] when and otherwise
+[ ] Cast and data type conversion
+[ ] NULL handling and dropDuplicates
+[ ] groupBy and aggregations
+[ ] Joins, union and unionByName
+[ ] orderBy and sort
+[ ] Window functions
+[ ] UDFs and performance implications
+[ ] Built-in functions vs UDFs
+[ ] Explode and nested data
+[ ] Array and map operations
+[ ] Date and timestamp functions
+[ ] Temporary views and Spark SQL
+[ ] Read from and write to databases
+
+C. SPARK PERFORMANCE TUNING
+[ ] Partitioning, repartition and coalesce
+[ ] Shuffle partitions
+[ ] Broadcast joins and sort-merge joins
+[ ] Join strategy selection
+[ ] Data skew and mitigation
+[ ] Caching and persistence
+[ ] Checkpointing
+[ ] Predicate pushdown and partition pruning
+[ ] File compaction and small-file problem
+[ ] Adaptive Query Execution (AQE)
+[ ] Spark UI and explain plans
+[ ] Executor memory and cores
+[ ] Driver memory
+[ ] Garbage collection fundamentals
+[ ] Avoid unnecessary shuffles
+[ ] Optimize file sizes and output partitions
+
+PRACTICE
+[ ] Process at least 1 million records
+[ ] Perform joins and aggregations in PySpark
+[ ] Compare repartition and coalesce
+[ ] Diagnose and fix a data-skew example
+[ ] Compare a built-in function with a UDF
+[ ] Inspect Spark UI and execution plans
+
+MILESTONE:
+[ ] Build a PySpark batch pipeline
+[ ] Explain Spark execution from job submission to task completion

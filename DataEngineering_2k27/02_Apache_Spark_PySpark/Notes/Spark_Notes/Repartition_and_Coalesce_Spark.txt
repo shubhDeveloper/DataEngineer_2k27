@@ -1,0 +1,88 @@
+repartition() and coalesce() — Explained in Detail
+/
+
+What Are Partitions in PySpark?
+A partition is a chunk of your data that Spark processes in parallel.
+Each partition is processed by one executor/task.
+
+More partitions → More parallelism
+Too many small partitions → Overhead
+Too few large partitions → Slow processing (less parallelism)
+______________________________________________________________________________________________________________________________
+1. repartition() in PySpark
+Definition:
+repartition() is used to increase or decrease the number of partitions by reshuffling the data across the network.
+
+Syntax:
+df.repartition(numPartitions)
+
+Example:
+# Repartition to 4 partitions
+df_repart = emp.repartition(4)
+print(df_repart.rdd.getNumPartitions())
+
+Internally, this causes a full shuffle, meaning Spark moves data between executors → costly but accurate repartitioning.
+-----------------------------------------------------------------------------
+
+When to Use repartition():
+
+When you need more parallelism (e.g., large data for writing).
+Before writing to files (e.g., one file per partition).
+For balanced processing before aggregation or join.
+______________________________________________________________________________________________________________________________
+
+2. coalesce() in PySpark
+Definition:
+coalesce() is used to reduce the number of partitions without full shuffle, by merging existing partitions.
+
+Syntax:
+df.coalesce(numPartitions)
+
+Example:
+# Reduce to 1 partition (useful before writing to a single output file)
+df_single = emp.coalesce(1)
+print(df_single.rdd.getNumPartitions())
+
+Coalesce avoids full shuffle, hence faster but less flexible than repartition.
+---------------------------------------------------------------------------
+
+When to Use coalesce():
+When writing to a single output file.
+To optimize small DataFrames before actions (like .collect()).
+When you want to reduce partition count without shuffle.
+
+______________________________________________________________________________________________________________________________
+
+Difference: repartition vs coalesce
+
+| Feature              | `repartition()`                         | `coalesce()`                               |
+| -------------------- | --------------------------------------- | ------------------------------------------ |
+| Shuffle              | Yes (Full data shuffle)                 | No (Only merges existing partitions)       |
+| Increases partitions | ✅ Yes                                   | ❌ No (only reduces)                        |
+| Reduces partitions   | ✅ Yes                                   | ✅ Yes                                      |
+| Performance          | Slower (due to shuffle)                 | Faster (no shuffle)                        |
+| Use case             | Increase parallelism, even distribution | Write single file, reduce small partitions |
+| Flexible             | More flexible (works both up/down)      | Only for reducing                          |
+
+______________________________________________________________________________________________________________________________
+
+
+Real-World Use Case Example
+
+Scenario:
+
+You want to write your DataFrame to a single Parquet file:
+emp.coalesce(1).write.mode("overwrite").parquet("output/emp_single_file")
+
+Scenario:
+
+You want to distribute a large dataset across 6 nodes for parallel processing:
+emp.repartition(6).write.mode("overwrite").parquet("output/emp_multi")
+---------------------------------------------------------------------------------------
+
+Summary:
+
+| Function      | Purpose                               | Shuffle | Use When                                       |
+| ------------- | ------------------------------------- | ------- | ---------------------------------------------- |
+| `repartition` | Change number of partitions (up/down) | ✅ Yes   | Need better parallelism or balanced partitions |
+| `coalesce`    | Reduce partitions (only down)         | ❌ No    | Save to single file or fewer tasks             |

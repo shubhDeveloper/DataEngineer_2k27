@@ -1,0 +1,720 @@
+======================================================================
+                 DATA ENGINEER LEARNING ROADMAP
+              COMPLETE TECHNOLOGY CHECKLIST + TIMELINE
+======================================================================
+
+TARGET
+------
+Prepare for Data Engineer / Senior Data Engineer roles through programming,
+database engineering, data architecture, big data, cloud, orchestration,
+streaming, engineering practices and system design.
+
+DURATION: 9 MONTHS
+STUDY TIME: 12-15 HOURS PER WEEK
+PRIMARY CLOUD: MICROSOFT AZURE
+SECONDARY CLOUD: AWS
+
+Use this as a suggested sequence. Learn the fundamentals, practise them,
+build the milestone project, and then move to the next phase.
+
+======================================================================
+PHASE 0 - ENVIRONMENT SETUP
+TIMELINE: WEEK 1
+======================================================================
+[ ] Install Python and VS Code / PyCharm
+[ ] Install Git and create a GitHub repository
+[ ] Learn basic Linux command-line navigation
+[ ] Understand files, folders, paths and environment variables
+[ ] Understand CSV, JSON, XML and Parquet at a basic level
+[ ] Understand APIs and HTTP fundamentals
+[ ] Set up PostgreSQL for SQL practice
+[ ] Create a notes folder and progress tracker
+
+MILESTONE: Create a GitHub repository for notes, code and projects.
+
+======================================================================
+PHASE 1 - PYTHON FOR DATA ENGINEERING
+TIMELINE: WEEKS 2-5
+======================================================================
+
+A. PYTHON FUNDAMENTALS
+[ ] Variables and data types
+[ ] Operators and expressions
+[ ] Conditional statements and loops
+[ ] Strings and string methods
+[ ] Lists, tuples and sets
+[ ] Dictionaries and dictionary methods
+[ ] List, set and dictionary comprehensions
+[ ] Functions, parameters and return values
+[ ] Lambda functions
+[ ] Modules, packages and imports
+[ ] Exception handling
+[ ] File handling
+[ ] CSV, JSON and text file processing
+
+B. INTERMEDIATE PYTHON
+[ ] Object-oriented programming
+[ ] Classes and objects
+[ ] Constructors
+[ ] Inheritance, encapsulation and polymorphism
+[ ] Iterators and generators
+[ ] Decorators - fundamentals
+[ ] Context managers
+[ ] Virtual environments and pip
+[ ] Logging and debugging
+[ ] Type hints
+[ ] Unit testing fundamentals
+
+C. PYTHON FOR DATA ENGINEERING
+[ ] Read and write CSV and JSON
+[ ] Process large files in chunks
+[ ] Work with dates and timestamps
+[ ] Connect Python to PostgreSQL
+[ ] Execute SQL from Python
+[ ] Consume REST APIs
+[ ] Use environment variables for configuration
+[ ] Handle API errors, retries and timeouts
+[ ] Build reusable ETL functions
+[ ] Implement logging and exception handling
+[ ] Understand memory-efficient processing
+
+PRACTICE
+[ ] Validate columns in a CSV file
+[ ] Flatten nested JSON records
+[ ] Extract data from a REST API
+[ ] Load transformed records into PostgreSQL
+[ ] Build a reusable Python ETL script
+
+MILESTONE: API/CSV -> Python transformation -> PostgreSQL.
+
+======================================================================
+PHASE 2 - ADVANCED SQL AND DATABASE ENGINEERING
+TIMELINE: WEEKS 6-8
+======================================================================
+
+A. SQL
+[ ] SELECT, WHERE, ORDER BY and DISTINCT
+[ ] GROUP BY and HAVING
+[ ] INNER, LEFT, RIGHT and FULL OUTER JOIN
+[ ] CROSS JOIN and SELF JOIN
+[ ] UNION and UNION ALL
+[ ] Subqueries and correlated subqueries
+[ ] CTEs and recursive CTEs
+[ ] CASE expressions and NULL handling
+[ ] EXISTS, NOT EXISTS, IN and NOT IN (including NULL semantics)
+[ ] Window functions
+[ ] ROW_NUMBER, RANK and DENSE_RANK
+[ ] LAG, LEAD, FIRST_VALUE and LAST_VALUE
+[ ] Aggregate window functions
+[ ] Running totals and moving averages
+[ ] Date, timestamp and string functions
+[ ] INSERT, UPDATE, DELETE and MERGE
+[ ] Transactions and ACID properties
+
+B. DATABASE CONCEPTS
+[ ] OLTP vs OLAP
+[ ] Primary keys, foreign keys and constraints
+[ ] Normalization and denormalization
+[ ] Index fundamentals
+[ ] B-tree, composite and covering indexes
+[ ] Views and materialized views
+[ ] Sequences and identity columns
+[ ] Stored procedures, functions and triggers
+[ ] Query execution plans
+[ ] Statistics and cardinality
+[ ] Locking and transaction isolation
+[ ] Deadlocks and concurrency
+[ ] Partitioning fundamentals
+
+C. DATABASE PERFORMANCE
+[ ] Read execution plans
+[ ] Identify full table scans and index scans
+[ ] Understand nested loop, hash and merge joins
+[ ] Understand sorting and aggregation
+[ ] Evaluate index selectivity
+[ ] Rewrite inefficient SQL
+[ ] Compare estimated and actual plans
+[ ] Measure elapsed time, CPU and I/O where available
+
+PRACTICE
+[ ] Solve at least 50 SQL problems
+[ ] Tune 5 slow SQL queries
+[ ] Implement incremental loading using SQL
+[ ] Design basic fact and dimension tables
+
+MILESTONE: SQL interview practice plus a documented SQL tuning exercise.
+
+======================================================================
+PHASE 3 - DATA WAREHOUSING, MODELING, DATA LAKES
+TIMELINE: WEEKS 9-12
+======================================================================
+
+A. DATA WAREHOUSING
+[ ] Data Warehouse concepts and architecture
+[ ] OLTP vs OLAP
+[ ] Enterprise Data Warehouse (EDW)
+[ ] Data marts, staging areas and ODS
+[ ] ETL vs ELT
+[ ] Batch processing
+[ ] Full and incremental loading
+[ ] CDC (Change Data Capture) fundamentals
+[ ] Data quality and reconciliation
+
+B. DATA MODELING
+[ ] Conceptual, logical and physical models
+[ ] Entities, attributes and relationships
+[ ] Fact tables and dimension tables
+[ ] Grain and measures
+[ ] Star schema and snowflake schema
+[ ] Transaction, periodic snapshot and accumulating snapshot facts
+[ ] Surrogate keys and natural keys
+[ ] SCD Type 0, 1, 2 and 3
+[ ] SCD Type 4 and 6 - concepts
+[ ] Late-arriving dimensions and facts
+[ ] Role-playing, degenerate and junk dimensions
+[ ] Data Vault fundamentals
+
+C. DATA LAKE AND LAKEHOUSE
+[ ] Data Lake fundamentals
+[ ] Data Lake vs Data Warehouse vs Lakehouse
+[ ] Lakehouse architecture
+[ ] Structured, semi-structured and unstructured data
+[ ] Raw, Bronze, Silver and Gold layers
+[ ] Medallion architecture
+[ ] Schema-on-read vs schema-on-write
+[ ] Metadata and data catalog concepts
+[ ] CSV, JSON, Avro, ORC and Parquet
+[ ] Row-based vs columnar formats
+[ ] Compression fundamentals
+[ ] Partitioned storage
+[ ] Small-file problem
+[ ] Data retention and lifecycle
+
+MILESTONE:
+[ ] Design a sales warehouse with fact and dimension tables
+[ ] Explain a Bronze-Silver-Gold lakehouse architecture
+
+======================================================================
+PHASE 4 - APACHE SPARK AND PYSPARK
+TIMELINE: WEEKS 13-17
+======================================================================
+
+A. SPARK FUNDAMENTALS
+[ ] Apache Spark architecture and use cases
+[ ] Driver, executors and cluster manager
+[ ] Jobs, stages and tasks
+[ ] DAG (Directed Acyclic Graph)
+[ ] SparkSession and SparkContext
+[ ] Lazy evaluation
+[ ] Transformations and actions
+[ ] Narrow and wide transformations
+[ ] Shuffle operations
+[ ] RDD fundamentals
+[ ] DataFrames and Datasets - differences
+[ ] Catalyst Optimizer
+[ ] Tungsten execution engine - concepts
+
+B. PYSPARK PROGRAMMING
+[ ] Create SparkSession
+[ ] Read and write CSV, JSON and Parquet
+[ ] Define schemas explicitly
+[ ] select, filter and where
+[ ] withColumn and drop
+[ ] when and otherwise
+[ ] Cast and data type conversion
+[ ] NULL handling and dropDuplicates
+[ ] groupBy and aggregations
+[ ] Joins, union and unionByName
+[ ] orderBy and sort
+[ ] Window functions
+[ ] UDFs and performance implications
+[ ] Built-in functions vs UDFs
+[ ] Explode and nested data
+[ ] Array and map operations
+[ ] Date and timestamp functions
+[ ] Temporary views and Spark SQL
+[ ] Read from and write to databases
+
+C. SPARK PERFORMANCE TUNING
+[ ] Partitioning, repartition and coalesce
+[ ] Shuffle partitions
+[ ] Broadcast joins and sort-merge joins
+[ ] Join strategy selection
+[ ] Data skew and mitigation
+[ ] Caching and persistence
+[ ] Checkpointing
+[ ] Predicate pushdown and partition pruning
+[ ] File compaction and small-file problem
+[ ] Adaptive Query Execution (AQE)
+[ ] Spark UI and explain plans
+[ ] Executor memory and cores
+[ ] Driver memory
+[ ] Garbage collection fundamentals
+[ ] Avoid unnecessary shuffles
+[ ] Optimize file sizes and output partitions
+
+PRACTICE
+[ ] Process at least 1 million records
+[ ] Perform joins and aggregations in PySpark
+[ ] Compare repartition and coalesce
+[ ] Diagnose and fix a data-skew example
+[ ] Compare a built-in function with a UDF
+[ ] Inspect Spark UI and execution plans
+
+MILESTONE:
+[ ] Build a PySpark batch pipeline
+[ ] Explain Spark execution from job submission to task completion
+
+======================================================================
+PHASE 5 - DELTA LAKE AND LAKEHOUSE ENGINEERING
+TIMELINE: WEEKS 18-19
+======================================================================
+[ ] Delta Lake architecture and Delta tables
+[ ] Transaction log (_delta_log)
+[ ] ACID transactions
+[ ] Schema enforcement and schema evolution
+[ ] INSERT, UPDATE and DELETE
+[ ] MERGE INTO and upsert patterns
+[ ] Time Travel and version history
+[ ] OPTIMIZE and compaction
+[ ] Z-ORDER - use cases and platform support
+[ ] VACUUM and retention considerations
+[ ] Change Data Feed
+[ ] Streaming reads and writes
+[ ] Delta Lake performance tuning
+[ ] Delta Lake vs Apache Iceberg
+[ ] Iceberg architecture and snapshots - fundamentals
+[ ] Parquet and its role in lakehouse storage
+
+MILESTONE:
+[ ] Build Bronze, Silver and Gold Delta tables
+[ ] Implement an incremental MERGE pipeline
+
+======================================================================
+PHASE 6 - MICROSOFT AZURE DATA ENGINEERING
+TIMELINE: WEEKS 20-24
+======================================================================
+
+A. AZURE FUNDAMENTALS
+[ ] Cloud computing: IaaS, PaaS and SaaS
+[ ] Subscriptions and resource groups
+[ ] Regions and availability zones
+[ ] Identity, access and networking fundamentals
+[ ] Cost management fundamentals
+
+B. AZURE DATA LAKE STORAGE (ADLS GEN2)
+[ ] Storage accounts, containers and file systems
+[ ] Hierarchical namespace
+[ ] Directory and file operations
+[ ] Access control lists (ACLs)
+[ ] Azure RBAC
+[ ] Managed identities
+[ ] SAS tokens
+[ ] Storage security and encryption
+[ ] Lifecycle management
+[ ] Data organization and partitioning
+[ ] Connect ADLS with Databricks and ADF
+
+C. AZURE DATA FACTORY (ADF)
+[ ] ADF architecture
+[ ] Linked services and datasets
+[ ] Pipelines and activities
+[ ] Copy Data activity
+[ ] Lookup and Get Metadata activities
+[ ] ForEach and If Condition activities
+[ ] Execute Pipeline activity
+[ ] Parameters and variables
+[ ] Dynamic content
+[ ] Triggers and scheduling
+[ ] Tumbling window trigger - concepts
+[ ] Integration Runtime
+[ ] Self-hosted Integration Runtime
+[ ] Incremental and watermark-based loading
+[ ] Metadata-driven pipelines
+[ ] Error handling and retry policies
+[ ] Monitoring and alerts
+[ ] CI/CD and deployment fundamentals
+
+D. AZURE DATABRICKS
+[ ] Workspace and compute concepts
+[ ] Clusters and cluster policies
+[ ] Notebooks, jobs and workflows
+[ ] Databricks Runtime
+[ ] PySpark in Databricks
+[ ] Unity Catalog fundamentals
+[ ] Catalogs, schemas and tables
+[ ] Managed vs external tables
+[ ] Access control and permissions
+[ ] Secrets and secure configuration
+[ ] Delta Lake integration
+[ ] Job scheduling
+[ ] Monitoring and troubleshooting
+[ ] Performance tuning and cost optimization
+
+E. SUPPORTING AZURE SERVICES
+[ ] Azure Key Vault
+[ ] Azure Monitor
+[ ] Log Analytics fundamentals
+[ ] Azure DevOps
+[ ] Azure Repos and Git integration
+[ ] CI/CD for data pipelines
+
+MILESTONE:
+[ ] ADF copies source data into ADLS
+[ ] Databricks processes it using PySpark
+[ ] Bronze, Silver and Gold Delta tables are created
+[ ] Scheduling, monitoring and error handling are configured
+
+======================================================================
+PHASE 7 - AWS DATA ENGINEERING
+TIMELINE: WEEKS 25-27
+======================================================================
+
+A. AWS FUNDAMENTALS
+[ ] Regions and availability zones
+[ ] IAM users, roles and policies
+[ ] Authentication and authorization
+[ ] Networking fundamentals
+[ ] CloudWatch fundamentals
+[ ] Cost management fundamentals
+
+B. AMAZON S3
+[ ] Buckets and objects
+[ ] Object storage concepts
+[ ] Storage classes
+[ ] Versioning and lifecycle policies
+[ ] Encryption
+[ ] Bucket policies and IAM access
+[ ] Partitioned data layout
+[ ] Performance and cost basics
+
+C. AWS DATA SERVICES
+[ ] AWS Glue
+[ ] Glue Data Catalog and crawlers
+[ ] Glue ETL jobs
+[ ] Glue and Spark
+[ ] Amazon EMR and cluster concepts
+[ ] Amazon Redshift architecture
+[ ] Redshift distribution and sort keys
+[ ] AWS Lambda fundamentals
+[ ] Amazon Kinesis fundamentals
+[ ] CloudWatch monitoring
+
+PRACTICE
+[ ] Store raw files in S3
+[ ] Catalog data using Glue
+[ ] Transform data using Glue or EMR
+[ ] Load analytical data into Redshift
+
+MILESTONE: Explain and demonstrate an S3 -> Glue/EMR -> Redshift pipeline.
+
+NOTE: Learn AWS fundamentals and build one practical pipeline. Keep Azure
+as the primary cloud during this roadmap.
+
+======================================================================
+PHASE 8 - ORCHESTRATION, STREAMING AND DATA OPERATIONS
+TIMELINE: WEEKS 28-31
+======================================================================
+
+A. APACHE AIRFLOW
+[ ] Airflow architecture
+[ ] Scheduler and DAGs
+[ ] Tasks and dependencies
+[ ] Operators and sensors
+[ ] Hooks and connections
+[ ] Variables and XCom
+[ ] Scheduling and cron expressions
+[ ] Retries and timeouts
+[ ] Catchup and backfill
+[ ] Failure handling
+[ ] Dynamic task mapping - fundamentals
+[ ] DAG testing
+[ ] Monitoring and logs
+[ ] Run Python and PySpark jobs from Airflow
+[ ] Deployment concepts
+
+B. APACHE KAFKA
+[ ] Kafka architecture and brokers
+[ ] Topics and partitions
+[ ] Producers and consumers
+[ ] Consumer groups and offsets
+[ ] Replication and retention
+[ ] Delivery semantics
+[ ] At-most-once and at-least-once
+[ ] Exactly-once concepts and limitations
+[ ] Schema Registry - fundamentals
+[ ] Kafka Connect - fundamentals
+[ ] Error handling and dead-letter topics
+
+C. SPARK STRUCTURED STREAMING
+[ ] Streaming fundamentals and micro-batches
+[ ] Streaming DataFrames
+[ ] Sources and sinks
+[ ] Event time and processing time
+[ ] Watermarking
+[ ] Windowed aggregations
+[ ] Checkpointing
+[ ] Stateful processing
+[ ] Late-arriving events
+[ ] Output modes
+[ ] Kafka integration
+[ ] Streaming to Delta tables
+
+D. DATA OPERATIONS
+[ ] Logging and monitoring
+[ ] Pipeline observability
+[ ] Data quality checks
+[ ] Data reconciliation
+[ ] Retry and recovery
+[ ] Idempotency
+[ ] Duplicate handling
+[ ] Alerting
+[ ] SLA and data freshness monitoring
+[ ] Backfills and reruns
+[ ] Secrets management
+
+MILESTONE:
+[ ] Orchestrate a batch pipeline using Airflow
+[ ] Build a basic Kafka-to-Spark streaming pipeline
+
+======================================================================
+PHASE 9 - ENGINEERING PRACTICES AND SYSTEM DESIGN
+TIMELINE: WEEKS 32-34
+======================================================================
+
+A. SOFTWARE ENGINEERING
+[ ] Git fundamentals, branching and merging
+[ ] Pull requests and code reviews
+[ ] GitHub project management
+[ ] Linux commands and shell scripting
+[ ] Docker fundamentals: images and containers
+[ ] Environment configuration
+[ ] Unit and integration testing
+[ ] CI/CD fundamentals
+[ ] Infrastructure as Code - concepts
+[ ] Reusable code modules
+
+B. DATA ENGINEERING DESIGN
+[ ] Batch vs streaming architecture
+[ ] ETL vs ELT architecture
+[ ] Data ingestion patterns
+[ ] Full vs incremental loading
+[ ] CDC architecture
+[ ] Idempotent pipeline design
+[ ] Data partitioning strategy
+[ ] File format selection
+[ ] Data storage layout
+[ ] Data quality architecture
+[ ] Metadata-driven pipelines
+[ ] Schema evolution strategy
+[ ] Failure recovery and replay
+[ ] Security and access control
+[ ] PII handling and data governance
+[ ] Cost and performance trade-offs
+
+C. DISTRIBUTED SYSTEMS
+[ ] Distributed computing fundamentals
+[ ] Horizontal vs vertical scaling
+[ ] Fault tolerance
+[ ] Replication
+[ ] Partitioning and sharding
+[ ] Consistency concepts
+[ ] Data locality
+[ ] Network and serialization overhead
+[ ] Retry and duplicate-processing risks
+[ ] Backpressure fundamentals
+
+D. SYSTEM DESIGN PRACTICE
+[ ] Design a batch ingestion platform
+[ ] Design an incremental CDC pipeline
+[ ] Design a data lakehouse
+[ ] Design a real-time event processing system
+[ ] Design a scalable reporting warehouse
+[ ] Design a metadata-driven ETL framework
+[ ] Design pipeline monitoring and alerting
+[ ] Explain scaling, recovery and cost trade-offs
+
+MILESTONE: Complete at least 5 data engineering system design exercises.
+
+======================================================================
+PHASE 10 - END-TO-END PROJECTS AND INTERVIEW PREPARATION
+TIMELINE: WEEKS 35-39
+======================================================================
+
+PROJECT 1 - END-TO-END AZURE LAKEHOUSE
+[ ] Extract data from PostgreSQL or source files
+[ ] Ingest using Azure Data Factory
+[ ] Store raw data in ADLS Gen2
+[ ] Create Bronze Delta tables
+[ ] Clean and validate data in Silver
+[ ] Build business-ready Gold tables
+[ ] Implement SCD Type 1 and Type 2
+[ ] Implement incremental loading and MERGE
+[ ] Add logging and error handling
+[ ] Schedule the pipeline
+[ ] Add monitoring and data quality checks
+[ ] Document architecture and design decisions
+
+PROJECT 2 - REAL-TIME DATA PIPELINE
+[ ] Generate sample events
+[ ] Publish events to Kafka
+[ ] Consume events using Spark Structured Streaming
+[ ] Handle event time and late-arriving data
+[ ] Apply transformations and aggregations
+[ ] Store output in Delta tables
+[ ] Implement checkpointing and recovery
+[ ] Document the architecture
+
+PROJECT 3 - ORCHESTRATED DATA PLATFORM
+[ ] Create Airflow DAGs
+[ ] Orchestrate ingestion and transformation
+[ ] Add dependencies and retries
+[ ] Implement failure notifications
+[ ] Add logging and monitoring
+[ ] Implement backfill and rerun scenarios
+[ ] Document operational procedures
+
+PROJECT 4 - AWS DATA PIPELINE
+[ ] Store source files in Amazon S3
+[ ] Catalog data using AWS Glue
+[ ] Transform using Glue or EMR
+[ ] Load results into Amazon Redshift
+[ ] Configure IAM access
+[ ] Monitor execution and cost
+[ ] Document the architecture
+
+INTERVIEW PREPARATION
+[ ] Python coding questions
+[ ] SQL coding questions
+[ ] PySpark coding questions
+[ ] Spark architecture and internals
+[ ] Spark performance tuning
+[ ] Data warehouse and modeling
+[ ] SCD and incremental loading
+[ ] ADF and Databricks
+[ ] ADLS and S3
+[ ] Airflow
+[ ] Kafka and streaming
+[ ] Pipeline troubleshooting scenarios
+[ ] System design
+[ ] Project explanation and trade-offs
+[ ] Resume and GitHub documentation
+
+FINAL MILESTONE
+[ ] Complete at least 2 production-style end-to-end projects
+[ ] Publish clean documentation on GitHub
+[ ] Prepare architecture diagrams
+[ ] Prepare project explanations and troubleshooting stories
+[ ] Complete mock interviews
+
+======================================================================
+SUGGESTED WEEKLY STUDY ROUTINE
+======================================================================
+
+MONDAY       - 1.5 hours: concepts
+TUESDAY      - 1.5 hours: coding practice
+WEDNESDAY    - 1.5 hours: concepts
+THURSDAY     - 1.5 hours: hands-on exercises
+FRIDAY       - 1.5 hours: revision and interview questions
+SATURDAY     - 3-4 hours: project work
+SUNDAY       - 2-3 hours: review, notes and problem solving
+
+FOR EVERY TOPIC
+[ ] Understand the concept
+[ ] Write a small implementation
+[ ] Test edge cases
+[ ] Understand performance implications
+[ ] Write interview notes
+[ ] Explain the topic without referring to notes
+
+======================================================================
+CONTINUOUS REVISION - ALL 9 MONTHS
+======================================================================
+[ ] SQL practice every week
+[ ] Python practice every week
+[ ] PySpark practice after starting Spark
+[ ] Database performance tuning revision
+[ ] Data modeling revision through projects
+[ ] Spark performance tuning with execution plans
+[ ] Apply cloud security in every cloud project
+[ ] Commit project changes to Git regularly
+[ ] Revise interview questions every week
+[ ] Practise system design after learning architecture basics
+
+======================================================================
+TECHNOLOGY PRIORITY SUMMARY
+======================================================================
+
+BUILD STRONG DEPTH FIRST
+[ ] Python
+[ ] Advanced SQL
+[ ] Data Warehousing
+[ ] Data Modeling
+[ ] Data Lake and Lakehouse
+[ ] Apache Spark
+[ ] PySpark
+[ ] Spark Performance Tuning
+[ ] ADLS Gen2
+[ ] Azure Data Factory
+[ ] Azure Databricks
+[ ] Delta Lake
+[ ] Git and Linux fundamentals
+
+IMPORTANT SECONDARY SKILLS
+[ ] AWS S3
+[ ] AWS Glue
+[ ] Amazon EMR
+[ ] Amazon Redshift
+[ ] Apache Airflow
+[ ] Apache Kafka
+[ ] Spark Structured Streaming
+[ ] Apache Iceberg
+[ ] Docker
+[ ] CI/CD
+
+ADVANCED / ROLE-DEPENDENT
+[ ] Distributed systems
+[ ] Advanced system design
+[ ] Data governance
+[ ] Unity Catalog
+[ ] Schema Registry
+[ ] Kafka Connect
+[ ] Infrastructure as Code
+[ ] Advanced cloud networking
+[ ] Advanced security and compliance
+
+======================================================================
+INTERVIEW QUESTIONS YOU MUST BE ABLE TO ANSWER
+======================================================================
+[ ] How would you design an end-to-end data pipeline?
+[ ] How do you implement incremental data loading?
+[ ] How do you handle inserts, updates and deletes?
+[ ] How do you implement SCD Type 2?
+[ ] How do you process millions of records using PySpark?
+[ ] How does Spark execute a job?
+[ ] What causes a shuffle and how do you reduce it?
+[ ] How do you handle data skew?
+[ ] How do you optimize a slow Spark job?
+[ ] How do you organize Bronze, Silver and Gold layers?
+[ ] How do you orchestrate pipelines?
+[ ] How do you recover from pipeline failures?
+[ ] How do you prevent duplicate processing?
+[ ] How do you monitor data quality and freshness?
+[ ] How do you secure cloud data?
+[ ] How would you design a real-time streaming pipeline?
+[ ] How would you estimate and optimize pipeline cost?
+
+======================================================================
+COMPLETION CRITERIA
+======================================================================
+A topic is NOT complete just because you watched a video or read notes.
+
+Mark a topic complete only when:
+[ ] You can explain it in simple language.
+[ ] You can write a working example without copying.
+[ ] You understand common errors and edge cases.
+[ ] You understand performance implications.
+[ ] You can explain a real-world use case.
+[ ] You can answer related interview questions.
+
+=========================== ROADMAP END =============================

@@ -1,0 +1,58 @@
+======================================================================
+PHASE 9 - ENGINEERING PRACTICES AND SYSTEM DESIGN
+TIMELINE: WEEKS 32-34
+======================================================================
+
+A. SOFTWARE ENGINEERING
+[ ] Git fundamentals, branching and merging
+[ ] Pull requests and code reviews
+[ ] GitHub project management
+[ ] Linux commands and shell scripting
+[ ] Docker fundamentals: images and containers
+[ ] Environment configuration
+[ ] Unit and integration testing
+[ ] CI/CD fundamentals
+[ ] Infrastructure as Code - concepts
+[ ] Reusable code modules
+
+B. DATA ENGINEERING DESIGN
+[ ] Batch vs streaming architecture
+[ ] ETL vs ELT architecture
+[ ] Data ingestion patterns
+[ ] Full vs incremental loading
+[ ] CDC architecture
+[ ] Idempotent pipeline design
+[ ] Data partitioning strategy
+[ ] File format selection
+[ ] Data storage layout
+[ ] Data quality architecture
+[ ] Metadata-driven pipelines
+[ ] Schema evolution strategy
+[ ] Failure recovery and replay
+[ ] Security and access control
+[ ] PII handling and data governance
+[ ] Cost and performance trade-offs
+
+C. DISTRIBUTED SYSTEMS
+[ ] Distributed computing fundamentals
+[ ] Horizontal vs vertical scaling
+[ ] Fault tolerance
+[ ] Replication
+[ ] Partitioning and sharding
+[ ] Consistency concepts
+[ ] Data locality
+[ ] Network and serialization overhead
+[ ] Retry and duplicate-processing risks
+[ ] Backpressure fundamentals
+
+D. SYSTEM DESIGN PRACTICE
+[ ] Design a batch ingestion platform
+[ ] Design an incremental CDC pipeline
+[ ] Design a data lakehouse
+[ ] Design a real-time event processing system
+[ ] Design a scalable reporting warehouse
+[ ] Design a metadata-driven ETL framework
+[ ] Design pipeline monitoring and alerting
+[ ] Explain scaling, recovery and cost trade-offs
+
+MILESTONE: Complete at least 5 data engineering system design exercises.

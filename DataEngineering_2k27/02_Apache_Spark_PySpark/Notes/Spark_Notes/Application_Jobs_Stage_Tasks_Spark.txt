@@ -1,0 +1,245 @@
+1. What is a Spark Application?
+
+Definition:
+A Spark Application is a complete program written by a user using the Spark APIs that performs a specific job, like reading data, 
+transforming it, and writing output.
+It runs as a single unit on the cluster and consists of one or more jobs.
+/
+
+Real-Life Analogy:
+A Spark application is like a full project or assignment you submit. It includes everything — your work, steps, and final report.
+
+Example:
+
+from pyspark.sql import SparkSession
+
+spark = SparkSession.builder.appName("SalesAnalytics").getOrCreate()
+
+df = spark.read.csv("sales.csv", header=True, inferSchema=True)
+df_filtered = df.filter(df["region"] == "West")
+df_result = df_filtered.groupBy("product").sum("amount")
+df_result.write.csv("output/west_sales")
+
+spark.stop()
+
+Here, the whole script is one Spark application.
+--------------------------------------------------------------------------------------------------------------------------------------------------
+
+What is a Job in Apache Spark?
+
+Definition:
+A Job in Spark is the unit of work that gets triggered when an action (like .show(), .count(), .collect(), .write()) is called on a 
+DataFrame or RDD.
+
+Jobs are how Spark executes your logic — everything you've built using transformations is converted into one or more jobs when you 
+finally trigger an action.
+/
+
+Important Points:
+1. A Job is created only when an action is called.
+2. A Spark Application can have multiple Jobs (one per action).
+3. Each Job is broken into Stages (based on whether shuffle is required).
+4. Each Stage is broken into Tasks (one per data partition).
+/
+
+Real-World Analogy
+Imagine your Spark Application is a big data analysis project.
+Each Job is a major task you perform — like generating a report, exporting data, or computing metrics.
+When you say, “give me the total sales,” that’s a Job.
+When you say, “save this result to disk,” that’s another Job.
+/
+
+Simple Example:
+-----------------------
+from pyspark.sql import SparkSession
+
+spark = SparkSession.builder.appName("JobExample").getOrCreate()
+
+df = spark.read.option("header", "true").csv("sales.csv")
+
+# Action 1: Show results
+df.show()
+
+# Action 2: Count rows
+count = df.count()
+
+# Action 3: Save to file
+df.write.mode("overwrite").csv("output/sales")
+------------------------
+What happens internally- 
+
+| Code Line            | What Spark Does     | Explanation                      |
+| -------------------- | ------------------- | -------------------------------- |
+| `df = spark.read...` | Builds Logical Plan | No job yet (lazy transformation) |
+| `df.show()`          | **Triggers Job 1**  | Reads and prints data            |
+| `df.count()`         | **Triggers Job 2**  | Counts rows                      |
+| `df.write(...)`      | **Triggers Job 3**  | Saves data to disk               |
+/
+
+How to See Jobs in Spark?
+
+Open Spark UI at http://localhost:4040 (when the app is running)
+Go to the "Jobs" tab to see:
+Job ID
+Status
+Number of stages
+Execution time
+------------------------------------------------------------------------------------------------------------------------------------------------
+
+What is a Stage in Spark?
+
+A Stage in Spark is a set of tasks that can be executed together without requiring data to be shuffled across the cluster.
+Each job is broken down into one or more stages based on the need to shuffle data (i.e., move data between nodes).
+/
+
+Why Does Spark Create Stages?
+
+Stages are logical units of execution.
+Spark uses lazy evaluation — it builds a DAG (Directed Acyclic Graph) of all operations.
+When it sees an action, it analyzes the DAG and divides the job into stages.
+A new stage is created every time a wide transformation (e.g., groupBy, join, distinct) causes data shuffle.
+/
+
+Types of Stages
+
+| Type of Stage       | Description                                                                 |
+| ------------------- | --------------------------------------------------------------------------- |
+| **ShuffleMapStage** | Occurs **before shuffle**. Produces data that will be reshuffled.           |
+| **ResultStage**     | Occurs **after shuffle**. Produces the **final output** or returns results. |
+/
+
+Example with Code
+Let’s consider this PySpark code:
+--------------------------
+from pyspark.sql import SparkSession
+
+spark = SparkSession.builder.appName("StageExample").getOrCreate()
+
+df = spark.read.csv("sales.csv", header=True, inferSchema=True)
+df_filtered = df.filter(df["region"] == "East")
+df_grouped = df_filtered.groupBy("product").sum("amount")
+df_grouped.write.mode("overwrite").csv("output/east_sales")
+--------------------------
+What Spark Does Internally
+
+| Step | Operation               | Lazy? | Causes Shuffle? | What Happens           |
+| ---- | ----------------------- | ----- | --------------- | ---------------------- |
+| 1    | `read.csv()`            | ✅     | ❌               | No job yet             |
+| 2    | `filter("region")`      | ✅     | ❌               | Still lazy             |
+| 3    | `groupBy("product")`    | ✅     | ✅ (wide)        | Marks shuffle boundary |
+| 4    | `.write.csv()` (action) | ❌     | ❌               | Triggers job           |
+
+Spark will now:
+
+Create 1 Job
+Break it into 2 Stages:
+	Stage 1: Read + Filter + GroupBy → produces shuffled data (ShuffleMapStage)
+	Stage 2: Aggregate results and write to disk (ResultStage)
+-----------------------------------------------------------------------------------------------------------------------------------------------
+
+What is a Task in Spark?
+
+Definition:
+A Task in Spark is the smallest unit of work sent to an executor to process a single data partition in a stage.
+Each stage in Spark is made up of multiple tasks, and:
+Each task executes the same logic on different chunks of data (partitions).
+Tasks are run in parallel across the cluster using executors.
+/
+
+Relationship of Spark Units
+
+Spark Application
+└── Job (Triggered by Action)
+    └── Stages (Split at shuffle boundaries)
+        └── Tasks (One per data partition)
+/
+
+Code Example
+Let’s take this Spark example:
+------------------------------
+from pyspark.sql import SparkSession
+
+spark = SparkSession.builder.appName("TaskExample").getOrCreate()
+
+df = spark.read.csv("sales.csv", header=True, inferSchema=True)
+
+df_filtered = df.filter(df["region"] == "East")
+df_grouped = df_filtered.groupBy("product").sum("amount")
+
+df_grouped.write.mode("overwrite").csv("output/east_sales")
+-----------------------------
+What Happens Internally
+
+Let’s say sales.csv is split into 4 partitions.
+Now let’s break it down:
+
+When the action .write() is called:
+	Spark creates 1 Job
+	Job is broken into 2 Stages (due to groupBy → shuffle)
+
+Each Stage runs 4 Tasks (1 per partition)
+| Stage                         | Task Count | Task Work                                   |
+| ----------------------------- | ---------- | ------------------------------------------- |
+| **Stage 1** (ShuffleMapStage) | 4 Tasks    | Read, filter, group & shuffle data          |
+| **Stage 2** (ResultStage)     | 4 Tasks    | Aggregate shuffled data and write to output |
+
+So, total 8 tasks are created and run in parallel.
+-----------------------------------------------------------------------------------------------------------------------------------
+
+First, Understand Wide Dependency
+
+Definition:
+A wide dependency in Spark means that data from multiple partitions of the parent RDD/DataFrame are required to produce each partition of the child RDD/DataFrame.
+
+Examples of wide transformations:
+groupBy()
+join()
+distinct()
+reduceByKey()
+
+These cause shuffling of data — meaning Spark moves data across the cluster to group or join it properly.
+/
+
+Why Are At Least 200 Tasks Created?
+This number comes from Spark’s default shuffle partition configuration:
+
+spark.sql.shuffle.partitions
+
+Default value = 200
+This means: when a wide transformation triggers a shuffle, Spark will create 200 output partitions, and thus 200 tasks for the next stage.
+/
+
+In Simple Terms:
+
+| Transformation   | Stage 1 (before shuffle)                               | Stage 2 (after shuffle)                    |
+| ---------------- | ------------------------------------------------------ | ------------------------------------------ |
+| `groupBy("col")` | Number of partitions in input file (e.g., 4) → 4 tasks | 200 **tasks** (default shuffle partitions) |
+/
+
+So when you perform a wide dependency:
+Spark will redistribute the data into 200 partitions
+Therefore, Stage 2 will have 200 tasks
+/
+
+How to Change the Number of Tasks?
+You can change this number to control performance.
+
+Set a Custom Shuffle Partition Count:
+spark.conf.set("spark.sql.shuffle.partitions", 100)
+/
+
+Summary (Interview Style Answer):
+"When we perform wide transformations in Spark such as groupBy, Spark needs to shuffle data.
+By default, Spark splits the shuffled data into 200 partitions, which results in 200 tasks being created for the next stage.
+This number is controlled by the configuration spark.sql.shuffle.partitions.
+It ensures parallelism during shuffling and aggregation, and can be tuned depending on the data volume and cluster resources."
+
+
+
+
+
+
+
+
+
+

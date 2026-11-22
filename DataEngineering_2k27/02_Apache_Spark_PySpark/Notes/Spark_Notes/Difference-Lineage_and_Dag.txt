@@ -1,0 +1,49 @@
+Difference between DAG and lineage-
+
+
+What is DAG in Spark?
+🔹 DAG = Directed Acyclic Graph
+A DAG is the execution plan that Spark builds based on all the transformations and actions in your job.
+
+It's like a flowchart of how Spark will run your job — showing stages, tasks, and dependencies.
+
+Spark creates the DAG when an action (like show(), count()) is called.
+It helps Spark schedule and optimize tasks.
+DAG splits the job into stages and tasks.
+
+What is Lineage in Spark?
+Lineage is the history of transformations that created an RDD or DataFrame from the original data.
+
+Spark keeps this lineage even before an action is called. It’s used for fault tolerance — if a partition is lost, Spark can rebuild it using lineage.
+
+Simple Analogy
+Concept							Analogy Example
+Lineage							A recipe: shows how you created a dish (step-by-step instructions).
+DAG								A cooking plan: tells you how to assign steps to cooks, in what order, and how to optimize cooking time.
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+Real Spark Example
+
+df = spark.read.csv("sales.csv")
+filtered = df.filter("amount > 1000")
+grouped = filtered.groupBy("region").sum("amount")
+grouped.show()
+
+Lineage:
+
+Read from CSV → Filter → GroupBy → (Action)
+This is the history of transformations.
+
+DAG:
+
+Spark builds a DAG at .show() to schedule the job.
+It splits it into stages:
+	Stage 1: Read + Filter (narrow)
+	Stage 2: GroupBy + Sum (wide → needs shuffle)
+	
+--------------------------------------------------------------------------------------------------------------------------------------------
+
+Interview-Friendly Answer:
+"Lineage is the step-by-step history of how a dataset was created in Spark — it's used for fault recovery.
+DAG is the execution plan Spark builds when an action is triggered — it's used to schedule and optimize job execution.
+Lineage helps Spark remember the logic, DAG helps Spark run the logic efficiently."

@@ -1,0 +1,84 @@
+What is Spark SQL?
+Spark SQL is a module in Apache Spark for working with structured and semi-structured data using:
+
+SQL queries
+DataFrames (like tables)
+Datasets (type-safe objects in Scala/Java)
+
+It lets you use SQL syntax to query big data, just like querying tables in traditional databases — but distributed across a cluster.
+
+What is Spark SQL Engine?
+The Spark SQL Engine is the query processor inside Spark that understands SQL queries or DataFrame operations and converts them into Spark jobs (DAGs).
+
+It allows you to:
+1. Write SQL queries (like SELECT * FROM table)
+2. Use DataFrames and Datasets (with functions like filter(), groupBy())
+3. Automatically get optimized query plans
+4. Integrate with Hive, JDBC, JSON, Parquet, and more
+
+Real-World Analogy
+Imagine Spark SQL as the “brain” of a database built into Spark:
+
+You give it a SQL query or DataFrame logic.
+It analyzes, optimizes, and executes the query on a cluster.
+It returns results quickly, even for large datasets.
+
+How Spark SQL Works Internally
+Let’s break down how the Spark SQL Engine processes a query:
+
+Step 1: Parse
+SQL or DataFrame query is parsed into a logical plan.
+E.g., SELECT name FROM customers WHERE age > 30 becomes a tree of operations like: Scan → Filter → Project.
+
+Step 2: Analyze
+The logical plan is checked against catalogs (metadata about tables and columns).
+Spark checks if the table exists, column names are correct, data types match, etc.
+
+Step 3: Optimize
+Spark applies Catalyst Optimizer (a powerful query optimization engine).
+It reorders filters, merges operations, and improves performance.
+
+Step 4: Create Physical Plan
+Spark generates one or more physical plans (how to actually execute it).
+Then it selects the most efficient plan using Cost-Based Optimization (CBO).
+
+Step 5: Execute
+The plan is turned into a DAG (Directed Acyclic Graph).
+Spark runs the job across the cluster and gives you results.
+
+Components of Apache Spark SQL Engine-
+
+| Component                 | Role                                                                                   |
+| ------------------------- | -------------------------------------------------------------------------------------- |
+| **Catalyst Optimizer**    | Optimizes SQL and DataFrame queries (rule-based and cost-based).                       |
+| **Tungsten Engine**       | Handles low-level memory and execution optimizations.                                  |
+| **Data Source API**       | Allows Spark SQL to read/write from multiple formats (CSV, JSON, Parquet, Hive, JDBC). |
+| **SQL Parser & Analyzer** | Converts SQL into executable plans and validates schemas.                              |
+
+Example: Using Spark SQL
+Option 1: Using SQL Queries
+
+df = spark.read.csv("employees.csv", header=True, inferSchema=True)
+df.createOrReplaceTempView("employees")
+
+# Run SQL query
+spark.sql("SELECT department, AVG(salary) FROM employees GROUP BY department").show()
+
+
+Option 2: Using DataFrame API
+df.groupBy("department").avg("salary").show()
+-----------------------------------------------------------------------------------------------------------------------
+
+Benefits of Spark SQL Engine
+✅ Supports SQL and functional programming (DataFrame/Dataset API)
+✅ Automatically applies query optimizations
+✅ Can work with structured, semi-structured, and external sources
+✅ Faster due to Catalyst + Tungsten
+✅ Easily integrates with BI tools (like Tableau, Power BI)
+
+Interview-Ready Summary
+"Spark SQL Engine is the core module that allows us to write SQL queries and DataFrame operations in Spark. 
+It uses a powerful Catalyst Optimizer to transform logical queries into efficient execution plans and runs 
+them using the Tungsten engine. Spark SQL supports a variety of data sources like JSON, Parquet, Hive, and 
+JDBC, making it suitable for both batch and interactive analytics."
+

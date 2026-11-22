@@ -1,0 +1,786 @@
+ORACLE PERFORMANCE TUNING NOTES
+================================
+
+This document is organized in two major sections:
+1. General Performance Tuning Techniques
+2. Oracle Object-Wise Performance Tuning Methodologies
+
+---------------------------------------------------------------------
+SECTION 1: GENERAL PERFORMANCE TUNING TECHNIQUES
+---------------------------------------------------------------------
+
+1. SQL TUNING
+Definition:
+SQL tuning is the process of improving the speed and efficiency of SQL statements by rewriting logic, using indexes, reducing row processing, and making the plan more efficient.
+
+Key principles:
+- Reduce number of rows scanned
+- Avoid full table scans when an index is available
+- Use selective predicates
+- Avoid unnecessary joins and sorts
+- Use bind variables instead of literals
+- Eliminate repeated work
+
+Practical Example - Slower Query:
+SELECT *
+FROM sales
+WHERE order_date BETWEEN '01-JAN-2024' AND '31-DEC-2024';
+
+Problem:
+- May scan the entire sales table
+- If order_date is indexed, the query can still be slow if the date range is too wide
+- Using SELECT * fetches unnecessary columns
+
+Faster Query:
+SELECT order_id, customer_id, total_amount
+FROM sales
+WHERE order_date >= DATE '2024-01-01'
+  AND order_date < DATE '2025-01-01';
+
+Why it is faster:
+- Fetches only required columns
+- Uses range predicate efficiently
+- Reduces network I/O and buffer usage
+
+2. INDEXING
+Definition:
+Indexes are database objects used to locate rows quickly without scanning the whole table.
+
+Slower Code:
+SELECT *
+FROM employees
+WHERE department_id = 10;
+
+If there is no index on department_id, Oracle may do a full table scan.
+
+Faster Code:
+CREATE INDEX idx_emp_dept ON employees(department_id);
+
+SELECT employee_id, name, salary
+FROM employees
+WHERE department_id = 10;
+
+Why faster:
+- Oracle can access rows through the index tree
+- Reduces I/O especially on large tables
+
+Important note:
+- Too many indexes can slow DML operations (INSERT, UPDATE, DELETE)
+- Choose indexes carefully
+
+3. BIND VARIABLES VS HARD-CODED LITERAL VALUES
+Problem:
+Hard-coded values cause hard parsing and poor cursor reuse.
+
+Slower Code:
+SELECT * FROM orders WHERE customer_id = 101;
+SELECT * FROM orders WHERE customer_id = 102;
+SELECT * FROM orders WHERE customer_id = 103;
+
+This creates many similar SQL statements.
+
+Faster Code:
+SELECT * FROM orders WHERE customer_id = :customer_id;
+
+Then pass different values from the application.
+
+Why faster:
+- Reuses the same SQL statement
+- Reduces parsing overhead
+- Improves library cache hit ratio
+
+4. AVOID SELECT *
+Slower Code:
+SELECT *
+FROM employees
+WHERE department_id = 20;
+
+Faster Code:
+SELECT employee_id, first_name, last_name, salary
+FROM employees
+WHERE department_id = 20;
+
+Why faster:
+- Only needed columns are fetched
+- Less memory and less network usage
+- Helps reduce buffer gets and row processing
+
+5. FILTER EARLY AND REDUCE ROWSETS
+Slower Code:
+SELECT *
+FROM orders o
+JOIN customers c ON o.customer_id = c.customer_id
+WHERE c.country = 'USA';
+
+This may join many rows before filtering.
+
+Faster Code:
+SELECT *
+FROM customers c
+JOIN orders o ON o.customer_id = c.customer_id
+WHERE c.country = 'USA';
+
+Better practice:
+- Apply filters on the driving table early
+- Keep row counts small before joins
+
+6. JOIN ORDERING AND JOIN TYPES
+Join performance depends on table cardinality and index availability.
+
+Slower Code:
+SELECT *
+FROM big_table a, small_table b
+WHERE a.id = b.id;
+
+This can be inefficient if the optimizer chooses a bad join plan.
+
+Faster Approach:
+- Ensure smaller table is used as driving table when possible
+- Use proper indexed join keys
+- Prefer equijoins over non-equijoins
+
+Example:
+SELECT s.sales_id, c.customer_name
+FROM sales s
+JOIN customers c ON s.customer_id = c.customer_id
+WHERE s.region = 'EAST';
+
+Better than writing complex nested subqueries.
+
+7. AVOID UNNECESSARY SORTS
+Sorting is expensive, especially on large data sets.
+
+Slower Code:
+SELECT *
+FROM employees
+ORDER BY department_id, salary DESC;
+
+When the query does not really need sorting, sort overhead is wasted.
+
+Faster Code:
+SELECT employee_id, department_id, salary
+FROM employees
+WHERE department_id IN (10,20,30)
+ORDER BY salary DESC;
+
+Why:
+- Sort is performed only on a smaller filtered result set
+- Avoids sorting the entire table unnecessarily
+
+8. USE EXISTS INSTEAD OF IN WHEN CHECKING PRESENCE
+Slower Code:
+SELECT *
+FROM customers c
+WHERE c.customer_id IN (
+    SELECT customer_id FROM orders
+);
+
+This can be slower depending on data and optimizer behavior.
+
+Faster Code:
+SELECT *
+FROM customers c
+WHERE EXISTS (
+    SELECT 1
+    FROM orders o
+    WHERE o.customer_id = c.customer_id
+);
+
+Why:
+- EXISTS stops as soon as a matching row is found
+- More efficient for large subquery result sets
+
+9. USE UNION ALL INSTEAD OF UNION WHERE POSSIBLE
+Slower Code:
+SELECT employee_id FROM emp_old
+UNION
+SELECT employee_id FROM emp_new;
+
+UNION removes duplicates and sorts data.
+
+Faster Code:
+SELECT employee_id FROM emp_old
+UNION ALL
+SELECT employee_id FROM emp_new;
+
+Why:
+- UNION ALL avoids duplicate elimination and sorting
+- Faster for append-only data sets where duplicates are not required
+
+10. AVOID FUNCTIONS ON INDEXED COLUMNS
+Slower Code:
+SELECT *
+FROM employees
+WHERE UPPER(last_name) = 'SMITH';
+
+If last_name has an index, this may prevent index usage.
+
+Faster Code:
+SELECT *
+FROM employees
+WHERE last_name = 'SMITH';
+
+or create a function-based index if needed:
+CREATE INDEX idx_emp_upper_lastname ON employees(UPPER(last_name));
+
+11. USE PARTITIONING FOR LARGE TABLES
+Definition:
+Partitioning divides a large table into smaller, manageable pieces.
+
+Slower Code:
+SELECT *
+FROM sales_history
+WHERE txn_date BETWEEN DATE '2024-01-01' AND DATE '2024-12-31';
+
+If sales_history is huge and unpartitioned, query cost is high.
+
+Faster Method:
+CREATE TABLE sales_history (
+    txn_id NUMBER,
+    txn_date DATE,
+    amount NUMBER
+)
+PARTITION BY RANGE (txn_date) (
+    PARTITION p2023 VALUES LESS THAN (DATE '2024-01-01'),
+    PARTITION p2024 VALUES LESS THAN (DATE '2025-01-01')
+);
+
+Then query only required partitions.
+
+12. PARALLEL QUERY EXECUTION
+Definition:
+Parallelism allows Oracle to use multiple CPUs to process a query.
+
+Slower Code:
+SELECT COUNT(*)
+FROM huge_fact_table;
+
+Faster Code:
+SELECT /*+ PARALLEL(4) */ COUNT(*)
+FROM huge_fact_table;
+
+Why:
+- Large scans can be split across cores
+- Useful on data warehouse systems and large analytical queries
+
+13. ANALYZE STATISTICS
+Definition:
+Oracle optimizer needs statistics to choose best execution plans.
+
+Slower Code:
+SELECT * FROM orders WHERE customer_id = 1001;
+
+If stale or missing statistics exist, Oracle may choose a poor plan.
+
+Faster Action:
+BEGIN
+    DBMS_STATS.GATHER_TABLE_STATS('SCOTT','ORDERS');
+END;
+/
+
+Why:
+- Better cardinality estimates
+- More accurate execution plans
+
+14. MATERIALIZED VIEWS
+Definition:
+Materialized views store precomputed query results for frequent reporting.
+
+Slower Code:
+SELECT region, SUM(amount)
+FROM sales
+GROUP BY region;
+
+This repeats expensive aggregation each time.
+
+Faster Code:
+CREATE MATERIALIZED VIEW mv_sales_region AS
+SELECT region, SUM(amount) AS total_amount
+FROM sales
+GROUP BY region;
+
+Then query the materialized view.
+
+15. OPTIMIZER HINTS (USE CAREFULLY)
+Definition:
+Optimizer hints guide Oracle on how to choose execution plan.
+
+Slower Query:
+SELECT *
+FROM orders o
+JOIN customers c ON o.customer_id = c.customer_id;
+
+Faster Query:
+SELECT /*+ USE_NL(o c) */ *
+FROM orders o
+JOIN customers c ON o.customer_id = c.customer_id;
+
+This hints Oracle to use nested loop join if appropriate.
+
+Important:
+- Hints should be used only when you understand the plan
+- They are not a substitute for proper indexing and statistics
+
+16. REDUCE ROUND TRIPS
+Slower pattern:
+- Application executes 100 SQL statements in a loop
+- Each statement hits the database
+
+Faster pattern:
+- Combine logic into one query
+- Use bulk processing in PL/SQL
+
+Slower PL/SQL:
+FOR i IN 1..10000 LOOP
+    INSERT INTO emp_log VALUES (i, SYSDATE);
+END LOOP;
+
+Faster PL/SQL:
+INSERT INTO emp_log
+SELECT level, SYSDATE
+FROM dual
+CONNECT BY level <= 10000;
+
+Why:
+- Fewer context switches
+- More efficient single SQL statement
+
+17. BULK PROCESSING IN PL/SQL
+Slower Code:
+DECLARE
+    CURSOR c IS SELECT * FROM big_table;
+BEGIN
+    FOR rec IN c LOOP
+        UPDATE temp_table SET val = rec.val WHERE id = rec.id;
+    END LOOP;
+END;
+/
+
+Faster Code:
+DECLARE
+    TYPE t_tab IS TABLE OF big_table%ROWTYPE INDEX BY PLS_INTEGER;
+    v_tab t_tab;
+BEGIN
+    SELECT * BULK COLLECT INTO v_tab FROM big_table;
+    FORALL i IN 1..v_tab.COUNT
+        UPDATE temp_table
+        SET val = v_tab(i).val
+        WHERE id = v_tab(i).id;
+END;
+/
+
+Why faster:
+- Reduces per-row context switching
+- Uses bulk operations efficiently
+
+18. DISABLE UNNECESSARY TRIGGERS OR CONSTRAINTS IN ETL BATCH LOADS
+Slower Code:
+INSERT INTO target_table SELECT * FROM staging;
+
+If a trigger does heavy validation or logging for every row, performance suffers.
+
+Faster Approach:
+- Use direct path load when appropriate
+- Disable or simplify trigger logic in bulk jobs
+- Re-enable after load
+
+19. USE PROPER DATA TYPES
+Slower Code:
+CREATE TABLE sales (
+    customer_id VARCHAR2(100),
+    amount VARCHAR2(100)
+);
+
+Faster Code:
+CREATE TABLE sales (
+    customer_id NUMBER,
+    amount NUMBER(12,2)
+);
+
+Why:
+- Numeric comparisons are faster
+- Less implicit conversion
+- Better index usage
+
+20. TABLE AND INDEX REBUILDING
+When to use:
+- High row churn
+- Fragmentation
+- Poor storage utilization
+
+Example:
+ALTER TABLE orders MOVE;
+ALTER INDEX idx_orders_customer REBUILD;
+
+This can improve performance after major changes.
+
+21. CONCURRENCY AND RESOURCE MANAGEMENT
+Performance tuning is not only about SQL. It also includes:
+- SGA sizing
+- PGA tuning
+- Shared pool sizing
+- Buffer cache sizing
+- I/O tuning
+- CPU capacity planning
+
+Poor tuning can cause:
+- latch contention
+- buffer busy waits
+- library cache lock waits
+- CPU starvation
+
+22. EXPLAIN PLAN ANALYSIS
+Use:
+EXPLAIN PLAN FOR
+SELECT *
+FROM employees
+WHERE department_id = 10;
+
+Then query USER_TABLES or DBMS_XPLAN.DISPLAY.
+
+Look for:
+- Full table scans on large tables
+- Nested loops on large result sets
+- Sorts
+- Filter operations
+- High cardinality estimates
+
+---------------------------------------------------------------------
+SECTION 2: ORACLE OBJECT-WISE PERFORMANCE TUNING METHODOLOGIES
+---------------------------------------------------------------------
+
+1. TABLE PERFORMANCE TUNING
+Objectives:
+- Reduce row count read per query
+- Use proper column design
+- Keep tables normalized but efficient
+- Partition large tables
+
+Methodology:
+- Use correct data types
+- Add indexes on foreign keys and filter columns
+- Partition large historical data
+- Avoid highly volatile columns in frequently accessed index
+- Use compression for large static tables
+
+Slower table design:
+CREATE TABLE sales (
+    sales_id VARCHAR2(50),
+    customer_id VARCHAR2(50),
+    txn_date VARCHAR2(50),
+    amount VARCHAR2(50)
+);
+
+Faster table design:
+CREATE TABLE sales (
+    sales_id NUMBER,
+    customer_id NUMBER,
+    txn_date DATE,
+    amount NUMBER(12,2)
+);
+
+Why faster:
+- Correct numeric and date types
+- Better Oracle internal processing
+- Efficient indexing and comparisons
+
+2. INDEX PERFORMANCE TUNING
+Objectives:
+- Make selectors fast
+- Avoid unnecessary indexes on low-selectivity columns
+
+Methodology:
+- Index columns used in WHERE, JOIN, ORDER BY, GROUP BY
+- Prefer composite indexes when multiple columns used together
+- Use function-based indexes for transformed values
+- Remove duplicate or unused indexes
+
+Slower index:
+CREATE INDEX idx_emp_name ON employees(name);
+CREATE INDEX idx_emp_name2 ON employees(name);
+
+Faster design:
+CREATE INDEX idx_emp_name_dept ON employees(name, department_id);
+
+This works better when queries filter both name and department.
+
+3. VIEW PERFORMANCE TUNING
+Views can hide complexity and can be expensive if not designed well.
+
+Slower view:
+CREATE OR REPLACE VIEW v_emp_detail AS
+SELECT * FROM employees e
+JOIN departments d ON e.department_id = d.department_id;
+
+Faster view:
+CREATE OR REPLACE VIEW v_emp_detail AS
+SELECT e.employee_id, e.first_name, e.last_name, d.department_name
+FROM employees e
+JOIN departments d ON e.department_id = d.department_id;
+
+Why faster:
+- Reduced data volume
+- Clearer column access
+- Easier for optimizer to process
+
+4. PARTITION PERFORMANCE TUNING
+Objectives:
+- Reduce data scanned
+- Improve maintenance operations
+- Faster archive and purge
+
+Methodology:
+- Partition by date, region, or business key
+- Use local indexes for partition pruning
+- Partition large reporting tables
+- Use interval partitioning for time-based data
+
+Example:
+CREATE TABLE order_history (
+    order_id NUMBER,
+    order_date DATE,
+    amount NUMBER
+)
+PARTITION BY RANGE (order_date) (
+    PARTITION p2024_q1 VALUES LESS THAN (DATE '2024-04-01'),
+    PARTITION p2024_q2 VALUES LESS THAN (DATE '2024-07-01')
+);
+
+Faster queries:
+SELECT * FROM order_history WHERE order_date BETWEEN DATE '2024-04-01' AND DATE '2024-06-30';
+
+This avoids scanning all partitions.
+
+5. MATERIALIZED VIEW TUNING
+Objectives:
+- Precompute heavy summary data
+- Avoid repeated expensive GROUP BY queries
+
+Methodology:
+- Refresh periodically
+- Use query rewrite when appropriate
+- Build only on frequently used aggregations
+- Avoid overloading system with too many refreshes
+
+Example:
+CREATE MATERIALIZED VIEW mv_customer_sales AS
+SELECT customer_id, SUM(amount) total_amount
+FROM sales
+GROUP BY customer_id;
+
+This speeds up dashboards and period summary reports.
+
+6. SEQUENCE PERFORMANCE TUNING
+Sequences are often fast, but misuse can create performance issues.
+
+Slower method:
+SELECT MAX(employee_id)+1 FROM employees;
+
+This is not safe in concurrent systems.
+
+Faster method:
+CREATE SEQUENCE emp_seq START WITH 1 INCREMENT BY 1;
+
+Then use:
+INSERT INTO employees(employee_id, name)
+VALUES (emp_seq.NEXTVAL, 'Alice');
+
+Why better:
+- Thread-safe
+- High performance
+- No race condition
+
+7. TRIGGER PERFORMANCE TUNING
+Triggers can severely affect performance if they do heavy work.
+
+Slower trigger:
+CREATE OR REPLACE TRIGGER trg_emp_audit
+AFTER INSERT ON employees
+FOR EACH ROW
+BEGIN
+    INSERT INTO emp_audit VALUES (:NEW.employee_id, SYSDATE, 'INSERT');
+END;
+/
+
+This works but may be slow on large batch loads.
+
+Faster approach:
+- Use bulk processing
+- Reduce row-level triggers for mass updates
+- Move logic to batch procedures where appropriate
+- Log asynchronously where possible
+
+8. PROCEDURE AND PACKAGE TUNING
+Oracle PL/SQL procedures must be efficient.
+
+Slower procedure:
+CREATE OR REPLACE PROCEDURE update_salary AS
+BEGIN
+  FOR rec IN (SELECT * FROM employees) LOOP
+    UPDATE employees SET salary = salary + 100 WHERE employee_id = rec.employee_id;
+  END LOOP;
+END;
+/
+
+Faster procedure:
+CREATE OR REPLACE PROCEDURE update_salary AS
+BEGIN
+  UPDATE employees
+  SET salary = salary + 100;
+END;
+/
+
+Why faster:
+- Single SQL statement instead of row-by-row processing
+- Reduced context switches
+
+9. TABLESPACE AND STORAGE TUNING
+Objectives:
+- Minimize I/O bottlenecks
+- Keep data files appropriately sized
+- Use proper block size and storage layout
+
+Methodology:
+- Use separate tablespaces for data, indexes, temp, redo logs
+- Keep hot tables and indexes on fast storage
+- Use ASSM / locally managed tablespaces where appropriate
+- Monitor free space and fragmentation
+
+10. LOB AND LARGE OBJECT TUNING
+LOBs are expensive to read and write if not handled well.
+
+Slower pattern:
+SELECT large_clob FROM documents WHERE id = 10;
+
+This reads huge content when only a small portion is needed.
+
+Faster pattern:
+SELECT DBMS_LOB.SUBSTR(large_clob, 2000, 1)
+FROM documents
+WHERE id = 10;
+
+Why better:
+- Reads only required portion
+- Reduces I/O and memory usage
+
+11. TEMP TABLESPACE TUNING
+Temporary tablespaces are used for sorts, hash joins, and temporary result sets.
+
+Slower scenario:
+- Large sort operation causes excessive temporary disk usage
+- Frequent sorts degrade performance
+
+Faster approach:
+- Index properly
+- Reduce sort scope
+- Use PGA and temp tablespace sizing correctly
+- Avoid unnecessary DISTINCT and ORDER BY on large sets
+
+12. CURSOR TUNING
+Slower Code:
+OPEN c FOR 'SELECT * FROM big_table';
+LOOP
+  FETCH c INTO rec;
+  EXIT WHEN c%NOTFOUND;
+  ...
+END LOOP;
+CLOSE c;
+
+Faster approach:
+- Use set-based SQL instead of row-by-row loops
+- Use BULK COLLECT when needed
+- Close cursors properly
+
+13. DATA COMPRESSION TUNING
+Compress table and index data when large and mostly read-only.
+
+Example:
+CREATE TABLE sales_archive (
+    sales_id NUMBER,
+    customer_id NUMBER,
+    amount NUMBER
+) COMPRESS FOR QUERY HIGH;
+
+Why useful:
+- Reduces storage and I/O
+- Improves cache efficiency
+
+14. STATISTICS AND PLAN STABILITY
+Methodology:
+- Gather optimizer statistics regularly
+- Monitor execution plans
+- Use SQL profiles or outlines only when needed
+- Avoid constant plan instability
+
+15. ORACLE DATABASE WAIT EVENTS AND AWR ANALYSIS
+Tuning should be based on evidence, not guesses.
+
+Key metrics to review:
+- CPU usage
+- Buffer gets
+- Physical reads
+- DB time
+- Wait events
+- Top SQL by elapsed time
+
+Examples of wait events:
+- db file sequential read
+- direct path read
+- enq: TX - row lock contention
+- library cache lock
+- log file sync
+
+This is how DBAs decide whether the issue is:
+- I/O bottleneck
+- lock contention
+- CPU pressure
+- SQL inefficiency
+
+---------------------------------------------------------------------
+SUMMARY OF FAST VS SLOW DESIGN PATTERNS
+---------------------------------------------------------------------
+Slow patterns:
+- SELECT *
+- Full table scans on large tables
+- Hard-coded query values
+- Repeated SQL execution in loops
+- Poor indexing
+- Missing statistics
+- Large sorts and unnecessary DISTINCT
+- Unoptimized joins
+- Row-by-row PL/SQL processing
+
+Fast patterns:
+- Select only required columns
+- Add correct indexes
+- Use bind variables
+- Use set-based SQL
+- Partition large data
+- Analyze optimizer statistics
+- Use execution plan analysis
+- Reduce round trips
+- Use BULK COLLECT and FORALL
+- Use materialized views for heavy reporting
+
+---------------------------------------------------------------------
+FINAL PRACTICAL TUNING APPROACH FOR ORACLE
+---------------------------------------------------------------------
+1. Identify the slow SQL from AWR, ASH, or SQL monitoring.
+2. Check the execution plan.
+3. Review table/index statistics.
+4. Look for full scans and table joins that can be improved.
+5. Add or fix indexes.
+6. Rewrite SQL to reduce row count.
+7. Avoid functions on indexed columns.
+8. Use partitioning for large historical tables.
+9. Reduce row-by-row processing in PL/SQL.
+10. Tune memory and I/O resources.
+11. Re-test after each change.
+12. Measure before and after using elapsed time, CPU, logical reads, and physical reads.
+
+This is the standard Oracle tuning cycle:
+Find -> Diagnose -> Fix -> Measure -> Repeat
+
+---------------------------------------------------------------------
+END OF DOCUMENT
+---------------------------------------------------------------------

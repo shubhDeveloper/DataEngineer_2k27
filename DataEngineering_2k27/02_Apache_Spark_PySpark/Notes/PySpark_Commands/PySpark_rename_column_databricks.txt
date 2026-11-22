@@ -1,0 +1,391 @@
+```
+============================================================
+ PySpark Rename Column for 'df_new' DataFrame in Databricks
+============================================================
+# Detailed explanation of how to rename columns in PySpark.
+# Tailored for Databricks, using CSV-loaded 'df_new' DataFrame.
+# Includes methods: withColumnRenamed(), select() with alias(), and SQL.
+# Formatted for Notepad and Databricks notebook use.
+# Assumes 'df_new' has columns: emp_id, name, department, Annual Salary (double), hire_date, region.
+
+============================================================
+ 0. Loading the 'df_new' DataFrame (Reference)
+============================================================
+# Load df_new DataFrame from CSV
+# Purpose: Reads employee CSV into 'df_new' DataFrame with inferred schema.
+df_new = spark.read.csv("/FileStore/tables/emp.csv", header=True, inferSchema=True)
+display(df_new)
+# Output:
+# +------+-----+----------+-------------+----------+------+
+# |emp_id|name |department|Annual Salary|hire_date |region|
+# +------+-----+----------+-------------+----------+------+
+# |1     |John |IT_Dept   |60000.0      |2023-01-15|West  |
+# |2     |Alice|HR_Dept   |15000.5      |2022-06-20|East  |
+# |3     |Bob  |IT_Dept   |75000.0      |2021-09-10|West  |
+# |4     |Emma |HR_Dept   |12000.0      |2024-03-01|South |
+# +------+-----+----------+-------------+----------+------+
+# Note: Annual Salary is double (assumes prior cleaning of '$' and ',').
+
+============================================================
+ 1. Rename Column Using withColumnRenamed()
+============================================================
+# Rename Annual Salary to salary
+# Purpose: Renames a single column using withColumnRenamed().
+df_renamed = df_new.withColumnRenamed("Annual Salary", "salary")
+display(df_renamed)
+# Output:
+# +------+-----+----------+-------+----------+------+
+# |emp_id|name |department|salary |hire_date |region|
+# +------+-----+----------+-------+----------+------+
+# |1     |John |IT_Dept   |60000.0|2023-01-15|West  |
+# |2     |Alice|HR_Dept   |15000.5|2022-06-20|East  |
+# |3     |Bob  |IT_Dept   |75000.0|2021-09-10|West  |
+# |4     |Emma |HR_Dept   |12000.0|2024-03-01|South |
+# +------+-----+----------+-------+----------+------+
+
+# Rename multiple columns
+# Purpose: Chains withColumnRenamed() to rename multiple columns.
+df_multi_renamed = df_new.withColumnRenamed("Annual Salary", "salary") \
+                         .withColumnRenamed("department", "dept")
+display(df_multi_renamed)
+# Output:
+# +------+-----+------+-------+----------+------+
+# |emp_id|name |dept  |salary |hire_date |region|
+# +------+-----+------+-------+----------+------+
+# |1     |John |IT_Dept|60000.0|2023-01-15|West  |
+# |2     |Alice|HR_Dept|15000.5|2022-06-20|East  |
+# |3     |Bob  |IT_Dept|75000.0|2021-09-10|West  |
+# |4     |Emma |HR_Dept|12000.0|2024-03-01|South |
+# +------+-----+------+-------+----------+------+
+
+============================================================
+ 2. Rename Column Using select() with alias()
+============================================================
+# Rename Annual Salary to salary
+# Purpose: Uses select() with alias() to rename a column while selecting others.
+from pyspark.sql.functions import col
+df_select_renamed = df_new.select(
+    col("Annual Salary").alias("salary"),
+    col("emp_id"),
+    col("name"),
+    col("department"),
+    col("hire_date"),
+    col("region")
+)
+display(df_select_renamed)
+# Output: Same as withColumnRenamed() example above.
+
+# Rename multiple columns
+# Purpose: Uses select() to rename multiple columns in one operation.
+df_select_multi = df_new.select(
+    col("Annual Salary").alias("salary"),
+    col("department").alias("dept"),
+    col("emp_id"),
+    col("name"),
+    col("hire_date"),
+    col("region")
+)
+display(df_select_multi)
+# Output: Same as multi-renamed example above.
+
+============================================================
+ 3. Rename Column Using SQL
+============================================================
+# Register as temporary view
+# Purpose: Enables SQL queries for renaming columns.
+df_new.createOrReplaceTempView("emp_table")
+
+# SQL rename
+# Purpose: Uses SELECT with AS to rename columns in SQL.
+result = spark.sql("""
+    SELECT emp_id,
+           name,
+           department,
+           Annual Salary AS salary,
+           hire_date,
+           region
+    FROM emp_table
+""")
+display(result)
+# Output: Same as withColumnRenamed() example above.
+
+# SQL in Databricks cell
+# Purpose: Runs rename query directly in a %sql cell.
+# %sql
+# SELECT emp_id,
+#        name,
+#        department,
+#        Annual Salary AS salary,
+#        hire_date,
+#        region
+# FROM emp_table
+# Output: Same as above.
+
+============================================================
+ What Renaming Columns Does
+============================================================
+# - Changes the name of one or more columns in a DataFrame.
+# - Methods:
+#   - withColumnRenamed(): Simple, renames one column at a time; chain for multiple.
+#   - select() with alias(): Flexible, renames multiple columns in one operation.
+#   - SQL with AS: Equivalent to select(), ideal for SQL-based workflows.
+# - Preserves data and schema type; only updates column name.
+# - Lazy evaluation: Plan is built but executed only with actions (e.g., display()).
+
+============================================================
+ Use Cases
+============================================================
+# - Simplify column names (e.g., 'Annual Salary' to 'salary').
+# - Standardize names for consistency (e.g., 'department' to 'dept').
+# - Prepare data for downstream processing or visualization.
+# - Rename columns after transformations (e.g., cleaning, aggregations).
+# - Use in Databricks with display() to verify renamed columns.
+
+============================================================
+ Notes
+============================================================
+# - withColumnRenamed() is preferred for renaming one or few columns.
+# - select() with alias() is better for renaming multiple columns or combining with expressions.
+# - SQL is useful for SQL-based workflows or when using %sql cells.
+# - Column names with spaces (e.g., 'Annual Salary') require backticks in SQL (`Annual Salary`).
+# - Ensure unique column names to avoid errors.
+# - Use 'display()' for interactive output in Databricks.
+# - Ensure 'emp.csv' is in /FileStore/tables/ (upload via Databricks UI).
+# - Ensure imports (e.g., from pyspark.sql.functions import col).
+# - Cache DataFrame (df_new.cache()) for repetitive operations.
+```
+
+### Detailed Explanation of Renaming Columns
+
+1. **Purpose**:
+   - Renaming columns in PySpark changes the name of one or more columns in a DataFrame, improving readability, standardizing names, or preparing data for downstream tasks.
+   - Common scenarios:
+     - Simplify long names (e.g., `Annual Salary` to `salary`).
+     - Align names with conventions (e.g., `department` to `dept`).
+     - Rename after transformations (e.g., cleaning or aggregations).
+
+2. **Methods**:
+   - **`withColumnRenamed(old_name, new_name)`**:
+     - **Purpose**: Renames a single column from `old_name` to `new_name`.
+     - **Syntax**:
+       ```python
+       df.withColumnRenamed("old_column", "new_column")
+       ```
+     - **Key Features**:
+       - Simple and direct; modifies one column at a time.
+       - Chain multiple calls to rename multiple columns.
+       - Preserves all other columns and their order.
+       - Returns a new DataFrame with the updated column name.
+     - **Use Case**: Rename `Annual Salary` to `salary`.
+     - **Example**:
+       ```python
+       df_new.withColumnRenamed("Annual Salary", "salary").show()
+       ```
+
+   - **`select()` with `alias()`**:
+     - **Purpose**: Renames columns by selecting them with `col().alias()` or expressions, often used to rename multiple columns or combine with transformations.
+     - **Syntax**:
+       ```python
+       df.select(col("old_column").alias("new_column"), col("other_column"), ...)
+       ```
+     - **Key Features**:
+       - Flexible; allows renaming multiple columns in one operation.
+       - Requires explicitly selecting all desired columns.
+       - Can combine with expressions (e.g., `col("Annual Salary") * 0.1.alias("bonus")`).
+       - Useful when transforming and renaming simultaneously.
+     - **Use Case**: Rename `Annual Salary` to `salary` and `department` to `dept`.
+     - **Example**:
+       ```python
+       df_new.select(col("Annual Salary").alias("salary"), col("emp_id")).show()
+       ```
+
+   - **SQL with `AS`**:
+     - **Purpose**: Renames columns using SQL `SELECT` with the `AS` keyword, equivalent to `select()` with `alias()`.
+     - **Syntax**:
+       ```sql
+       SELECT old_column AS new_column, other_column FROM table
+       ```
+     - **Key Features**:
+       - Ideal for SQL-based workflows or `%sql` cells in Databricks.
+       - Requires registering the DataFrame as a temporary view.
+       - Supports renaming multiple columns and combining with other SQL operations.
+       - Columns with spaces (e.g., `Annual Salary`) need backticks in SQL.
+     - **Use Case**: Rename `Annual Salary` to `salary` in a SQL query.
+     - **Example**:
+       ```python
+       df_new.createOrReplaceTempView("emp_table")
+       spark.sql("SELECT Annual Salary AS salary, emp_id FROM emp_table").show()
+       ```
+
+3. **Key Features**:
+   - **Preservation**: Renaming only changes column names, not data or types.
+   - **Lazy Evaluation**: Operations are planned but executed only with actions (e.g., `display()`, `show()`).
+   - **Column Names with Spaces**: Supported in PySpark (e.g., `Annual Salary`), but use backticks in SQL (`` `Annual Salary` ``).
+   - **Uniqueness**: Ensure new column names are unique to avoid errors.
+   - **Databricks Integration**: Use `display()` to verify renamed columns interactively.
+
+4. **Use Cases with `df_new`**:
+   - Simplify `Annual Salary` to `salary` for easier queries.
+   - Rename `department` to `dept` for consistency.
+   - Rename columns after cleaning (e.g., `salary` to `Annual Salary` after removing `$` and `,`).
+   - Prepare data for reporting or visualization with clear column names.
+
+5. **Relation to Your Previous Operations**:
+   - **Cleaning**: In `pyspark_remove_dollar_comma_salary_databricks.txt`, you cleaned `salary` to `Annual Salary` using `regexp_replace`. You can rename it back or to another name:
+     ```python
+     df_new = emp.withColumnRenamed("salary", "Annual Salary")
+     ```
+   - **Filtering**: In `pyspark_filter_annual_salary_databricks.txt`, you filtered `Annual Salary`. Rename for clarity in filtered results:
+     ```python
+     df_new.filter((col("Annual Salary") > 10000) & (col("Annual Salary") < 20000)) \
+           .withColumnRenamed("Annual Salary", "salary").show()
+     ```
+   - **When**: In `pyspark_when_function_databricks.txt`, you used `when` to create `salary_category`. Rename it for clarity:
+     ```python
+     df_new.withColumn("category", when(col("Annual Salary") < 20000, "Low").otherwise("High")) \
+           .withColumnRenamed("category", "salary_category").show()
+     ```
+   - **Aggregation**: In `pyspark_groupby_aggregate_functions_databricks.txt`, you used `agg` with `alias`. Rename input columns before aggregation:
+     ```python
+     df_new.withColumnRenamed("Annual Salary", "salary") \
+           .groupBy("department").agg(sum("salary").alias("total_salary")).show()
+     ```
+   - **Alias**: In `pyspark_alias_function_databricks.txt`, you used `alias` to name derived columns. `select` with `alias` can also rename existing columns:
+     ```python
+     df_new.select(col("Annual Salary").alias("salary")).show()
+     ```
+
+### How to Use in Databricks
+1. **Copy to Notepad**: Save the content above as `pyspark_rename_column_databricks.txt` for reference.
+2. **Use in Notebook**:
+   - Ensure `df_new` is loaded:
+     ```python
+     df_new = spark.read.csv("/FileStore/tables/emp.csv", header=True, inferSchema=True)
+     ```
+     If `Annual Salary` needs cleaning:
+     ```python
+     from pyspark.sql.functions import regexp_replace, col
+     df_new = df_new.withColumn("Annual Salary", regexp_replace(col("Annual Salary"), "[\\$,]", "").cast("double"))
+     ```
+   - Copy renaming commands into a Python cell.
+   - For SQL, use a Python cell with `spark.sql()` or a `%sql` cell:
+     ```sql
+     %sql
+     SELECT Annual Salary AS salary, emp_id, name FROM emp_table
+     ```
+   - Upload `emp.csv` via Databricks UI (Data > Add Data > Upload File) to `/FileStore/tables/`.
+3. **Databricks Tips**:
+   - Use `display(df_renamed)` to visualize the DataFrame with renamed columns.
+   - Verify the schema with `df_renamed.printSchema()` to check column names:
+     ```python
+     df_renamed.printSchema()
+     # Expected: |-- salary: double (nullable = true)
+     ```
+   - Cache the DataFrame (`df_new.cache()`) for multiple operations.
+   - Combine with other operations (e.g., `filter`, `groupBy`, `when`):
+     ```python
+     df_new.withColumnRenamed("Annual Salary", "salary") \
+           .filter(col("salary") > 10000) \
+           .groupBy("department").agg(sum("salary").alias("total_salary")).show()
+     ```
+
+### Example Workflow
+For your `df_new` DataFrame:
+- **Using `withColumnRenamed`**:
+  ```python
+  df_renamed = df_new.withColumnRenamed("Annual Salary", "salary")
+  display(df_renamed)
+  # Output: Annual Salary renamed to salary
+  ```
+
+- **Using `select` with `alias`**:
+  ```python
+  from pyspark.sql.functions import col
+  df_select_renamed = df_new.select(col("Annual Salary").alias("salary"), "emp_id", "name")
+  display(df_select_renamed)
+  # Output: Only salary, emp_id, and name columns, with Annual Salary renamed
+  ```
+
+- **Using SQL**:
+  ```python
+  df_new.createOrReplaceTempView("emp_table")
+  spark.sql("SELECT Annual Salary AS salary, emp_id, name FROM emp_table").show()
+  # Output: Same as select example
+  ```
+
+- **Rename Multiple Columns**:
+  ```python
+  df_multi_renamed = df_new.withColumnRenamed("Annual Salary", "salary") \
+                           .withColumnRenamed("department", "dept")
+  display(df_multi_renamed)
+  # Output: Annual Salary to salary, department to dept
+  ```
+
+### Handling Variations
+- **Columns with Spaces**: Columns like `Annual Salary` are supported, but use backticks in SQL:
+  ```sql
+  SELECT `Annual Salary` AS salary FROM emp_table
+  ```
+- **Non-existent Columns**: `withColumnRenamed` ignores non-existent columns without error:
+  ```python
+  df_new.withColumnRenamed("non_existent", "new_name").show()  # No error, no change
+  ```
+- **Duplicate Names**: Ensure new names don’t conflict with existing columns:
+  ```python
+  # Wrong: df_new.withColumnRenamed("Annual Salary", "name") # Error if 'name' exists
+  ```
+- **Integration with Cleaning**: Rename after cleaning `Annual Salary`:
+  ```python
+  df_new = emp.withColumn("salary", regexp_replace(col("salary"), "[\\$,]", "").cast("double")) \
+              .withColumnRenamed("salary", "Annual Salary")
+  ```
+- **Integration with Aggregation**: Rename before aggregating:
+  ```python
+  df_new.withColumnRenamed("Annual Salary", "salary") \
+        .groupBy("department").agg(sum("salary").alias("total_salary")).show()
+  ```
+
+### Choosing the Right Method
+- **Use `withColumnRenamed`**:
+  - For simple, single-column renaming.
+  - When you want to keep all columns without explicitly selecting them.
+  - Example: `df_new.withColumnRenamed("Annual Salary", "salary")`.
+- **Use `select` with `alias`**:
+  - For renaming multiple columns in one operation.
+  - When combining renaming with selecting specific columns or transformations.
+  - Example: `df_new.select(col("Annual Salary").alias("salary"), col("emp_id"))`.
+- **Use SQL**:
+  - For SQL-based workflows or `%sql` cells in Databricks.
+  - When combining renaming with other SQL operations.
+  - Example: `SELECT Annual Salary AS salary FROM emp_table`.
+
+### Relevance to Your Previous Operations
+Your previous artifacts involved:
+- **Cleaning**: `pyspark_remove_dollar_comma_salary_databricks.txt` cleaned `salary` to `Annual Salary`. You can rename it to another name:
+  ```python
+  df_new = emp.withColumn("Annual Salary", regexp_replace(col("salary"), "[\\$,]", "").cast("double")) \
+              .withColumnRenamed("Annual Salary", "salary")
+  ```
+- **Filtering**: `pyspark_filter_annual_salary_databricks.txt` filtered `Annual Salary`. Rename for clarity:
+  ```python
+  df_new.filter((col("Annual Salary") > 10000) & (col("Annual Salary") < 20000)) \
+        .withColumnRenamed("Annual Salary", "salary").show()
+  ```
+- **When**: `pyspark_when_function_databricks.txt` created `salary_category`. Rename it:
+  ```python
+  df_new.withColumn("category", when(col("Annual Salary") < 20000, "Low").otherwise("High")) \
+        .withColumnRenamed("category", "salary_category").show()
+  ```
+- **Aggregation**: `pyspark_groupby_aggregate_functions_databricks.txt` used `agg`. Rename columns before or after:
+  ```python
+  df_new.withColumnRenamed("Annual Salary", "salary") \
+        .groupBy("department").agg(sum("salary").alias("total_salary")).show()
+  ```
+- **Alias**: `pyspark_alias_function_databricks.txt` used `alias` for derived columns. `select` with `alias` can rename existing columns:
+  ```python
+  df_new.select(col("Annual Salary").alias("salary")).show()
+  ```
+
+Renaming columns enhances these operations by making column names more intuitive, especially for downstream tasks like filtering, aggregating, or visualization.
+
+If your `df_new` schema differs (e.g., different column names, uncleaned data), or you have a specific renaming use case (e.g., renaming multiple columns, handling spaces, or integrating with other operations), share details (e.g., CSV structure, sample data, or desired output), and I can provide a tailored snippet. Let me know if you want to explore more renaming examples, integrate with other operations (e.g., `filter`, `groupBy`, `when`), or revisit previous steps like cleaning `Annual Salary`!

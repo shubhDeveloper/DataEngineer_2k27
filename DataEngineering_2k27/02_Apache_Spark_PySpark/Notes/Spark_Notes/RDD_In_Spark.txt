@@ -1,0 +1,55 @@
+What is RDD?
+
+An RDD (Resilient Distributed Dataset) is a basic data structure in Apache Spark that holds data in a distributed way across 
+multiple machines and allows you to process that data in parallel.
+
+It’s like a smart, large list of data that Spark splits into smaller pieces (called partitions) and spreads across multiple 
+computers to work on them together.
+
+Why is it called Resilient, Distributed, Dataset?
+Word			Simple Meaning
+Resilient		If a part of data is lost (due to failure), Spark can rebuild it automatically.
+Distributed		The data is spread across multiple computers (cluster nodes), so work can be done in parallel.
+Dataset			It is a collection of records, like a list, table, or array — which you can apply logic to.
+
+How RDD Works (Step by Step)
+1. Create an RDD: You can create it from a file, list, or from existing RDDs.
+2. Apply Transformations: You define what you want to do (e.g., filter, map, group). These don’t run immediately.
+3. Trigger an Action: When you call an action (like collect() or count()), Spark runs all previous steps and gives output.
+
+Example:
+
+data = [10, 20, 30, 40]
+rdd = sc.parallelize(data)              # RDD created
+new_rdd = rdd.map(lambda x: x * 2)      # Transformation
+print(new_rdd.collect())                # Action (executes all steps)
+
+Spark doesn't compute at .map() — it waits until .collect() is called. This is called lazy evaluation.
+
+Key Features of RDD (in Simple Language)
+
+Feature				 		Explanation
+
+Lazy Evaluation		--		Spark waits until you ask for results (like .collect()) to actually run the logic.
+Partitioned Data	--		Data is split into smaller chunks, and each part is handled by different computers.
+Transformations		--		You can apply steps like map, filter, flatMap — they return new RDDs.
+Actions				--		Like count, collect, reduce — they give you actual results and trigger execution.
+Fault Tolerance		--		If one computer fails, Spark knows how to rebuild only the missing part.
+
+Real-Life Example:
+
+Imagine you’re working in an online store with millions of orders stored in a file.
+
+1. You read the file as an RDD.
+2. You use .filter() to get only orders from Delhi.
+3. You use .map() to calculate the total amount.
+4. Finally, you use .collect() to bring the result.
+
+Spark runs all of this in the background, splitting the file across computers, doing work in parallel, and only running when needed.
+
+----------------------------------------------------------------------------------------------------------------------
+
+Interview Answer (Simple & Technical)
+"An RDD in Spark is a distributed collection of data that is fault-tolerant, immutable, and processed in parallel across a cluster.
+We can apply transformations like map or filter, and Spark only runs them when we call an action like collect or count.
+RDD is useful when we need fine control over our data or are working with unstructured or complex data."

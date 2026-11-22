@@ -1,0 +1,322 @@
+```
+============================================================
+ PySpark when Function for 'df_new' DataFrame in Databricks
+============================================================
+# Detailed explanation of the 'when' function in PySpark.
+# Tailored for Databricks, using CSV-loaded 'df_new' DataFrame.
+# Includes purpose, syntax, examples, and use cases for conditional logic.
+# Formatted for Notepad and Databricks notebook use.
+# Assumes 'df_new' has columns: emp_id, name, department, Annual Salary (double), hire_date, region.
+
+============================================================
+ 0. Loading the 'df_new' DataFrame (Reference)
+============================================================
+# Load df_new DataFrame from CSV
+# Purpose: Reads employee CSV into 'df_new' DataFrame with inferred schema.
+df_new = spark.read.csv("/FileStore/tables/emp.csv", header=True, inferSchema=True)
+display(df_new)
+# Output:
+# +------+-----+----------+-------------+----------+------+
+# |emp_id|name |department|Annual Salary|hire_date |region|
+# +------+-----+----------+-------------+----------+------+
+# |1     |John |IT_Dept   |60000.0      |2023-01-15|West  |
+# |2     |Alice|HR_Dept   |15000.5      |2022-06-20|East  |
+# |3     |Bob  |IT_Dept   |75000.0      |2021-09-10|West  |
+# |4     |Emma |HR_Dept   |12000.0      |2024-03-01|South |
+# +------+-----+----------+-------------+----------+------+
+# Note: Annual Salary is double (assumes prior cleaning of '$' and ',').
+
+============================================================
+ 1. Basic when() Usage
+============================================================
+# Categorize Annual Salary
+# Purpose: Creates a new column 'salary_category' based on salary ranges.
+from pyspark.sql.functions import when, col
+df_with_category = df_new.withColumn(
+    "salary_category",
+    when(col("Annual Salary") < 20000, "Low")
+    .when(col("Annual Salary") < 50000, "Medium")
+    .otherwise("High")
+)
+display(df_with_category)
+# Output:
+# +------+-----+----------+-------------+----------+------+---------------+
+# |emp_id|name |department|Annual Salary|hire_date |region|salary_category|
+# +------+-----+----------+-------------+----------+------+---------------+
+# |1     |John |IT_Dept   |60000.0      |2023-01-15|West  |High           |
+# |2     |Alice|HR_Dept   |15000.5      |2022-06-20|East  |Low            |
+# |3     |Bob  |IT_Dept   |75000.0      |2021-09-10|West  |High           |
+# |4     |Emma |HR_Dept   |12000.0      |2024-03-01|South |Low            |
+# +------+-----+----------+-------------+----------+------+---------------+
+
+============================================================
+ 2. when() with Multiple Conditions
+============================================================
+# Assign bonus based on department and salary
+# Purpose: Creates a 'bonus' column with conditional bonus amounts.
+df_with_bonus = df_new.withColumn(
+    "bonus",
+    when((col("department") == "IT_Dept") & (col("Annual Salary") > 50000), col("Annual Salary") * 0.1)
+    .when((col("department") == "HR_Dept") & (col("Annual Salary") < 20000), col("Annual Salary") * 0.05)
+    .otherwise(0.0)
+)
+display(df_with_bonus)
+# Output:
+# +------+-----+----------+-------------+----------+------+------+
+# |emp_id|name |department|Annual Salary|hire_date |region|bonus |
+# +------+-----+----------+-------------+----------+------+------+
+# |1     |John |IT_Dept   |60000.0      |2023-01-15|West  |6000.0|
+# |2     |Alice|HR_Dept   |15000.5      |2022-06-20|East  |750.03|
+# |3     |Bob  |IT_Dept   |75000.0      |2021-09-10|West  |7500.0|
+# |4     |Emma |HR_Dept   |12000.0      |2024-03-01|South |600.0 |
+# +------+-----+----------+-------------+----------+------+------+
+
+============================================================
+ 3. when() for Handling Nulls
+============================================================
+# Replace null salaries
+# Purpose: Replaces null Annual Salary values with a default (e.g., 0.0).
+from pyspark.sql.functions import when, col
+# Simulate nulls (for demonstration)
+df_with_nulls = df_new.withColumn("Annual Salary", 
+    when(col("emp_id") == 2, None).otherwise(col("Annual Salary"))
+)
+df_cleaned = df_with_nulls.withColumn(
+    "Annual Salary",
+    when(col("Annual Salary").isNull(), 0.0).otherwise(col("Annual Salary"))
+)
+display(df_cleaned)
+# Output:
+# +------+-----+----------+-------------+----------+------+
+# |emp_id|name |department|Annual Salary|hire_date |region|
+# +------+-----+----------+-------------+----------+------+
+# |1     |John |IT_Dept   |60000.0      |2023-01-15|West  |
+# |2     |Alice|HR_Dept   |0.0          |2022-06-20|East  |
+# |3     |Bob  |IT_Dept   |75000.0      |2021-09-10|West  |
+# |4     |Emma |HR_Dept   |12000.0      |2024-03-01|South |
+# +------+-----+----------+-------------+----------+------+
+
+============================================================
+ 4. when() with SQL Expression
+============================================================
+# Register as temporary view
+# Purpose: Enables SQL queries with CASE WHEN for conditional logic.
+df_new.createOrReplaceTempView("emp_table")
+
+# SQL CASE WHEN
+# Purpose: Uses SQL to categorize Annual Salary (equivalent to when()).
+result = spark.sql("""
+    SELECT emp_id, name, department, Annual Salary, hire_date, region,
+           CASE 
+               WHEN Annual Salary < 20000 THEN 'Low'
+               WHEN Annual Salary < 50000 THEN 'Medium'
+               ELSE 'High'
+           END AS salary_category
+    FROM emp_table
+""")
+display(result)
+# Output: Same as when() example in section 1.
+
+# SQL in Databricks cell
+# Purpose: Runs CASE WHEN directly in a %sql cell.
+# %sql
+# SELECT emp_id, name, department, Annual Salary, hire_date, region,
+#        CASE 
+#            WHEN Annual Salary < 20000 THEN 'Low'
+#            WHEN Annual Salary < 50000 THEN 'Medium'
+#            ELSE 'High'
+#        END AS salary_category
+# FROM emp_table
+# Output: Same as above.
+
+============================================================
+ What when() Does
+============================================================
+# - Applies conditional logic to create or transform columns (e.g., if-then-else).
+# - Syntax: when(condition, value).when(condition, value).otherwise(default).
+# - Conditions use col() for column expressions (e.g., col("Annual Salary") > 10000).
+# - Supports chaining multiple when() clauses for multiple conditions.
+# - otherwise() provides a default value if no conditions are met.
+# - Returns a Column object; use with withColumn() or select() to add to DataFrame.
+# - Lazy evaluation: Plan is built but executed only with actions (e.g., display()).
+
+============================================================
+ Use Cases
+============================================================
+# - Categorize data (e.g., salary ranges: Low, Medium, High).
+# - Compute conditional values (e.g., bonuses based on department and salary).
+# - Handle nulls or missing data (e.g., replace null salaries with 0.0).
+# - Transform data for reporting (e.g., flag employees by salary threshold).
+# - Use in Databricks with display() to visualize results.
+
+============================================================
+ Notes
+============================================================
+# - Use when() with col() for column conditions; wrap complex conditions in parentheses.
+# - Combine with & (AND), | (OR) for multiple conditions (e.g., (cond1) & (cond2)).
+# - Use otherwise() to avoid nulls in the output column.
+# - SQL CASE WHEN is equivalent; use for SQL-based workflows.
+# - Use 'display()' for interactive output in Databricks.
+# - Ensure 'emp.csv' is in /FileStore/tables/ (upload via Databricks UI).
+# - Ensure imports (e.g., from pyspark.sql.functions import when, col).
+# - Cache DataFrame (df_new.cache()) for repetitive operations.
+```
+
+### Detailed Explanation of `when`
+
+1. **Purpose**:
+   - The `when` function (`pyspark.sql.functions.when`) allows conditional logic in PySpark DataFrames, similar to `if-else` in Python or `CASE WHEN` in SQL.
+   - It evaluates a condition and returns a value if true, with chaining for multiple conditions and an `otherwise` clause for defaults.
+   - Common uses:
+     - Create new columns based on conditions (e.g., salary categories).
+     - Transform existing columns (e.g., conditional bonuses).
+     - Handle nulls or default values.
+
+2. **Syntax**:
+   ```python
+   from pyspark.sql.functions import when, col
+   df.withColumn("new_column", when(condition, value).when(condition, value).otherwise(default))
+   ```
+   - `condition`: A boolean expression using `col()` (e.g., `col("Annual Salary") > 10000`).
+   - `value`: The value to return if the condition is true (can be a literal, column, or expression).
+   - `otherwise(default)`: The value to return if no conditions are met (optional, defaults to `null`).
+   - Returns a `Column` object, so it must be used with `withColumn()` or `select()`.
+
+3. **Key Features**:
+   - **Chaining**: Multiple `when` clauses can be chained to handle different conditions (evaluated in order).
+   - **Logical Operators**: Use `&` (AND), `|` (OR), and `~` (NOT) for complex conditions, with parentheses to avoid precedence issues (e.g., `(col("A") > 10) & (col("B") < 20)`).
+   - **Null Handling**: Use `isNull()` or `isNotNull()` to handle null values.
+   - **Lazy Evaluation**: The `when` operation is planned but executed only with actions (e.g., `display()`, `show()`).
+   - **SQL Equivalent**: `CASE WHEN` in `spark.sql()` or `%sql` achieves the same logic.
+
+4. **Use Cases with `df_new`**:
+   - **Categorization**: Classify `Annual Salary` into ranges (e.g., Low: <20,000, Medium: <50,000, High: >=50,000).
+   - **Conditional Computations**: Assign bonuses based on `department` and `Annual Salary`.
+   - **Null Handling**: Replace null `Annual Salary` values with a default (e.g., `0.0`).
+   - **Flagging**: Create a flag column (e.g., `is_mid_range` for salaries between 10,000 and 20,000).
+
+5. **Relation to Your Previous Filter**:
+   - Your previous error with `df_new.filter(col("Annual Salary") > 10000 & col("Annual Salary") < 20000)` involved filtering rows. The `when` function complements this by allowing you to create a new column based on similar conditions rather than filtering rows.
+   - Example: Instead of filtering salaries between 10,000 and 20,000, you could use `when` to flag them:
+     ```python
+     df_new.withColumn("is_mid_range", when((col("Annual Salary") > 10000) & (col("Annual Salary") < 20000), "Yes").otherwise("No"))
+     ```
+
+### How to Use in Databricks
+1. **Copy to Notepad**: Save the content above as a `.txt` file for reference.
+2. **Use in Notebook**:
+   - Ensure `df_new` is loaded:
+     ```python
+     df_new = spark.read.csv("/FileStore/tables/emp.csv", header=True, inferSchema=True)
+     ```
+     If `Annual Salary` needs cleaning (e.g., removing `$` and `,`):
+     ```python
+     from pyspark.sql.functions import regexp_replace, col
+     df_new = df_new.withColumn("Annual Salary", regexp_replace(col("Annual Salary"), "[\\$,]", "").cast("double"))
+     ```
+   - Copy `when` commands into a Python cell.
+   - For SQL, use a Python cell with `spark.sql()` or a `%sql` cell:
+     ```sql
+     %sql
+     SELECT *, 
+            CASE WHEN Annual Salary < 20000 THEN 'Low'
+                 WHEN Annual Salary < 50000 THEN 'Medium'
+                 ELSE 'High'
+            END AS salary_category
+     FROM emp_table
+     ```
+   - Upload `emp.csv` via Databricks UI (Data > Add Data > Upload File) to `/FileStore/tables/`.
+3. **Databricks Tips**:
+   - Use `display(df_with_category)` to visualize new columns interactively.
+   - Verify the schema with `df_with_category.printSchema()` to check new columns:
+     ```python
+     df_with_category.printSchema()
+     # Expected: |-- salary_category: string (nullable = true)
+     ```
+   - Cache the DataFrame (`df_new.cache()`) for multiple operations.
+   - Combine with other operations (e.g., `filter`, `groupBy`):
+     ```python
+     df_with_category = df_new.withColumn(
+         "salary_category",
+         when(col("Annual Salary") < 20000, "Low").otherwise("High")
+     )
+     df_with_category.filter(col("salary_category") == "Low").groupBy("department").agg(sum("Annual Salary")).show()
+     ```
+
+### Example Workflow
+For your `df_new` DataFrame:
+- **Categorize Salaries**:
+  ```python
+  from pyspark.sql.functions import when, col
+  df_with_category = df_new.withColumn(
+      "salary_category",
+      when(col("Annual Salary") < 20000, "Low")
+      .when(col("Annual Salary") < 50000, "Medium")
+      .otherwise("High")
+  )
+  display(df_with_category)
+  # Output: Adds salary_category (Low for Alice and Emma, High for John and Bob)
+  ```
+
+- **Conditional Bonus**:
+  ```python
+  df_with_bonus = df_new.withColumn(
+      "bonus",
+      when(col("Annual Salary") > 50000, col("Annual Salary") * 0.1)
+      .otherwise(col("Annual Salary") * 0.05)
+  )
+  display(df_with_bonus)
+  # Output: 10% bonus for John and Bob (>50000), 5% for Alice and Emma
+  ```
+
+- **Using SQL**:
+  ```python
+  df_new.createOrReplaceTempView("emp_table")
+  spark.sql("""
+      SELECT *, 
+             CASE WHEN Annual Salary > 50000 THEN Annual Salary * 0.1
+                  ELSE Annual Salary * 0.05
+             END AS bonus
+      FROM emp_table
+  """).show()
+  # Output: Same as bonus example
+  ```
+
+### Handling Variations
+- **Complex Conditions**: Combine multiple columns or conditions:
+  ```python
+  df_new.withColumn(
+      "status",
+      when((col("Annual Salary") > 50000) & (col("department") == "IT_Dept"), "Senior IT")
+      .otherwise("Other")
+  )
+  ```
+- **Null Handling**: Replace nulls in another column (e.g., `region`):
+  ```python
+  df_new.withColumn("region", when(col("region").isNull(), "Unknown").otherwise(col("region")))
+  ```
+- **Non-numeric Columns**: Use `when` with strings:
+  ```python
+  df_new.withColumn("dept_type", when(col("department") == "IT_Dept", "Tech").otherwise("Non-Tech"))
+  ```
+- **Integration with Filter**: Combine with your previous filter (10,000–20,000):
+  ```python
+  df_new.withColumn(
+      "is_mid_range",
+      when((col("Annual Salary") > 10000) & (col("Annual Salary") < 20000), "Yes")
+      .otherwise("No")
+  ).filter(col("is_mid_range") == "Yes").show()
+  ```
+
+### Relevance to Your Previous Operations
+Your previous artifact (`pyspark_filter_annual_salary_databricks.txt`) addressed filtering `df_new` for `Annual Salary` between 10,000 and 20,000. The `when` function extends this by allowing you to create new columns based on similar conditions instead of filtering rows. For example:
+- **Filter**: `df_new.filter((col("Annual Salary") > 10000) & (col("Annual Salary") < 20000))` selects rows.
+- **When**: `df_new.withColumn("is_mid_range", when((col("Annual Salary") > 10000) & (col("Annual Salary") < 20000), "Yes").otherwise("No"))` adds a column to flag those rows.
+This complements your operations like:
+- **Cleaning**: `Annual Salary` was cleaned of `$` and `,` using `regexp_replace`, enabling numeric conditions in `when`.
+- **GroupBy**: Use `when` to categorize salaries, then aggregate:
+  ```python
+  df_with_category.groupBy("salary_category").agg(sum("Annual Salary").alias("total_salary")).show()
+  ```
+
+If your `df_new` schema differs (e.g., different column names, uncleaned `Annual Salary`), or you have a specific `when` use case (e.g., categorizing salaries, handling nulls, or combining with filters), share details (e.g., CSV structure, sample data, or desired output), and I can provide a tailored snippet. Let me know if you want to explore more `when` examples, integrate with other operations (e.g., `filter`, `groupBy`), or revisit the `Annual Salary` cleaning step!

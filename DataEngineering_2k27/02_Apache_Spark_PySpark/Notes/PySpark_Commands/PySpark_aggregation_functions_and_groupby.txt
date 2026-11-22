@@ -1,0 +1,45 @@
+
+PySpark Aggregation Functions Explanation
+-----------------------------------------
+
+1. groupBy()
+------------
+Used to group the data based on one or more columns.
+Example:
+    df.groupBy("department")
+
+2. agg()
+--------
+Used to perform multiple aggregate functions at once on grouped data.
+Example:
+    df.groupBy("department").agg(sum("salary"), avg("salary"))
+
+3. count()
+----------
+Returns the count of rows for each group.
+Example:
+    df.groupBy("department").count()
+
+4. sum()
+--------
+Returns the sum of values for each group.
+Example:
+    df.groupBy("department").sum("salary")
+
+5. avg()
+--------
+Returns the average (mean) of values for each group.
+Example:
+    df.groupBy("department").avg("salary")
+
+6. min()
+--------
+Returns the minimum value in each group.
+Example:
+    df.groupBy("department").min("salary")
+
+7. max()
+--------
+Returns the maximum value in each group.
+Example:
+    df.groupBy("department").max("salary")

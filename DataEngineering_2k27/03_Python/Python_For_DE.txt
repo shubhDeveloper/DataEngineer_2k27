@@ -1,0 +1,54 @@
+======================================================================
+PHASE 1 - PYTHON FOR DATA ENGINEERING
+TIMELINE: WEEKS 2-5
+======================================================================
+
+A. PYTHON FUNDAMENTALS
+[ ] Variables and data types
+[ ] Operators and expressions
+[ ] Conditional statements and loops
+[ ] Strings and string methods
+[ ] Lists, tuples and sets
+[ ] Dictionaries and dictionary methods
+[ ] List, set and dictionary comprehensions
+[ ] Functions, parameters and return values
+[ ] Lambda functions
+[ ] Modules, packages and imports
+[ ] Exception handling
+[ ] File handling
+[ ] CSV, JSON and text file processing
+
+B. INTERMEDIATE PYTHON
+[ ] Object-oriented programming
+[ ] Classes and objects
+[ ] Constructors
+[ ] Inheritance, encapsulation and polymorphism
+[ ] Iterators and generators
+[ ] Decorators - fundamentals
+[ ] Context managers
+[ ] Virtual environments and pip
+[ ] Logging and debugging
+[ ] Type hints
+[ ] Unit testing fundamentals
+
+C. PYTHON FOR DATA ENGINEERING
+[ ] Read and write CSV and JSON
+[ ] Process large files in chunks
+[ ] Work with dates and timestamps
+[ ] Connect Python to PostgreSQL
+[ ] Execute SQL from Python
+[ ] Consume REST APIs
+[ ] Use environment variables for configuration
+[ ] Handle API errors, retries and timeouts
+[ ] Build reusable ETL functions
+[ ] Implement logging and exception handling
+[ ] Understand memory-efficient processing
+
+PRACTICE
+[ ] Validate columns in a CSV file
+[ ] Flatten nested JSON records
+[ ] Extract data from a REST API
+[ ] Load transformed records into PostgreSQL
+[ ] Build a reusable Python ETL script
+
+MILESTONE: API/CSV -> Python transformation -> PostgreSQL.

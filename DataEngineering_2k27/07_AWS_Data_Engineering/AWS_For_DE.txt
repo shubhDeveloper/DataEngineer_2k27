@@ -1,0 +1,42 @@
+======================================================================
+PHASE 7 - AWS DATA ENGINEERING
+TIMELINE: WEEKS 25-27
+======================================================================
+
+A. AWS FUNDAMENTALS
+[ ] Regions and availability zones
+[ ] IAM users, roles and policies
+[ ] Authentication and authorization
+[ ] Networking fundamentals
+[ ] CloudWatch fundamentals
+[ ] Cost management fundamentals
+
+B. AMAZON S3
+[ ] Buckets and objects
+[ ] Object storage concepts
+[ ] Storage classes
+[ ] Versioning and lifecycle policies
+[ ] Encryption
+[ ] Bucket policies and IAM access
+[ ] Partitioned data layout
+[ ] Performance and cost basics
+
+C. AWS DATA SERVICES
+[ ] AWS Glue
+[ ] Glue Data Catalog and crawlers
+[ ] Glue ETL jobs
+[ ] Glue and Spark
+[ ] Amazon EMR and cluster concepts
+[ ] Amazon Redshift architecture
+[ ] Redshift distribution and sort keys
+[ ] AWS Lambda fundamentals
+[ ] Amazon Kinesis fundamentals
+[ ] CloudWatch monitoring
+
+PRACTICE
+[ ] Store raw files in S3
+[ ] Catalog data using Glue
+[ ] Transform data using Glue or EMR
+[ ] Load analytical data into Redshift
+
+MILESTONE: Explain and demonstrate an S3 -> Glue/EMR -> Redshift pipeline.

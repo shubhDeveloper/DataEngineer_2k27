@@ -1,0 +1,49 @@
+======================================================================
+PHASE 3 - DATA WAREHOUSING, MODELING, DATA LAKES
+TIMELINE: WEEKS 9-12
+======================================================================
+
+A. DATA WAREHOUSING
+[ ] Data Warehouse concepts and architecture
+[ ] OLTP vs OLAP
+[ ] Enterprise Data Warehouse (EDW)
+[ ] Data marts, staging areas and ODS
+[ ] ETL vs ELT
+[ ] Batch processing
+[ ] Full and incremental loading
+[ ] CDC (Change Data Capture) fundamentals
+[ ] Data quality and reconciliation
+
+B. DATA MODELING
+[ ] Conceptual, logical and physical models
+[ ] Entities, attributes and relationships
+[ ] Fact tables and dimension tables
+[ ] Grain and measures
+[ ] Star schema and snowflake schema
+[ ] Transaction, periodic snapshot and accumulating snapshot facts
+[ ] Surrogate keys and natural keys
+[ ] SCD Type 0, 1, 2 and 3
+[ ] SCD Type 4 and 6 - concepts
+[ ] Late-arriving dimensions and facts
+[ ] Role-playing, degenerate and junk dimensions
+[ ] Data Vault fundamentals
+
+C. DATA LAKE AND LAKEHOUSE
+[ ] Data Lake fundamentals
+[ ] Data Lake vs Data Warehouse vs Lakehouse
+[ ] Lakehouse architecture
+[ ] Structured, semi-structured and unstructured data
+[ ] Raw, Bronze, Silver and Gold layers
+[ ] Medallion architecture
+[ ] Schema-on-read vs schema-on-write
+[ ] Metadata and data catalog concepts
+[ ] CSV, JSON, Avro, ORC and Parquet
+[ ] Row-based vs columnar formats
+[ ] Compression fundamentals
+[ ] Partitioned storage
+[ ] Small-file problem
+[ ] Data retention and lifecycle
+
+MILESTONE:
+[ ] Design a sales warehouse with fact and dimension tables
+[ ] Explain a Bronze-Silver-Gold lakehouse architecture

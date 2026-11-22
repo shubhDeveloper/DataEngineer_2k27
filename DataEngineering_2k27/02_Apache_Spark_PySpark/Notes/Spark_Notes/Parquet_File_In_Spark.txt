@@ -1,0 +1,98 @@
+What is Apache Parquet?
+Apache Parquet is a columnar storage file format designed for efficient data storage and processing, especially in big data environments 
+like Apache Spark, Hive, Presto, etc.
+
+It is:
+1. Open-source
+2. Efficient for both read and write operations
+3. Highly optimized for analytics workloads
+4. Splittable and compressed
+
+Real-World Analogy
+Imagine you're storing student records:
+
+1. Row-based (CSV, JSON) = You write each student’s full record in order:
+Name, Age, Grade, City for every student.
+2. Column-based (Parquet) = You store all names in one place, all ages in one place, etc.
+
+So when you ask: "What are the names of all students?", column format gives it to you directly without reading age, grade, or city.
+/
+
+Row-based vs Columnar File Formats
+
+| Feature                    | **Row-based (CSV, JSON)**         | **Columnar (Parquet)**               |
+| -------------------------- | --------------------------------- | ------------------------------------ |
+| Best for                   | Write-heavy or transactional data | Read-heavy or analytical queries     |
+| Read performance           | Slower (reads full rows)          | Faster (reads only selected columns) |
+| File size                  | Larger                            | Smaller due to compression           |
+| Data processing            | Less efficient                    | Highly optimized                     |
+| Splittable for parallelism | ❌ No                              | ✅ Yes                                |
+
+Key Features of Parquet
+
+| Feature                   | Description                                                             |
+| ------------------------- | ----------------------------------------------------------------------- |
+| **Columnar Format**       | Stores data column-wise for better compression and fast reads.          |
+| **Efficient Compression** | Same type of data in a column → better compression (like Snappy, GZIP). |
+| **Schema Evolution**      | Supports adding/removing fields without breaking existing data.         |
+| **Splittable**            | Files can be split → Spark can read them in parallel.                   |
+| **Supports Nested Data**  | Supports arrays, structs, and maps (great for semi-structured data).    |
+| **Self-describing**       | File includes schema → no need to define it separately.                 |
+| **Interoperability**      | Can be used with Spark, Hive, Impala, Presto, AWS Athena, etc.          |
+
+
+Internal Structure of Parquet
+Parquet stores data in this structure:
+
+Parquet File
+ ├── Row Groups
+ │    ├── Column Chunks
+ │    │    ├── Pages (Data Pages, Dictionary Pages)
+ 
+Row Group: A horizontal block of rows — Spark can read one row group at a time.
+Column Chunk: Data for one column in that row group.
+Pages: The smallest unit — usually compressed and encoded for efficiency.
+
+How Spark Uses Parquet
+In Spark, Parquet is a first-class citizen — it is the default file format for DataFrames.
+
+Reading Parquet File
+df = spark.read.parquet("data/employees.parquet")
+df.show()
+
+Writing Parquet File
+df.write.mode("overwrite").parquet("output/employees")
+
+With Partitioning
+df.write.partitionBy("department").parquet("output/employees_by_dept")
+
+Why Parquet is Preferred in Big Data
+
+| Reason                         | Benefit                                             |
+| ------------------------------ | --------------------------------------------------- |
+| Columnar layout                | Reads only needed columns, improves performance.    |
+| Compression-friendly           | Compresses similar data types efficiently.          |
+| Works well with Spark Catalyst | Spark can optimize queries with predicate pushdown. |
+| Schema stored with data        | Easy to integrate and self-contained.               |
+| Great for OLAP use cases       | Works well with analytics and reporting tools.      |
+
+
+Example Scenario
+Say you have a sales dataset of 1 billion records. You only want to know the total sales amount per region.
+In CSV, Spark reads every column of every row.
+In Parquet, Spark reads only the region and sales_amount columns, saving time and memory.
+
+Interview-Ready Summary
+"Apache Parquet is a columnar storage format optimized for analytical processing. It stores data column-wise, allowing faster 
+reads and better compression than row-based formats like CSV or JSON. It is supported natively in Spark, and thanks to its 
+schema support, splittability, and compatibility with nested data, it's widely used in data lakes and big data pipelines."
+
+Tools and Technologies That Support Parquet
+Apache Spark
+Apache Hive
+Apache Impala
+Presto / Trino
+AWS Athena
+Google BigQuery (can export to Parquet)
+Azure Data Lake
+Snowflake

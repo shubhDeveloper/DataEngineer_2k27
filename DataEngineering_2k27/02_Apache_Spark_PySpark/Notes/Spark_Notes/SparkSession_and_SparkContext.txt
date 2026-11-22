@@ -1,0 +1,95 @@
+1. What is SparkContext?
+Basic Definition:
+SparkContext is the entry point to low-level Spark functionalities. It tells Spark how to connect to the cluster manager and 
+handles the execution of jobs.
+
+It represents the connection between your Spark application and the cluster.
+
+Before Spark 2.0, you needed to create a SparkContext manually to run anything in Spark.
+
+Responsibilities of SparkContext:
+1. Connects to cluster manager (like local, YARN, Mesos).
+2. Allocates resources for your application.
+3. Manages RDDs, tasks, jobs, and stages.
+4. Controls low-level APIs like RDD, broadcast, accumulators, etc.
+/
+
+Basic Example:
+
+from pyspark import SparkConf, SparkContext
+
+conf = SparkConf().setAppName("MyApp").setMaster("local")
+sc = SparkContext(conf=conf)
+
+data = [1, 2, 3, 4]
+rdd = sc.parallelize(data)
+print(rdd.map(lambda x: x * 2).collect())
+
+This is how Spark jobs were created before Spark 2.0.
+----------------------------------------------------------------------------------------------------------------------------
+
+2. What is SparkSession?
+Basic Definition:
+SparkSession is the unified entry point for all Spark functionalities including:
+
+1. RDDs
+2. DataFrames
+3. Datasets
+4. SQL
+5. UDFs
+
+Starting from Spark 2.0, SparkSession replaces SparkContext and acts as the main starting point for writing Spark applications.
+
+Responsibilities of SparkSession:
+1. Combines SparkContext, SQLContext, and HiveContext.
+2. Allows use of DataFrame and SQL APIs.
+3. Manages internal services like Catalyst Optimizer and Tungsten engine.
+4. Provides catalog access for registered tables and views.
+/
+Basic Example:
+from pyspark.sql import SparkSession
+
+spark = SparkSession.builder \
+    .appName("MySparkApp") \
+    .master("local") \
+    .getOrCreate()
+
+# Read CSV as DataFrame
+df = spark.read.csv("employees.csv", header=True, inferSchema=True)
+df.show()
+
+No need to create SparkContext manually.
+Internally, SparkSession creates and manages SparkContext for you.
+---------------------------------------------------------------------------------------------------------------------------------------
+
+SparkContext vs SparkSession — Comparison Table
+
+| Feature                | **SparkContext**                       | **SparkSession**                        |
+| ---------------------- | -------------------------------------- | --------------------------------------- |
+| Introduced In          | Spark 1.x                              | Spark 2.0+                              |
+| API Level              | Low-level (RDD-based)                  | High-level (DataFrame, SQL, and more)   |
+| Access To              | RDD, Accumulators, Broadcast           | RDD, DataFrame, Dataset, SQL, Hive, UDF |
+| Used For               | Core RDD operations                    | Full Spark operations                   |
+| Hive/SQL Support       | ❌ No                                   | ✅ Yes                                   |
+| Recommendation         | Legacy – not preferred in new projects | Preferred standard since Spark 2.0      |
+| Includes SparkContext? | ❌ No                                   | ✅ Yes (via `spark.sparkContext`)        |
+
+Accessing SparkContext from SparkSession:
+spark = SparkSession.builder.appName("Demo").getOrCreate()
+sc = spark.sparkContext
+
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+Imagine you're managing a library system:
+
+SparkContext is like a book manager who only understands book IDs and shelves (low-level control).
+
+SparkSession is like a modern librarian who can fetch books, give summaries, and handle both shelves and digital databases 
+(higher-level + easier to use).
+
+------------------------------------------------------------------------------------------------------------------------------------------
+
+Interview-Ready Summary
+"SparkContext is the original entry point to the Spark core engine, used for working with RDDs and low-level APIs.
+SparkSession, introduced in Spark 2.0, is now the unified entry point for Spark applications, supporting RDDs, DataFrames, SQL, and Hive.
+It simplifies code, supports high-level APIs, and is recommended for modern Spark development."

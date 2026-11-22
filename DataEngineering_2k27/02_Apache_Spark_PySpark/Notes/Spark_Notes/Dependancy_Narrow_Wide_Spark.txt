@@ -1,0 +1,65 @@
+What is Dependency in Spark?
+When you perform operations on data in Spark (like map(), filter(), or groupBy()), Spark creates a lineage of how the data was transformed.
+This relationship between parent (original) and child (new) datasets is called a dependency.
+
+There are two types of dependencies:
+
+1. Narrow Dependency
+2. Wide Dependency
+
+1. Narrow Dependency---------------------------------------------------------------------------------------------------------
+
+📌 Simple Meaning:
+Each partition of the new dataset depends on only one partition of the parent dataset.
+
+✅ Example:
+Let's say you have a file with 1 million customer records, and it's divided across 4 partitions in Spark.
+
+Now you apply a filter() operation to get only customers from Delhi:
+filtered_df = df.filter(df.city == 'Delhi')
+
+Partition 1 only reads and filters records from Partition 1 of original data.
+Partition 2 reads from Partition 2, and so on.
+
+🎯 Each partition works independently — no data needs to move between nodes.
+
+Key Points:
+Fast and efficient.
+No shuffling of data between nodes.
+Can be processed in a single stage.
+Spark can pipeline operations (do them one after another without waiting).
+
+⚡ Why it's fast?
+Because Spark doesn't need to move data over the network — it just transforms what's already there.
+--------------------------------------------------------------------------------------------------------------------------------------
+
+2. Wide Dependency
+📌 Simple Meaning:
+Each partition of the new dataset depends on multiple partitions of the parent dataset.
+
+✅ Example:
+Now you want to calculate total sales by city using groupBy():
+
+grouped_df = df.groupBy("city").sum("sales")
+
+All records for Delhi may be in multiple partitions (say Partition 1 and 3).
+Spark needs to move data for Delhi from Partition 1 and 3 to the same partition to do the sum.
+Same for other cities.
+
+🎯 This requires shuffling — Spark moves data across the cluster to group related records.
+
+Key Points:
+Slow compared to narrow dependency.
+Requires data shuffling (network + disk I/O).
+Creates a new stage in the DAG.
+Needs more memory and processing time.
+
+------------------------------------------------------------------------------------------------------------------------------------------
+
+Interview-Friendly Answer:
+
+In Spark, a narrow dependency means each partition of the new data depends on just one partition of the old data — so there's no 
+need for data movement across machines. Operations like map() and filter() fall in this category, and they are fast.
+
+A wide dependency, on the other hand, means data from multiple partitions needs to be shuffled to group or combine, like in groupBy() 
+or join(). These are slower because of the network and shuffle involved, and they create new stages in Spark’s DAG. 

@@ -1,0 +1,65 @@
+======================================================================
+PHASE 8 - ORCHESTRATION, STREAMING AND DATA OPERATIONS
+TIMELINE: WEEKS 28-31
+======================================================================
+
+A. APACHE AIRFLOW
+[ ] Airflow architecture
+[ ] Scheduler and DAGs
+[ ] Tasks and dependencies
+[ ] Operators and sensors
+[ ] Hooks and connections
+[ ] Variables and XCom
+[ ] Scheduling and cron expressions
+[ ] Retries and timeouts
+[ ] Catchup and backfill
+[ ] Failure handling
+[ ] Dynamic task mapping - fundamentals
+[ ] DAG testing
+[ ] Monitoring and logs
+[ ] Run Python and PySpark jobs from Airflow
+[ ] Deployment concepts
+
+B. APACHE KAFKA
+[ ] Kafka architecture and brokers
+[ ] Topics and partitions
+[ ] Producers and consumers
+[ ] Consumer groups and offsets
+[ ] Replication and retention
+[ ] Delivery semantics
+[ ] At-most-once and at-least-once
+[ ] Exactly-once concepts and limitations
+[ ] Schema Registry - fundamentals
+[ ] Kafka Connect - fundamentals
+[ ] Error handling and dead-letter topics
+
+C. SPARK STRUCTURED STREAMING
+[ ] Streaming fundamentals and micro-batches
+[ ] Streaming DataFrames
+[ ] Sources and sinks
+[ ] Event time and processing time
+[ ] Watermarking
+[ ] Windowed aggregations
+[ ] Checkpointing
+[ ] Stateful processing
+[ ] Late-arriving events
+[ ] Output modes
+[ ] Kafka integration
+[ ] Streaming to Delta tables
+
+D. DATA OPERATIONS
+[ ] Logging and monitoring
+[ ] Pipeline observability
+[ ] Data quality checks
+[ ] Data reconciliation
+[ ] Retry and recovery
+[ ] Idempotency
+[ ] Duplicate handling
+[ ] Alerting
+[ ] SLA and data freshness monitoring
+[ ] Backfills and reruns
+[ ] Secrets management
+
+MILESTONE:
+[ ] Orchestrate a batch pipeline using Airflow
+[ ] Build a basic Kafka-to-Spark streaming pipeline

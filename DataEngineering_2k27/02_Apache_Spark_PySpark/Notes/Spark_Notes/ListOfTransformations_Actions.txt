@@ -1,0 +1,60 @@
+-- All Transformations and Actions
+
+| S.No | Transformation           | Description                                              |
+| ---- | ------------------------ | -------------------------------------------------------- |
+| 1    | `agg()`                  | Aggregate using functions like sum, avg, count, etc.     |
+| 2    | `alias()`                | Renames a column or DataFrame temporarily                |
+| 3    | `coalesce()`             | Reduces the number of partitions                         |
+| 4    | `colRegex()`             | Selects columns using regex pattern                      |
+| 5    | `crossJoin()`            | Cartesian product of two DataFrames                      |
+| 6    | `crosstab()`             | Computes a contingency table                             |
+| 7    | `cube()`                 | Performs multi-dimensional aggregation                   |
+| 8    | `distinct()`             | Removes duplicate rows                                   |
+| 9    | `drop()`                 | Drops one or more columns                                |
+| 10   | `drop_duplicates()`      | Removes duplicate rows (alias of `dropDuplicates`)       |
+| 11   | `dropDuplicates()`       | Removes duplicate rows                                   |
+| 12   | `dropna()`               | Drops rows with nulls                                    |
+| 13   | `exceptAll()`            | Returns rows in df1 but not in df2, including duplicates |
+| 14   | `filter()`               | Filters rows based on a condition                        |
+| 15   | `groupBy()`              | Groups data by one or more columns                       |
+| 16   | `intersect()`            | Returns common rows between two DataFrames               |
+| 17   | `intersectAll()`         | Returns all common rows (including duplicates)           |
+| 18   | `join()`                 | Joins with another DataFrame                             |
+| 19   | `limit()`                | Limits the number of rows                                |
+| 20   | `orderBy()`              | Sorts the DataFrame by one or more columns               |
+| 21   | `randomSplit()`          | Splits DataFrame randomly into specified weights         |
+| 22   | `repartition()`          | Increases or decreases number of partitions              |
+| 23   | `repartitionByRange()`   | Repartitions by range of column values                   |
+| 24   | `rollup()`               | Performs hierarchical aggregation                        |
+| 25   | `sample()`               | Returns a random sample of rows                          |
+| 26   | `sampleBy()`             | Samples stratified by a column                           |
+| 27   | `select()`               | Selects specific columns                                 |
+| 28   | `selectExpr()`           | Selects using SQL expressions                            |
+| 29   | `sort()`                 | Sorts the rows                                           |
+| 30   | `sortWithinPartitions()` | Sorts rows within each partition                         |
+| 31   | `subtract()`             | Returns rows in df1 but not in df2                       |
+| 32   | `transform()`            | Applies a function that returns another DataFrame        |
+| 33   | `union()`                | Appends rows from another DataFrame                      |
+| 34   | `unionAll()`             | Same as `union()` (deprecated alias in Spark 2.x)        |
+| 35   | `unionByName()`          | Union by matching column names                           |
+| 36   | `where()`                | Alias of `filter()`                                      |
+| 37   | `withColumn()`           | Adds or updates a column                                 |
+| 38   | `withColumnRenamed()`    | Renames a column                                         |
+__________________________________________________________________________________________________________________________________________
+
+--Actions
+
+| S.No | Action               | Description                                                    |
+| ---- | -------------------- | -------------------------------------------------------------- |
+| 1    | `collect()`          | Returns all rows from the DataFrame to the driver              |
+| 2    | `count()`            | Returns the number of rows                                     |
+| 3    | `describe()`         | Computes basic statistics like count, mean, stddev, etc.       |
+| 4    | `first()`            | Returns the first row                                          |
+| 5    | `foreach()`          | Executes a function on each row (side-effects only, no return) |
+| 6    | `foreachPartition()` | Executes a function on each partition                          |
+| 7    | `head()`             | Returns the first n rows (default = 1)                         |
+| 8    | `show()`             | Displays the top rows in a tabular format                      |
+| 9    | `summary()`          | Computes extended statistics (min, max, mean, stddev, etc.)    |
+| 10   | `tail()`             | Returns the last n rows                                        |
+| 11   | `take(n)`            | Returns the first `n` rows                                     |
+| 12   | `toLocalIterator()`  | Returns an iterator over the rows (evaluated lazily)           |
